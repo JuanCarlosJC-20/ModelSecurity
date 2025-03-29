@@ -13,12 +13,6 @@ namespace Entity.DTOs
         public string LastNanem { get; set; }
         public string Email { get; set; }
 
-        public PersonDTO(int id, string firstName, string lastNanem, string email)
-        {
-            Id = id;
-            FirstName = firstName;
-            LastNanem = lastNanem;
-            Email = email;
-        }
+   
     }
 }

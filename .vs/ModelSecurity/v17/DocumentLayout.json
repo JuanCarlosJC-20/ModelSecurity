@@ -1,14 +1,26 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\JUANSE\\Desktop\\crs\\ModelSecurity\\",
+  "WorkspaceRootPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\crs\\modelsecurity\\data\\roldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\roldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\persondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\persondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\crs\\modelsecurity\\entity\\dtos\\persondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\persondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\roldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\roldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\roldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\roldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,30 +30,69 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
+              "Title": "UserDTO.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\UserDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\UserDTO.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\UserDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\UserDTO.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAQwBEAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-29T05:22:53.211Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RolDTO.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\RolDTO.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\RolDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-29T05:22:50.275Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Entity\\Context\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Entity\\Context\\ApplicationDbContext.cs",
+              "ViewState": "AgIAADsAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-29T05:22:25.536Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "RolData.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\crs\\ModelSecurity\\Data\\RolData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolData.cs",
               "RelativeDocumentMoniker": "Data\\RolData.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\crs\\ModelSecurity\\Data\\RolData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolData.cs",
               "RelativeToolTip": "Data\\RolData.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAswAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-29T05:16:47.275Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "PersonDTO.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\crs\\ModelSecurity\\Entity\\DTOs\\PersonDTO.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\PersonDTO.cs",
               "RelativeDocumentMoniker": "Entity\\DTOs\\PersonDTO.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\crs\\ModelSecurity\\Entity\\DTOs\\PersonDTO.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\PersonDTO.cs",
               "RelativeToolTip": "Entity\\DTOs\\PersonDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-29T05:16:38.565Z",
               "EditorCaption": ""

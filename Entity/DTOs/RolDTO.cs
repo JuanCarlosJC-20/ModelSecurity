@@ -14,13 +14,6 @@ namespace Entity.DTOs
         public DateTime CreateAt { get; set; }
         public DateTime DeleteAt { get; set; }
 
-        public RolDTO(int id, string name, bool active, DateTime createAt, DateTime deleteAt)
-        {
-            Id = id;
-            Name = name;
-            Active = active;
-            CreateAt = createAt;
-            DeleteAt = deleteAt;
-        }
+      
     }
 }
