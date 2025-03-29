@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace Entity.DTOs
 {
-    class RolDTO
+    class RolFormPermissionDTO
     {
         public int Id { get; set; }
-        public string Code { get; set; }
-        public string Name { get; set; }
-        public bool Active { get; set; }
-
-
+        public int RolId { get; set; }
+        public int FormId { get; set; }
     }
 }

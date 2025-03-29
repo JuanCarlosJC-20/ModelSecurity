@@ -81,6 +81,7 @@
           <Property Name="Active" Type="Boolean" Nullable="false" />
           <Property Name="CreateAt" Type="DateTime" Nullable="false" />
           <Property Name="DeleteAt" Type="DateTime" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="RolUser">
           <Key>
@@ -126,6 +127,7 @@
           <Property Name="Active" Nullable="false" Type="Boolean" />
           <Property Name="CreateAt" Type="DateTime" Nullable="false" />
           <Property Name="DeleteAt" Type="DateTime" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="Form">
           <Key>
