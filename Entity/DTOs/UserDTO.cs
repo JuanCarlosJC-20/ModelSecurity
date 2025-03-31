@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entity.DTOs
 {
-    class UserDTO
+    public class UserDTO
     {
         public int Id { get; set; }
         public PersonDTO PersonId { get; set; }
@@ -15,6 +15,6 @@ namespace Entity.DTOs
         public string Code { get; set; }
         public bool Active { get; set; }
 
-    
+       
     }
 }

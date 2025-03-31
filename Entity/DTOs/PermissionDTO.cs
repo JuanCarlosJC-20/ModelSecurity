@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace Entity.DTOs
 {
-    class PermissionDTO
+    public class PermissionDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
         public bool Active { get; set; }
-        
+
+   
     }
 }

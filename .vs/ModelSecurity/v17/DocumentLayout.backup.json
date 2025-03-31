@@ -3,36 +3,56 @@
   "WorkspaceRootPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
-      "RelativeMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|solutionrelative:diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\formdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\formdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\form.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\form.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\formmoduledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\formmoduledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\formdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\formdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\moduledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\moduledata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\permissiondata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\permissiondata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\persondata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\persondata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\roldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\roldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\rolformpermissiondata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\rolformpermissiondata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\roluserdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\roluserdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\userdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\userdata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\formmoduledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\formmoduledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\formmodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\formmodule.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\formdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\formdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\moduledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\moduledto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\module.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\module.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\permission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\permission.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\permissiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -43,16 +63,8 @@
       "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\persondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\roldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\roldto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\rol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\rol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\rolformpermissiondto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -63,20 +75,24 @@
       "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\roluserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\roluser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\roluser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\dtos\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\data\\roldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{1DD6D86D-30A7-4A0E-835A-FB071DABEF25}|Data\\Data.csproj|solutionrelative:data\\roldata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\roluser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\roluser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "RelativeMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|solutionrelative:diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -86,205 +102,252 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Form.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Form.cs",
-              "RelativeDocumentMoniker": "Entity\\Model\\Form.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Form.cs",
-              "RelativeToolTip": "Entity\\Model\\Form.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:44:33.652Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "FormModule.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\FormModule.cs",
-              "RelativeDocumentMoniker": "Entity\\Model\\FormModule.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\FormModule.cs",
-              "RelativeToolTip": "Entity\\Model\\FormModule.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:44:06.412Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Module.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Module.cs",
-              "RelativeDocumentMoniker": "Entity\\Model\\Module.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Module.cs",
-              "RelativeToolTip": "Entity\\Model\\Module.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:42:50.908Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "Permission.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Permission.cs",
-              "RelativeDocumentMoniker": "Entity\\Model\\Permission.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Permission.cs",
-              "RelativeToolTip": "Entity\\Model\\Permission.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:41:58.352Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "ModuleDTO.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\ModuleDTO.cs",
-              "RelativeDocumentMoniker": "Entity\\DTOs\\ModuleDTO.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\ModuleDTO.cs",
-              "RelativeToolTip": "Entity\\DTOs\\ModuleDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:33:01.284Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "DBModel.edmx [Diagram1]",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx",
-              "RelativeDocumentMoniker": "Diagram\\DBModel.edmx",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx [Diagram1]",
-              "RelativeToolTip": "Diagram\\DBModel.edmx [Diagram1]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
-              "WhenOpened": "2025-03-29T15:37:48.18Z",
-              "EditorCaption": " [Diagram1]"
+              "Title": "FormData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\FormData.cs",
+              "RelativeDocumentMoniker": "Data\\FormData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\FormData.cs",
+              "RelativeToolTip": "Data\\FormData.cs",
+              "ViewState": "AgIAAF0AAAAAAAAAAAAmwAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:55:58.237Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "FormModuleDTO.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\FormModuleDTO.cs",
-              "RelativeDocumentMoniker": "Entity\\DTOs\\FormModuleDTO.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\FormModuleDTO.cs",
-              "RelativeToolTip": "Entity\\DTOs\\FormModuleDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
+              "DocumentIndex": 1,
+              "Title": "FormModuleData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\FormModuleData.cs",
+              "RelativeDocumentMoniker": "Data\\FormModuleData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\FormModuleData.cs",
+              "RelativeToolTip": "Data\\FormModuleData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:32:12.312Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-30T23:55:54.191Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
+              "Title": "ModuleData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\ModuleData.cs",
+              "RelativeDocumentMoniker": "Data\\ModuleData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\ModuleData.cs",
+              "RelativeToolTip": "Data\\ModuleData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:55:48.378Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PermissionData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\PermissionData.cs",
+              "RelativeDocumentMoniker": "Data\\PermissionData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\PermissionData.cs",
+              "RelativeToolTip": "Data\\PermissionData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:55:44.535Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PersonData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\PersonData.cs",
+              "RelativeDocumentMoniker": "Data\\PersonData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\PersonData.cs",
+              "RelativeToolTip": "Data\\PersonData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:55:41.332Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RolData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolData.cs",
+              "RelativeDocumentMoniker": "Data\\RolData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolData.cs",
+              "RelativeToolTip": "Data\\RolData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:55:38.036Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "RolFormPermissionData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolFormPermissionData.cs",
+              "RelativeDocumentMoniker": "Data\\RolFormPermissionData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolFormPermissionData.cs",
+              "RelativeToolTip": "Data\\RolFormPermissionData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:55:34.758Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "RolUserData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolUserData.cs",
+              "RelativeDocumentMoniker": "Data\\RolUserData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolUserData.cs",
+              "RelativeToolTip": "Data\\RolUserData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:55:31.505Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "UserData.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\UserData.cs",
+              "RelativeDocumentMoniker": "Data\\UserData.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\UserData.cs",
+              "RelativeToolTip": "Data\\UserData.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:55:23.691Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "Entity\\Context\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
+              "RelativeToolTip": "Entity\\Context\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAuwAkAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:54:58.347Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
               "Title": "FormDTO.cs",
               "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\FormDTO.cs",
               "RelativeDocumentMoniker": "Entity\\DTOs\\FormDTO.cs",
               "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\FormDTO.cs",
               "RelativeToolTip": "Entity\\DTOs\\FormDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAoAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:30:54.86Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-30T23:54:50.209Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
+              "Title": "FormModuleDTO.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\FormModuleDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\FormModuleDTO.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\FormModuleDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\FormModuleDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:54:46.284Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "ModuleDTO.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\ModuleDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\ModuleDTO.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\ModuleDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\ModuleDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAACAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:54:41.129Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
               "Title": "PermissionDTO.cs",
               "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\PermissionDTO.cs",
               "RelativeDocumentMoniker": "Entity\\DTOs\\PermissionDTO.cs",
               "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\PermissionDTO.cs",
               "RelativeToolTip": "Entity\\DTOs\\PermissionDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:34:32.206Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-30T23:54:37.786Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 14,
               "Title": "PersonDTO.cs",
               "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\PersonDTO.cs",
               "RelativeDocumentMoniker": "Entity\\DTOs\\PersonDTO.cs",
               "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\PersonDTO.cs",
               "RelativeToolTip": "Entity\\DTOs\\PersonDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAtAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAADAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T05:16:38.565Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-30T23:54:31.61Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "Person.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Person.cs",
-              "RelativeDocumentMoniker": "Entity\\Model\\Person.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Person.cs",
-              "RelativeToolTip": "Entity\\Model\\Person.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:36:59.663Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "RolDTO.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolDTO.cs",
-              "RelativeDocumentMoniker": "Entity\\DTOs\\RolDTO.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolDTO.cs",
-              "RelativeToolTip": "Entity\\DTOs\\RolDTO.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAAA0AAAAoAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T05:22:50.275Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Rol.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Rol.cs",
-              "RelativeDocumentMoniker": "Entity\\Model\\Rol.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Rol.cs",
-              "RelativeToolTip": "Entity\\Model\\Rol.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAeAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:36:59.966Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 16,
               "Title": "RolFormPermissionDTO.cs",
               "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolFormPermissionDTO.cs",
               "RelativeDocumentMoniker": "Entity\\DTOs\\RolFormPermissionDTO.cs",
               "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolFormPermissionDTO.cs",
               "RelativeToolTip": "Entity\\DTOs\\RolFormPermissionDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAAEAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:33:35.502Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-30T23:54:24.944Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 17,
               "Title": "RolUserDTO.cs",
               "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolUserDTO.cs",
               "RelativeDocumentMoniker": "Entity\\DTOs\\RolUserDTO.cs",
               "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolUserDTO.cs",
               "RelativeToolTip": "Entity\\DTOs\\RolUserDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:34:00.776Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-30T23:54:21.009Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "UserDTO.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\UserDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\UserDTO.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\UserDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\UserDTO.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABEAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:54:16.697Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 15,
+              "Title": "RolDTO.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolDTO.cs",
+              "RelativeDocumentMoniker": "Entity\\DTOs\\RolDTO.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\RolDTO.cs",
+              "RelativeToolTip": "Entity\\DTOs\\RolDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:54:05.76Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\User.cs",
+              "RelativeDocumentMoniker": "Entity\\Model\\User.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\User.cs",
+              "RelativeToolTip": "Entity\\Model\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T23:53:53.216Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
               "Title": "RolUser.cs",
               "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\RolUser.cs",
               "RelativeDocumentMoniker": "Entity\\Model\\RolUser.cs",
@@ -292,45 +355,30 @@
               "RelativeToolTip": "Entity\\Model\\RolUser.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T15:35:20.464Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-30T23:53:52.27Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "UserDTO.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\UserDTO.cs",
-              "RelativeDocumentMoniker": "Entity\\DTOs\\UserDTO.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DTOs\\UserDTO.cs",
-              "RelativeToolTip": "Entity\\DTOs\\UserDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBEAAAAEAAAAAAAAAA==",
+              "DocumentIndex": 21,
+              "Title": "Person.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Person.cs",
+              "RelativeDocumentMoniker": "Entity\\Model\\Person.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Person.cs",
+              "RelativeToolTip": "Entity\\Model\\Person.cs",
+              "ViewState": "AgIAAAgAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T05:22:53.211Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-03-30T23:53:40.979Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "Entity\\Context\\ApplicationDbContext.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
-              "RelativeToolTip": "Entity\\Context\\ApplicationDbContext.cs",
-              "ViewState": "AgIAADsAAAAAAAAAAAAIwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T05:22:25.536Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "RolData.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolData.cs",
-              "RelativeDocumentMoniker": "Data\\RolData.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\RolData.cs",
-              "RelativeToolTip": "Data\\RolData.cs",
-              "ViewState": "AgIAAA8AAAAAAAAAAAAswAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-29T05:16:47.275Z"
+              "DocumentIndex": 22,
+              "Title": "DBModel.edmx [Diagram1]",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx",
+              "RelativeDocumentMoniker": "Diagram\\DBModel.edmx",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\js\\ModelSecurity\\Diagram\\DBModel.edmx [Diagram1]",
+              "RelativeToolTip": "..\\js\\ModelSecurity\\Diagram\\DBModel.edmx [Diagram1]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
+              "WhenOpened": "2025-03-30T23:52:26.108Z"
             }
           ]
         }

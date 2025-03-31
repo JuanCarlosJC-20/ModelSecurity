@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Model
 {
-    class FormModule
+    public class FormModule
     {
         public int Id { get; set; }
         public Module ModuleId { get; set; }

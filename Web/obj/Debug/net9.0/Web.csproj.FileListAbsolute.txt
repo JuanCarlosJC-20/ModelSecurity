@@ -1,0 +1,15 @@
+C:\Users\SENA\source\repos\ModelSecurity\Web\obj\Debug\net9.0\Web.csproj.AssemblyReference.cache
+C:\Users\SENA\source\repos\ModelSecurity\Web\obj\Debug\net9.0\Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\SENA\source\repos\ModelSecurity\Web\obj\Debug\net9.0\Web.AssemblyInfoInputs.cache
+C:\Users\SENA\source\repos\ModelSecurity\Web\obj\Debug\net9.0\Web.AssemblyInfo.cs
+C:\Users\SENA\source\repos\ModelSecurity\Web\obj\Debug\net9.0\Web.csproj.CoreCompileInputs.cache
+C:\Users\SENA\source\repos\ModelSecurity\Web\obj\Debug\net9.0\Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\SENA\source\repos\ModelSecurity\Web\obj\Debug\net9.0\Web.sourcelink.json
+C:\Users\JUANSE\Desktop\ModelSecurity\Web\obj\Debug\net9.0\Web.csproj.AssemblyReference.cache
+C:\Users\JUANSE\Desktop\ModelSecurity\Web\obj\Debug\net9.0\Web.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\JUANSE\Desktop\ModelSecurity\Web\obj\Debug\net9.0\Web.AssemblyInfoInputs.cache
+C:\Users\JUANSE\Desktop\ModelSecurity\Web\obj\Debug\net9.0\Web.AssemblyInfo.cs
+C:\Users\JUANSE\Desktop\ModelSecurity\Web\obj\Debug\net9.0\Web.csproj.CoreCompileInputs.cache
+C:\Users\JUANSE\Desktop\ModelSecurity\Web\obj\Debug\net9.0\Web.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\JUANSE\Desktop\ModelSecurity\Web\obj\Debug\net9.0\Web.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\JUANSE\Desktop\ModelSecurity\Web\obj\Debug\net9.0\Web.sourcelink.json

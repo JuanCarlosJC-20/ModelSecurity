@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entity.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,13 @@ using System.Threading.Tasks;
 
 namespace Entity.DTOs
 {
-    class RolFormPermissionDTO
+    public class RolFormPermissionDTO
     {
         public int Id { get; set; }
-        public int RolId { get; set; }
-        public int FormId { get; set; }
+        public RolDto RolId { get; set; }
+        public PermissionDTO PermissionId { get; set; }
+        public FormDTO FormId { get; set; }
+
+    
     }
 }

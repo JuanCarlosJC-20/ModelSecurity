@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entity.Model
 {
-    class RolUser
+   public class RolUser
     {
         public int Id { get; set; }
 

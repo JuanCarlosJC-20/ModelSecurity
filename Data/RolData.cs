@@ -1,21 +1,30 @@
-﻿namespace Data
+﻿using Entity.Context;
+using Entity.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+namespace Data
 {
+   
     public class RolData
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger<RolData> _logger;
+        private readonly ILogger _logger;
 
-        public RolData(ApplicationDbContext context, ILogger<RolData> logger)
+        ///<summary>
+        ///Constructor que recibe el contexto de la base de datos
+        ///</summary>
+        ///<param name="context">Instancia de <see cref="ApplicationDbContext"/>para la conexion con la base de datos</param>
+        public RolData(ApplicationDbContext context, ILogger logger)
         {
             _context = context;
             _logger = logger;
         }
 
-        /// <summary>
-        /// Crea un nuevo rol en la base de datos.
-        /// </summary>
-        /// <param name="rol">Instancia del rol a crear.</param>
-        /// <returns>El rol creado.</returns>
+        ///<summary>
+        ///Crea un nuevo rol en la base de datos
+        ///</summary>
+        ///<param name="rol">Instancia del rol a crear</param>
+        ///<returns>El rol creado</returns>
         public async Task<Rol> CreateAsync(Rol rol)
         {
             try
@@ -31,38 +40,32 @@
             }
         }
 
-        /// <summary>
-        /// Obtiene todos los roles almacenados en la base de datos.
-        /// </summary>
-        /// <returns>Lista de roles.</returns>
+        ///<summary>
+        ///Obtiene todos los roles almacenados en la base de datos
+        ///</summary>
+        ///<returns>Lista de los roles</returns>
         public async Task<IEnumerable<Rol>> GetAllAsync()
         {
             return await _context.Set<Rol>().ToListAsync();
         }
-
-        /// <summary>
-        /// Obtiene un rol específico por su identificador.
-        /// </summary>
-        /// <param name="id">Identificador único del rol.</param>
-        /// <returns>El rol encontrado o null si no existe.</returns>
+        ///<summary>Obtiene un rol especifico por su identificador</summary>
         public async Task<Rol?> GetByIdAsync(int id)
         {
             try
             {
                 return await _context.Set<Rol>().FindAsync(id);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
                 _logger.LogError(ex, "Error al obtener rol con ID {RolId}", id);
-                throw; // Re-lanza la excepción para que sea manejada en capas superiores
+                throw;
             }
         }
-
-        /// <summary>
-        /// Actualiza un rol existente en la base de datos.
-        /// </summary>
-        /// <param name="rol">Objeto con la información actualizada.</param>
-        /// <returns>True si la operación fue exitosa, False en caso contrario.</returns>
+        ///<summary>
+        ///Actualiza un rol existente en la base de datos
+        ///</summary>
+        ///<param name="rol">Objeto con la informacion actualizada</param>
+        ///<returns>True si la operacion fue exitosa, false en caso contrario</returns>
         public async Task<bool> UpdateAsync(Rol rol)
         {
             try
@@ -77,12 +80,12 @@
                 return false;
             }
         }
-
-        /// <summary>
-        /// Elimina un rol de la base de datos.
-        /// </summary>
-        /// <param name="id">Identificador único del rol a eliminar.</param>
-        /// <returns>True si la eliminación fue exitosa, False en caso contrario.</returns>
+        ///<summary>
+        ///Elimina un rol de la base de datos
+        ///</summary>
+        ///<param name="id">Identificador unico del rol a eliminar</param>
+        ///<returns>True si la eliminacion fue exitosa, false en caso contrario</returns>
+        ///
         public async Task<bool> DeleteAsync(int id)
         {
             try
@@ -97,7 +100,7 @@
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al eliminar el rol: {ex.Message}");
+                Console.WriteLine($"Error al elminar el rol: {ex.Message}");
                 return false;
             }
         }
