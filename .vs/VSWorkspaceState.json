@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Business",
+    "\\Entity",
+    "\\Entity\\DTOs",
+    "\\Entity\\Model"
+  ],
+  "SelectedNode": "\\Business\\UserBusiness.cs",
+  "PreviewInSolutionExplorer": false
+}
