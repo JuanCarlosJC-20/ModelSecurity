@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Data
 {
-   
+    /// <summary>
+    /// Repositorio encargado de la gestion de la entidad RolFormPermission en la base de datos
+    /// </summary>
     public class RolFormPermissionData
     {
         private readonly ApplicationDbContext _context;

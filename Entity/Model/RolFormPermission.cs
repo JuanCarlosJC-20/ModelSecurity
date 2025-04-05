@@ -9,16 +9,13 @@ namespace Entity.Model
     public class RolFormPermission
     {
         public int Id { get; set; }
-        public Rol RolId { get; set; }
-        public Permission PermissionId { get; set; }
-        public Form FormId { get; set; }
+        public int RolId { get; set; }
+        public Rol Rol { get; set; } = new Rol();
+        public int PermissionId { get; set; }
+        public Permission Permission { get; set; } = new Permission();
+        public int FormId { get; set; }
+        public Form Form { get; set; } = new Form();
 
-        public RolFormPermission(int id, Rol rolId, Permission permissionId, Form formId)
-        {
-            Id = id;
-            RolId = rolId;
-            PermissionId = permissionId;
-            FormId = formId;
-        }
+
     }
 }

@@ -9,22 +9,13 @@ namespace Entity.Model
     public class User
     {
         public int Id { get; set; }
-        public Person PersonId { get; set; }
+        public int PersonId { get; set; }
+        public Person Person { get; set; } = new Person();
         public string UserName { get; set; }
         public string Code { get; set; }
         public bool Active { get; set; }
         public DateTime CreateAt { get; set; }
         public DateTime DeletAt { get; set; }
 
-        public User(int id, Person personId, string userName, string code, bool active, DateTime createAt, DateTime deletAt)
-        {
-            Id = id;
-            PersonId = personId;
-            UserName = userName;
-            Code = code;
-            Active = active;
-            CreateAt = createAt;
-            DeletAt = deletAt;
-        }
     }
 }

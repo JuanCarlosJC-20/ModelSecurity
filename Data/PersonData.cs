@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Data
 {
-
+    /// <summary>
+    /// Repositorio encargado de la gestion de la entidad Person en la base de datos
+    /// </summary>
     public class PersonData
     {
         private readonly ApplicationDbContext _context;

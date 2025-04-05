@@ -1,172 +1,127 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Data;
-using Entity.Dto;
+﻿using Data;
+using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
 using Utilities.Exceptions;
 
 namespace Business
 {
-    public class RolFormPermissionBusiness
+    /// <summary>
+    /// Clase de negocio encargada de la lógica relacionada con los rolUsers del sistema.
+    /// </summary>
+    public class RolUserBusiness
     {
-        private readonly RolFormPermissionData _rolFormPermissionData;
-        private readonly ILogger<RolFormPermissionBusiness> _logger;
+        private readonly RolUserData _rolUserData;
+        private readonly ILogger _logger;
 
-        public RolFormPermissionBusiness(RolFormPermissionData rolFormPermissionData, ILogger<RolFormPermissionBusiness> logger)
+        public RolUserBusiness(RolUserData rolUserData, ILogger logger)
         {
-            _rolFormPermissionData = rolFormPermissionData;
+            _rolUserData = rolUserData;
             _logger = logger;
         }
 
-        public async Task<IEnumerable<RolFormPermissionDto>> GetAllAsync()
+        // Método para obtener todos los rolUsers como DTOs
+        public async Task<IEnumerable<RolUserDto>> GetAllRolUsersAsync()
         {
             try
             {
-                var permissions = await _rolFormPermissionData.GetAllAsync();
-                return permissions.Select(MapToDto).ToList();
+                var rolUsers = await _rolUserData.GetAllAsync();
+                var rolUsersDto = new List<RolUserDto>();
+
+                foreach (var rolUser in rolUsers)
+                {
+                    rolUsersDto.Add(new RolUserDto
+                    {
+                        Id = rolUser.Id,
+                        UserId = rolUser.UserId,
+                        RolId = rolUser.RolId
+                    });
+                }
+
+                return rolUsersDto;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener todas las relaciones Rol-Form-Permiso");
-                throw new ExternalServiceException("Base de datos", "Error al recuperar los permisos de los roles", ex);
+                _logger.LogError(ex, "Error al obtener todos los rolUsers");
+                throw new ExternalServiceException("Base de datos", "Error al recuperar la lista de rolUsers", ex);
             }
         }
 
-        public async Task<RolFormPermissionDto> GetByIdAsync(int id)
+        // Método para obtener un rolUser por ID como DTO
+        public async Task<RolUserDto> GetRolUserByIdAsync(int id)
         {
             if (id <= 0)
             {
-                _logger.LogWarning("Se intentó obtener una relación Rol-Form-Permiso con ID inválido: {Id}", id);
-                throw new ArgumentException("El ID debe ser mayor que cero", nameof(id));
+                _logger.LogWarning("Se intentó obtener un rolUser con ID inválido: {RolUserId}", id);
+                throw new Utilities.Exceptions.ValidationException("id", "El ID del rolUser debe ser mayor que cero");
             }
 
             try
             {
-                var permission = await _rolFormPermissionData.GetByIdAsync(id);
-                if (permission == null)
+                var rolUser = await _rolUserData.GetByIdAsync(id);
+                if (rolUser == null)
                 {
-                    _logger.LogInformation("No se encontró ninguna relación Rol-Form-Permiso con ID: {Id}", id);
-                    throw new EntityNotFoundException("RolFormPermission", id);
+                    _logger.LogInformation("No se encontró ningún rolUser con ID: {RolUserId}", id);
+                    throw new EntityNotFoundException("RolUser", id);
                 }
 
-                return MapToDto(permission);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener la relación Rol-Form-Permiso con ID: {Id}", id);
-                throw new ExternalServiceException("Base de datos", $"Error al recuperar la relación con ID {id}", ex);
-            }
-        }
-
-        public async Task<RolFormPermissionDto> CreateAsync(RolFormPermissionDto dto)
-        {
-            try
-            {
-                Validate(dto);
-
-                var entity = MapToEntity(dto);
-                var created = await _rolFormPermissionData.CreateAsync(entity);
-
-                return MapToDto(created);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al crear una nueva relación Rol-Form-Permiso");
-                throw new ExternalServiceException("Base de datos", "Error al crear la relación", ex);
-            }
-        }
-
-        public async Task<RolFormPermissionDto> UpdateAsync(RolFormPermissionDto dto)
-        {
-            try
-            {
-                Validate(dto);
-
-                var entity = MapToEntity(dto);
-                var updated = await _rolFormPermissionData.UpdateAsync(entity);
-                if (!updated)
+                return new RolUserDto
                 {
-                    throw new ExternalServiceException("Base de datos", "Error al actualizar la relación");
-                }
-
-                return dto;
+                    Id = rolUser.Id,
+                    UserId = rolUser.UserId,
+                    RolId = rolUser.RolId
+                };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar la relación Rol-Form-Permiso");
-                throw new ExternalServiceException("Base de datos", "Error al actualizar la relación", ex);
+                _logger.LogError(ex, "Error al obtener el rolUser con ID: {RolUserId}", id);
+                throw new ExternalServiceException("Base de datos", $"Error al recuperar el rolUser con ID {id}", ex);
             }
         }
 
-        public async Task DeleteAsync(int id)
+        // Método para crear un rol desde un DTO
+        public async Task<RolUserDto> CreateRolAsync(RolUserDto RolUserDto)
         {
-            if (id <= 0)
-            {
-                _logger.LogWarning("Se intentó eliminar una relación Rol-Form-Permiso con ID inválido: {Id}", id);
-                throw new ArgumentException("El ID debe ser mayor que cero", nameof(id));
-            }
-
             try
             {
-                var deleted = await _rolFormPermissionData.DeleteAsync(id);
-                if (!deleted)
+                ValidateRolUser(RolUserDto);
+
+                var rol = new RolUser
                 {
-                    throw new ExternalServiceException("Base de datos", "Error al eliminar la relación");
-                }
+                    UserId = RolUserDto.UserId,
+                    RolId = RolUserDto.RolId
+                };
+
+                var rolUserCreado = await _rolUserData.CreateAsync(rol);
+
+                return new RolUserDto
+                {
+                    Id = rolUserCreado.Id,
+                    UserId = rolUserCreado.UserId,
+                    RolId = rolUserCreado.RolId // Si existe en la entidad
+                };
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al eliminar la relación Rol-Form-Permiso con ID: {Id}", id);
-                throw new ExternalServiceException("Base de datos", $"Error al eliminar la relación con ID {id}", ex);
+                _logger.LogError(ex, "Error al crear nuevo formModule: {FormModuleRolId}", RolUserDto.RolId <= 0);
+                _logger.LogError(ex, "Error al crear nuevo formModule: {FormModuleUserId}", RolUserDto.UserId <= 0);
+                throw new ExternalServiceException("Base de datos", "Error al crear el rolUser", ex);
             }
         }
 
-        private void Validate(RolFormPermissionDto dto)
+        // Método para validar el DTO
+        private void ValidateRolUser(RolUserDto RolUserDto)
         {
-            if (dto == null)
+            if (RolUserDto == null)
             {
-                throw new ArgumentException("El objeto no puede ser nulo", nameof(dto));
+                throw new Utilities.Exceptions.ValidationException("El objeto rolUser no puede ser nulo");
             }
 
-            if (dto.RolId <= 0)
+            if (RolUserDto.RolId <= 0)
             {
-                _logger.LogWarning("Se intentó crear/actualizar una relación con RolId inválido");
-                throw new ArgumentException("El RolId debe ser mayor que cero", nameof(dto.RolId));
+                _logger.LogWarning("Se intentó crear/actualizar un rolUser con RolId vacío");
+                throw new Utilities.Exceptions.ValidationException("RolId", "El RolId del rol es obligatorio");
             }
-
-            if (dto.FormId <= 0)
-            {
-                _logger.LogWarning("Se intentó crear/actualizar una relación con FormId inválido");
-                throw new ArgumentException("El FormId debe ser mayor que cero", nameof(dto.FormId));
-            }
-
-            if (dto.PermissionId <= 0)
-            {
-                _logger.LogWarning("Se intentó crear/actualizar una relación con PermissionId inválido");
-                throw new ArgumentException("El PermissionId debe ser mayor que cero", nameof(dto.PermissionId));
-            }
-        }
-
-        private static RolFormPermissionDto MapToDto(RolFormPermission entity)
-        {
-            return new RolFormPermissionDto
-            {
-                Id = entity.Id,
-                RolId = entity.RolId,
-                FormId = entity.FormId,
-                PermissionId = entity.PermissionId
-            };
-        }
-
-        private static RolFormPermission MapToEntity(RolFormPermissionDto dto)
-        {
-            return new RolFormPermission
-            {
-                Id = dto.Id,
-                RolId = dto.RolId,
-                FormId = dto.FormId,
-                PermissionId = dto.PermissionId
-            };
         }
     }
 }

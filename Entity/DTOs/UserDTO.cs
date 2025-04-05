@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace Entity.DTOs
 {
-    public class UserDTO
+    public class UserDto
     {
         public int Id { get; set; }
-        public PersonDTO PersonId { get; set; }
+        public int PersonId { get; set; }
         public string UserName { get; set; }
         public string Code { get; set; }
         public bool Active { get; set; }
 
-       
+
     }
 }

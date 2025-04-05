@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj": {}
+    "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj": {}
   },
   "projects": {
-    "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj": {
+    "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj",
+        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj",
         "projectName": "Utilities",
-        "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj",
+        "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj",
         "packagesPath": "C:\\Users\\JUANSE\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\obj\\",
+        "outputPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

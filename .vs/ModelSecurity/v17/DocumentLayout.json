@@ -1,34 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\",
+  "WorkspaceRootPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\UserBusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Business\\UserBusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|c:\\users\\juanse\\desktop\\lol\\modelsecuritycccccccccccccccc\\web\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|solutionrelative:web\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolUserBusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Business\\RolUserBusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|c:\\users\\juanse\\desktop\\lol\\modelsecuritycccccccccccccccc\\web\\controllers\\formmodulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|solutionrelative:web\\controllers\\formmodulecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolFormPermissionBusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Business\\RolFormPermissionBusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{8904F9A8-F53E-46EB-A807-42E3974D9F1F}|Business\\Business.csproj|c:\\users\\juanse\\desktop\\lol\\modelsecuritycccccccccccccccc\\business\\formmodulebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{8904F9A8-F53E-46EB-A807-42E3974D9F1F}|Business\\Business.csproj|solutionrelative:business\\formmodulebusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolBusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Business\\RolBusiness.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\Business.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Business\\Business.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Diagram\\DBModel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx.diagram||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Diagram\\DBModel.edmx.diagram||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+      "AbsoluteMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|c:\\users\\juanse\\desktop\\lol\\modelsecuritycccccccccccccccc\\diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "RelativeMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|solutionrelative:diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
     }
   ],
   "DocumentGroupContainers": [
@@ -43,91 +31,52 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "UserBusiness.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\UserBusiness.cs",
-              "RelativeDocumentMoniker": "Business\\UserBusiness.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\UserBusiness.cs",
-              "RelativeToolTip": "Business\\UserBusiness.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAMIAAAAAAAAAAAAAAA==",
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "Web\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Controllers\\UserController.cs",
+              "RelativeToolTip": "Web\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T17:13:52.749Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "RolUserBusiness.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolUserBusiness.cs",
-              "RelativeDocumentMoniker": "Business\\RolUserBusiness.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolUserBusiness.cs",
-              "RelativeToolTip": "Business\\RolUserBusiness.cs",
-              "ViewState": "AgIAAJMAAAAAAAAAAAAmwKsAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T17:13:20.064Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "RolFormPermissionBusiness.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolFormPermissionBusiness.cs",
-              "RelativeDocumentMoniker": "Business\\RolFormPermissionBusiness.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolFormPermissionBusiness.cs",
-              "RelativeToolTip": "Business\\RolFormPermissionBusiness.cs",
-              "ViewState": "AgIAAGYAAAAAAAAAAAAmwJ0AAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T17:11:17.946Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Business.csproj",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\Business.csproj",
-              "RelativeDocumentMoniker": "Business\\Business.csproj",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\Business.csproj",
-              "RelativeToolTip": "Business\\Business.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-02T16:54:58.918Z",
+              "WhenOpened": "2025-04-05T19:59:18.445Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "RolBusiness.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolBusiness.cs",
-              "RelativeDocumentMoniker": "Business\\RolBusiness.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\RolBusiness.cs",
-              "RelativeToolTip": "Business\\RolBusiness.cs",
-              "ViewState": "AgIAAD8AAAAAAAAAAAAAAEkAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-02T16:54:13.778Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
               "Title": "DBModel.edmx [Diagram1]",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Diagram\\DBModel.edmx",
               "RelativeDocumentMoniker": "Diagram\\DBModel.edmx",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx [Diagram1]",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Diagram\\DBModel.edmx [Diagram1]",
               "RelativeToolTip": "Diagram\\DBModel.edmx [Diagram1]",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
-              "WhenOpened": "2025-04-02T16:44:03.137Z",
+              "WhenOpened": "2025-04-05T19:04:34.436Z",
               "EditorCaption": " [Diagram1]"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "DBModel.edmx.diagram",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx.diagram",
-              "RelativeDocumentMoniker": "Diagram\\DBModel.edmx.diagram",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx.diagram",
-              "RelativeToolTip": "Diagram\\DBModel.edmx.diagram",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-04-02T16:44:00.387Z",
+              "DocumentIndex": 2,
+              "Title": "FormModuleBusiness.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\FormModuleBusiness.cs",
+              "RelativeDocumentMoniker": "Business\\FormModuleBusiness.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\FormModuleBusiness.cs",
+              "RelativeToolTip": "Business\\FormModuleBusiness.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAxwBcAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-05T18:55:22.061Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FormModuleController.cs",
+              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Controllers\\FormModuleController.cs",
+              "RelativeDocumentMoniker": "Web\\Controllers\\FormModuleController.cs",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Controllers\\FormModuleController.cs",
+              "RelativeToolTip": "Web\\Controllers\\FormModuleController.cs",
+              "ViewState": "AgIAAGIAAAAAAAAAAAAYwH4AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-05T18:39:29.224Z",
               "EditorCaption": ""
             }
           ]

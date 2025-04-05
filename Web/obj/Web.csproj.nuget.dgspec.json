@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Web\\Web.csproj": {}
+    "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Web.csproj": {}
   },
   "projects": {
-    "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\Business.csproj": {
+    "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\Business.csproj",
+        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\Business.csproj",
         "projectName": "Business",
-        "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\Business.csproj",
+        "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\Business.csproj",
         "packagesPath": "C:\\Users\\JUANSE\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\obj\\",
+        "outputPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,11 +32,14 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\Data.csproj": {
-                "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\Data.csproj"
+              "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Data\\Data.csproj": {
+                "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Data\\Data.csproj"
               },
-              "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj": {
-                "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj"
+              "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Entity\\Entity.csproj": {
+                "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Entity\\Entity.csproj"
+              },
+              "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj": {
+                "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj"
               }
             }
           }
@@ -76,14 +79,14 @@
         }
       }
     },
-    "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\Data.csproj": {
+    "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\Data.csproj",
+        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\Data.csproj",
+        "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\JUANSE\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Data\\obj\\",
+        "outputPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -104,8 +107,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Entity.csproj": {
-                "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Entity.csproj"
+              "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Entity\\Entity.csproj": {
+                "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Entity\\Entity.csproj"
               }
             }
           }
@@ -145,14 +148,14 @@
         }
       }
     },
-    "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Entity.csproj": {
+    "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Entity\\Entity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Entity.csproj",
+        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Entity\\Entity.csproj",
         "projectName": "Entity",
-        "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Entity.csproj",
+        "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Entity\\Entity.csproj",
         "packagesPath": "C:\\Users\\JUANSE\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\obj\\",
+        "outputPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Entity\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -236,14 +239,14 @@
         }
       }
     },
-    "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj": {
+    "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj",
+        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj",
         "projectName": "Utilities",
-        "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj",
+        "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj",
         "packagesPath": "C:\\Users\\JUANSE\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\obj\\",
+        "outputPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -301,14 +304,14 @@
         }
       }
     },
-    "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Web\\Web.csproj": {
+    "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Web.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Web\\Web.csproj",
+        "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Web.csproj",
         "projectName": "Web",
-        "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Web\\Web.csproj",
+        "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Web.csproj",
         "packagesPath": "C:\\Users\\JUANSE\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Web\\obj\\",
+        "outputPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -329,11 +332,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\Business.csproj": {
-                "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Business\\Business.csproj"
+              "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\Business.csproj": {
+                "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\Business.csproj"
               },
-              "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj": {
-                "projectPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Utilities\\Utilities.csproj"
+              "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj": {
+                "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj"
               }
             }
           }

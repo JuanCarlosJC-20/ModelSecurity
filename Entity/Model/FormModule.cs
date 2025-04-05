@@ -9,14 +9,11 @@ namespace Entity.Model
     public class FormModule
     {
         public int Id { get; set; }
-        public Module ModuleId { get; set; }
-        public Form FormId { get; set; }
+        public int ModuleId { get; set; }
+        public Module Module { get; set; } = new Module();
+        public int FormId { get; set; }
+        public Form Form { get; set; } = new Form();
 
-        public FormModule(int id, Module moduleId, Form formId)
-        {
-            Id = id;
-            ModuleId = moduleId;
-            FormId = formId;
-        }
+
     }
 }

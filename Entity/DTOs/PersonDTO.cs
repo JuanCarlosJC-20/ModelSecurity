@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Entity.DTOs
 {
-    public class PersonDTO
+    public class PersonDto
     {
         public int Id { get; set; }
         public string FirstName { get; set; }
-        public string LastNanem { get; set; }
+        public string LastName { get; set; }
         public string Email { get; set; }
 
-   
+
     }
 }

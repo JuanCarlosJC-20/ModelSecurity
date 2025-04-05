@@ -15,14 +15,6 @@ namespace Entity.Model
         public DateTime CreateAt { get; set; }
         public DateTime DeleteAt { get; set; }
 
-        public Form(int id, string name, string code, bool active, DateTime createAt, DateTime deleteAt)
-        {
-            Id = id;
-            Name = name;
-            Code = code;
-            Active = active;
-            CreateAt = createAt;
-            DeleteAt = deleteAt;
-        }
+
     }
 }

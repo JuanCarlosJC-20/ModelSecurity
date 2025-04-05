@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Data
 {
-  
+    /// <summary>
+    /// Repositorio encargado de la gestion de la entidad Module en la base de datos
+    /// </summary>
     public class ModuleData
     {
         private readonly ApplicationDbContext _context;

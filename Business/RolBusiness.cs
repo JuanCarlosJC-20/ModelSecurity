@@ -2,7 +2,6 @@
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel.DataAnnotations;
 using Utilities.Exceptions;
 
 namespace Business

@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Data
 {    
- 
+    /// <summary>
+     /// Repositorio encargado de la gestion de la entidad Form en la base de datos
+     /// </summary>
     public class FormData
     {
         private readonly ApplicationDbContext _context;

@@ -5,7 +5,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Data
 {
-  
+    /// <summary>
+    /// Repositorio encargado de la gestion de la entidad RolUser en la base de datos
+    /// </summary>
     public class RolUserData
     {
         private readonly ApplicationDbContext _context;
@@ -50,7 +52,7 @@ namespace Data
             return await _context.Set<RolUser>().ToListAsync();
         }
         ///<summary>Obtiene un RolUser especifico por su identificador</summary>
-        public async Task<RolUser?> GestByIdAsync(int id)
+        public async Task<RolUser?> GetByIdAsync(int id)
         {
             try
             {

@@ -7,7 +7,10 @@ using System.Reflection;
 
 namespace Entity.Context
 {
- 
+    ///<summary>
+    ///Representa el contexto de la base de datos de la aplicacion, proporcionando configuraciones y metedos
+    ///para la gestion de entidades y consultas personalizadas con Dapper
+    ///</summary>
     public class ApplicationDbContext : DbContext
     {
         /// <summary>

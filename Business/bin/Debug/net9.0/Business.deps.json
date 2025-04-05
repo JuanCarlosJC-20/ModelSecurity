@@ -9,6 +9,7 @@
       "Business/1.0.0": {
         "dependencies": {
           "Data": "1.0.0",
+          "Entity": "1.0.0",
           "Utilities": "1.0.0"
         },
         "runtime": {
