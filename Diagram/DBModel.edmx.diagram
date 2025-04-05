@@ -4,18 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="6462bc7269c64559912581817bafbdca" Name="Diagram1" ZoomLevel="66" >
-        <EntityTypeShape EntityType="DBModel.User" Width="1.5" PointX="3.25" PointY="1" />
+      <Diagram DiagramId="6462bc7269c64559912581817bafbdca" Name="Diagram1" ZoomLevel="60" >
+        <EntityTypeShape EntityType="DBModel.User" Width="1.5" PointX="3.5" PointY="1.625" />
         <EntityTypeShape EntityType="DBModel.Rol" Width="1.5" PointX="3.25" PointY="7.375" />
         <EntityTypeShape EntityType="DBModel.RolUser" Width="1.5" PointX="3.375" PointY="4.625" />
         <AssociationConnector Association="DBModel.UserRolUser" />
         <AssociationConnector Association="DBModel.RolRolUser" />
-        <EntityTypeShape EntityType="DBModel.Module" Width="1.5" PointX="10.125" PointY="0.75" />
-        <EntityTypeShape EntityType="DBModel.Form" Width="1.5" PointX="9.875" PointY="7.5" />
+        <EntityTypeShape EntityType="DBModel.Module" Width="1.5" PointX="10" PointY="1.375" />
+        <EntityTypeShape EntityType="DBModel.Form" Width="1.5" PointX="9.875" PointY="6.875" />
         <EntityTypeShape EntityType="DBModel.FormModule" Width="1.5" PointX="10" PointY="3.875" />
         <AssociationConnector Association="DBModel.ModuleFormModule" />
         <AssociationConnector Association="DBModel.FormFormModule" />
-        <EntityTypeShape EntityType="DBModel.Permission" PointX="6.375" PointY="9.25" Width="1.5" />
+        <EntityTypeShape EntityType="DBModel.Permission" PointX="6.375" PointY="9" Width="1.5" />
         <EntityTypeShape EntityType="DBModel.RolFormPermission" PointX="6.5" PointY="6.25" Width="1.5" />
         <AssociationConnector Association="DBModel.RolRolFormPermission" />
         <AssociationConnector Association="DBModel.PermissionRolFormPermission" />

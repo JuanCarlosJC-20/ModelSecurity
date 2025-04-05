@@ -139,5 +139,10 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("FormId", "El Name del rolFormPermission es obligatorio");
             }
         }
+
+        public async Task GetAllRolFormPermissionAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
