@@ -3010,11 +3010,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Web.csproj",
+      "projectUniqueName": "C:\\Users\\JUANSE\\Desktop\\mio\\ModelSecurity\\Web\\Web.csproj",
       "projectName": "Web",
-      "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\Web.csproj",
+      "projectPath": "C:\\Users\\JUANSE\\Desktop\\mio\\ModelSecurity\\Web\\Web.csproj",
       "packagesPath": "C:\\Users\\JUANSE\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Web\\obj\\",
+      "outputPath": "C:\\Users\\JUANSE\\Desktop\\mio\\ModelSecurity\\Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3035,11 +3035,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\Business.csproj": {
-              "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Business\\Business.csproj"
+            "C:\\Users\\JUANSE\\Desktop\\mio\\ModelSecurity\\Business\\Business.csproj": {
+              "projectPath": "C:\\Users\\JUANSE\\Desktop\\mio\\ModelSecurity\\Business\\Business.csproj"
             },
-            "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj": {
-              "projectPath": "C:\\Users\\JUANSE\\Desktop\\lol\\ModelSecuritycccccccccccccccc\\Utilities\\Utilities.csproj"
+            "C:\\Users\\JUANSE\\Desktop\\mio\\ModelSecurity\\Utilities\\Utilities.csproj": {
+              "projectPath": "C:\\Users\\JUANSE\\Desktop\\mio\\ModelSecurity\\Utilities\\Utilities.csproj"
             }
           }
         }
