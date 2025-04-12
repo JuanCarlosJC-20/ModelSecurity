@@ -2,6 +2,7 @@
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
+using System.Security;
 using Utilities.Exceptions;
 
 namespace Business
@@ -125,6 +126,44 @@ namespace Business
                 _logger.LogWarning("Se intentó crear/actualizar un permiso con Name vacío");
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del permiso es obligatorio");
             }
+        }
+        //Metodo para mapear PermissionDto
+
+        private PermissionDto MapToDto(Permission permission)
+        {
+            return new PermissionDto
+            {
+                Id = permission.Id,
+                Name = permission.Name,
+                Code = permission.Code,
+                Active = permission.Active
+
+            };
+        }
+
+
+
+        private Permission MapToEntity(PermissionDto PermissionDto)
+        {
+            return new Permission
+            {
+                Id = PermissionDto.Id,
+                Name = PermissionDto.Name,
+                Code = PermissionDto.Code,
+                Active = PermissionDto.Active
+
+
+            };
+        }
+        // Método para mapear una lista de Rol a una lista de PermissionDto
+        private IEnumerable<PermissionDto> MapToDtoList(IEnumerable<Permission> permissions)
+        {
+            var PermissionDtos = new List<PermissionDto>();
+            foreach (var permission in permissions)
+            {
+                PermissionDtos.Add(MapToDto(permission));
+            }
+            return PermissionDtos;
         }
     }
 }

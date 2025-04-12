@@ -123,5 +123,42 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("RolId", "El RolId del rol es obligatorio");
             }
         }
+
+        //Metodo para mapear RolDto
+
+        private RolUserDto MapToDto(RolUser roluser)
+        {
+            return new RolUserDto
+            {
+                Id = roluser.Id,
+                UserId = roluser.UserId,
+                RolId = roluser.RolId
+
+            };
+        }
+
+
+
+        private RolUser MapToEntity(RolUserDto RolUserDto)
+        {
+            return new RolUser
+            {
+                Id = RolUserDto.Id,
+                UserId = RolUserDto.UserId,
+                RolId = RolUserDto.RolId
+
+
+            };
+        }
+        // Método para mapear una lista de Rol a una lista de RolUserDto
+        private IEnumerable<RolUserDto> MapToDtoList(IEnumerable<RolUser> rolusers)
+        {
+            var rolUserDtos = new List<RolUserDto>();
+            foreach (var roluser in rolusers)
+            {
+                rolUserDtos.Add(MapToDto(roluser));
+            }
+            return rolUserDtos;
+        }
     }
 }

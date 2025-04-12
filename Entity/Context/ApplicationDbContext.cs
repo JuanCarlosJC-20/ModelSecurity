@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Entity.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
@@ -27,16 +28,29 @@ namespace Entity.Context
         {
             _configuration = configuration;
         }
+
+
+
+        ///
+        /// DB SETS
+        ///
+        public DbSet<Rol> Rol { get; set; }
+
+
         /// <summary>
         /// Configura los modelos de la base de datos aplicando configuraciones desde ensamblados.
         /// </summary>
-        /// <param name="modelBuilder">Constructor del modelo de base de datos</param>
+        /// <param name="modelBuilder">Constructor del modelo de base de datos.</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<Person>()
+           .HasOne(p => p.User)
+           .WithOne(u => u.Person)
+           .HasForeignKey<User>(u => u.PersonId); // Especifica la clave foránea
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-            base.OnModelCreating(modelBuilder);
         }
 
         ///<summary>
@@ -109,6 +123,31 @@ namespace Entity.Context
             var connection = this.Database.GetDbConnection();
             return await connection.QueryFirstOrDefaultAsync<T>(command: command.Definition);
         }
+
+        //SobreCarga
+        //public async Task<int> QueryFirstOrDefaultAsync(string text, object parameters = null, int? timeout = null, CommandType? type = null)
+        //{
+        //    using var command = new DapperEFCoreCommand(this, text, parameters, timeout, type, CancellationToken.None);
+        //    var connection = this.Database.GetDbConnection();
+        //    return await connection.ExecuteAsync(command.Definition);
+        //}
+
+        public async Task<int> ExecuteAsync(String text, object parametres = null, int? timeout = null, CommandType? type = null)
+        {
+            using var command = new DapperEFCoreCommand(this, text, parametres, timeout, type, CancellationToken.None);
+            var connection = this.Database.GetDbConnection();
+            return await connection.ExecuteAsync(command.Definition);
+        }
+
+        //Debolver Objeto
+        public async Task<T> ExecuteScalarAsync<T>(string query, object parameters = null, int? timeout = null, CommandType? type = null)
+        {
+            using var command = new DapperEFCoreCommand(this, query, parameters, timeout, type, CancellationToken.None);
+            var connection = this.Database.GetDbConnection();
+            return await connection.ExecuteScalarAsync<T>(command.Definition);
+        }
+
+
         ///<summary>
         ///Metodo interno para garantizar la autoria de los cambios en las entidades
         /// </summary>

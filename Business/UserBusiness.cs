@@ -126,5 +126,59 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("UserName", "El UserName del usuario es obligatorio");
             }
         }
+
+        // Método para validar el DTO
+        private void ValidateRolUser(RolUserDto RolUserDto)
+        {
+            if (RolUserDto == null)
+            {
+                throw new Utilities.Exceptions.ValidationException("El objeto rolUser no puede ser nulo");
+            }
+
+            if (RolUserDto.RolId <= 0)
+            {
+                _logger.LogWarning("Se intentó crear/actualizar un rolUser con RolId vacío");
+                throw new Utilities.Exceptions.ValidationException("RolId", "El RolId del rol es obligatorio");
+            }
+        }
+
+        //Metodo para mapear UserDto
+
+        private UserDto MapToDto(User user)
+        {
+            return new UserDto
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Code = user.Code,
+                Active = user.Active
+
+            };
+        }
+
+
+
+        private User MapToEntity(UserDto UserDto)
+        {
+            return new User
+            {
+                Id = UserDto.Id,
+                UserName = UserDto.UserName,
+                Code = UserDto.Code,
+                Active = UserDto.Active
+
+
+            };
+        }
+        // Método para mapear una lista de Rol a una lista de UserDto
+        private IEnumerable<UserDto> MapToDtoList(IEnumerable<User> users)
+        {
+            var UserDtos = new List<UserDto>();
+            foreach (var user in users)
+            {
+                UserDtos.Add(MapToDto(user));
+            }
+            return UserDtos;
+        }
     }
 }

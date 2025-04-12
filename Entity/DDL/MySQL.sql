@@ -1,0 +1,62 @@
+﻿CREATE TABLE `User` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(255) NOT NULL,
+    code VARCHAR(100) NOT NULL,
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    delete_at DATETIME DEFAULT NULL,
+    person_id INT NOT NULL,
+    CONSTRAINT fk_user_person FOREIGN KEY (person_id) REFERENCES person(id)
+);
+
+CREATE TABLE person (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL
+);
+
+CREATE TABLE rol (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    delete_at DATETIME DEFAULT NULL
+);
+
+CREATE TABLE rol_user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    rol_id INT NOT NULL,
+    CONSTRAINT fk_roluser_user FOREIGN KEY (user_id) REFERENCES `User`(id),
+    CONSTRAINT fk_roluser_rol FOREIGN KEY (rol_id) REFERENCES rol(id)
+);
+
+CREATE TABLE module (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    delete_at DATETIME DEFAULT NULL
+);
+
+CREATE TABLE form (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    code VARCHAR(100) NOT NULL,
+    active TINYINT(1) NOT NULL DEFAULT 1,
+    create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    delete_at DATETIME DEFAULT NULL
+);
+
+CREATE TABLE form_module (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    module_id INT NOT NULL,
+    form_id INT NOT NULL,
+    CONSTRAINT fk_formmodule_module FOREIGN KEY (module_id) REFERENCES module(id),
+    CONSTRAINT fk_formmodule_form FOREIGN KEY (form_id) REFERENCES form(id)
+);
+
+CREATE TABLE permission (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT

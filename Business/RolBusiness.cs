@@ -2,7 +2,9 @@
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
+using System;
 using Utilities.Exceptions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Business
 {
@@ -122,5 +124,40 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del rol es obligatorio");
             }
         }
+        //Metodo para mapear RolDto
+
+        private RolDto MapToDto(Rol rol)
+        {
+            return new RolDto
+            {
+                Id = rol.Id,
+                Name = rol.Name,
+                 Active= rol.Active
+            };
+        }
+
+        
+       
+        private Rol MapToEntity(RolDto rolDto)
+        {
+            return new Rol
+            {
+                Id = rolDto.Id,
+                Name = rolDto.Name,
+                Active = rolDto.Active
+           
+            };
+        }
+        // Método para mapear una lista de Rol a una lista de RolDTO
+        private IEnumerable<RolDto> MapToDtoList(IEnumerable<Rol> roles)
+        {
+            var rolesDto = new List<RolDto>();
+            foreach (var rol in roles)
+            {
+                rolesDto.Add(MapToDto(rol));
+            }
+            return rolesDto;
+        }
+
     }
 }

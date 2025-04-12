@@ -144,5 +144,44 @@ namespace Business
         {
             throw new NotImplementedException();
         }
+
+        //Metodo para mapear RolFormPermissionDto
+
+        private RolFormPermissionDto MapToDto(RolFormPermission rolformpermission)
+        {
+            return new RolFormPermissionDto
+            {
+                Id = rolformpermission.Id,
+                RolId = rolformpermission.RolId,
+                PermissionId = rolformpermission.PermissionId,
+                FormId = rolformpermission.FormId
+
+            };
+        }
+
+
+
+        private RolFormPermission MapToEntity(RolFormPermissionDto RolFormPermissionDto)
+        {
+            return new RolFormPermission
+            {
+                Id = RolFormPermissionDto.Id,
+                RolId = RolFormPermissionDto.RolId,
+                PermissionId = RolFormPermissionDto.PermissionId,
+                FormId = RolFormPermissionDto.FormId
+
+
+            };
+        }
+        // Método para mapear una lista de Rol a una lista de RolFormPermissionDto
+        private IEnumerable<RolFormPermissionDto> MapToDtoList(IEnumerable<RolFormPermission> rolformpermissions)
+        {
+            var RolFormPermissionDto = new List<RolFormPermissionDto>();
+            foreach (var rolformpermission in rolformpermissions)
+            {
+                RolFormPermissionDto.Add(MapToDto(rolformpermission));
+            }
+            return RolFormPermissionDto;
+        }
     }
 }

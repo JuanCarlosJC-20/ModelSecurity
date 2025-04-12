@@ -122,5 +122,44 @@ namespace Business
                 throw new Utilities.Exceptions.ValidationException("Name", "El Name del modulo es obligatorio");
             }
         }
+
+        //Metodo para mapear ModuleDto
+
+        private ModuleDto MapToDto(Module module)
+        {
+            return new ModuleDto
+            {
+                Id = module.Id,
+                Name = module.Name,
+                Active = module.Active
+
+
+            };
+        }
+
+
+
+        private Module MapToEntity(ModuleDto ModuleDto)
+        {
+            return new Module
+            {
+                Id = ModuleDto.Id,
+                Name = ModuleDto.Name,
+                Active = ModuleDto.Active
+
+
+
+            };
+        }
+        // Método para mapear una lista de Rol a una lista de ModuleDto
+        private IEnumerable<ModuleDto> MapToDtoList(IEnumerable<Module> modules)
+        {
+            var ModuleDtos = new List<ModuleDto>();
+            foreach (var module in modules)
+            {
+                ModuleDtos.Add(MapToDto(module));
+            }
+            return ModuleDtos;
+        }
     }
 }

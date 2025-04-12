@@ -2,6 +2,7 @@
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
+using System;
 using Utilities.Exceptions;
 
 namespace Business
@@ -125,6 +126,58 @@ namespace Business
                 _logger.LogWarning("Se intentó crear/actualizar una persona con FirstName vacío");
                 throw new Utilities.Exceptions.ValidationException("FirstName", "El FirstName de la persona es obligatorio");
             }
+        }
+        // Método para validar el DTO
+        private void ValidateRol(RolDto RolDto)
+        {
+            if (RolDto == null)
+            {
+                throw new Utilities.Exceptions.ValidationException("El objeto rol no puede ser nulo");
+            }
+
+            if (string.IsNullOrWhiteSpace(RolDto.Name))
+            {
+                _logger.LogWarning("Se intentó crear/actualizar un rol con Name vacío");
+                throw new Utilities.Exceptions.ValidationException("Name", "El Name del rol es obligatorio");
+            }
+        }
+        //Metodo para mapear PersonDto
+
+        private PersonDto MapToDto(Person person)
+        {
+            return new PersonDto
+            {
+                Id = person.Id,
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                Email = person.Email
+
+            };
+        }
+
+
+
+        private Person MapToEntity(PersonDto PersonDto)
+        {
+            return new Person
+            {
+                Id = PersonDto.Id,
+                FirstName = PersonDto.FirstName,
+                LastName = PersonDto.LastName,
+                Email = PersonDto.Email
+
+
+            };
+        }
+        // Método para mapear una lista de Rol a una lista de PersonDto
+        private IEnumerable<PersonDto> MapToDtoList(IEnumerable<Person> persons)
+        {
+            var personDtos = new List<PersonDto>();
+            foreach (var person in persons)
+            {
+                personDtos.Add(MapToDto(person));
+            }
+            return personDtos;
         }
     }
 }
