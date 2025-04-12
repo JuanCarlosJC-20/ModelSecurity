@@ -6,11 +6,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddLogging();
+
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 
 // Registrar clases de Rol
 builder.Services.AddScoped<RolData>();
@@ -48,21 +49,20 @@ builder.Services.AddScoped<PersonBusiness>();
 builder.Services.AddScoped<RolFormPermissionData>();
 builder.Services.AddScoped<RolFormPermissionBusiness>();
 
-
-
-// Agregar CORS
-var OrigenesPermitidos = builder.Configuration.GetValue<string>("OrigenesPermitidos")!.Split(",");
-builder.Services.AddCors(opciones =>
-{
-    opciones.AddDefaultPolicy(politica =>
-    {
-        politica.WithOrigins(OrigenesPermitidos).AllowAnyHeader().AllowAnyMethod();
-    });
-});
-
 // Agregar DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
     opciones.UseSqlServer("name=DefaultConnection"));
+
+//  Configurar política de CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirFrontend", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // Cambia este origen si tu frontend está en otro lugar
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -74,6 +74,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+//  Usar CORS antes de Authorization
+app.UseCors("PermitirFrontend");
+
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();

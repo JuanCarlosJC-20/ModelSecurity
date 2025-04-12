@@ -19,23 +19,12 @@ namespace Web.Controllers
         private readonly FormBusiness _FormBusiness;
         private readonly ILogger<FormController> _logger;
 
-        /// <summary>
-        /// Constructor del controlador de permisos
-        /// </summary>
-        /// <param name="FormBusiness">Capa de negocio de permisos</param>
-        /// <param name="logger">Logger para registro de eventos</param>
         public FormController(FormBusiness FormBusiness, ILogger<FormController> logger)
         {
             _FormBusiness = FormBusiness;
             _logger = logger;
         }
 
-        /// <summary>
-        /// Obtiene todos los permisos del sistema
-        /// </summary>
-        /// <returns>Lista de permisos</returns>
-        /// <response code="200">Retorna la lista de permisos</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<FormDto>), 200)]
         [ProducesResponseType(500)]
@@ -53,15 +42,6 @@ namespace Web.Controllers
             }
         }
 
-        /// <summary>
-        /// Obtiene un permiso específico por su ID
-        /// </summary>
-        /// <param name="id">ID del permiso</param>
-        /// <returns>Permiso solicitado</returns>
-        /// <response code="200">Retorna el permiso solicitado</response>
-        /// <response code="400">ID proporcionado no válido</response>
-        /// <response code="404">Permiso no encontrado</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(FormDto), 200)]
         [ProducesResponseType(400)]
@@ -91,14 +71,6 @@ namespace Web.Controllers
             }
         }
 
-        /// <summary>
-        /// Crea un nuevo permiso en el sistema
-        /// </summary>
-        /// <param name="FormDto">Datos del permiso a crear</param>
-        /// <returns>Permiso creado</returns>
-        /// <response code="201">Retorna el permiso creado</response>
-        /// <response code="400">Datos del permiso no válidos</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpPost]
         [ProducesResponseType(typeof(FormDto), 201)]
         [ProducesResponseType(400)]
@@ -122,5 +94,70 @@ namespace Web.Controllers
             }
         }
 
+        /// <summary>
+        /// Actualiza un permiso existente
+        /// </summary>
+        /// <param name="id">ID del permiso</param>
+        /// <param name="FormDto">Datos actualizados del permiso</param>
+        /// <returns>Resultado de la operación</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateForm(int id, [FromBody] FormDto FormDto)
+        {
+            if (id != FormDto.Id)
+                return BadRequest(new { message = "El ID del permiso no coincide con el del objeto." });
+
+            try
+            {
+                await _FormBusiness.UpdateFormAsync(FormDto);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar permiso con ID: {FormId}", id);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Permiso no encontrado con ID: {FormId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al actualizar permiso con ID: {FormId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Elimina un permiso por su ID
+        /// </summary>
+        /// <param name="id">ID del permiso a eliminar</param>
+        /// <returns>Resultado de la operación</returns>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteForm(int id)
+        {
+            try
+            {
+                await _FormBusiness.DeleteFormAsync(id);
+                return NoContent();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Permiso no encontrado para eliminación con ID: {FormId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al eliminar permiso con ID: {FormId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

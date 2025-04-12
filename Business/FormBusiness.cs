@@ -12,34 +12,21 @@ namespace Business
     public class FormBusiness
     {
         private readonly FormData _formData;
-        private readonly ILogger _logger;
+        private readonly ILogger<FormBusiness> _logger;
 
-        public FormBusiness(FormData formData, ILogger logger)
+        public FormBusiness(FormData formData, ILogger<FormBusiness> logger)
         {
             _formData = formData;
             _logger = logger;
         }
 
-        // Método para obtener todos los formularios como DTOs
         public async Task<IEnumerable<FormDto>> GetAllFormsAsync()
         {
             try
             {
+
                 var forms = await _formData.GetAllAsync();
-                var formsDTO = new List<FormDto>();
-
-                foreach (var form in forms)
-                {
-                    formsDTO.Add(new FormDto
-                    {
-                        Id = form.Id,
-                        Name = form.Name,
-                        Code = form.Code,
-                        Active = form.Active
-                    });
-                }
-
-                return formsDTO;
+                return forms.Select(MapToDto);
             }
             catch (Exception ex)
             {
@@ -48,31 +35,18 @@ namespace Business
             }
         }
 
-        // Método para obtener un formulario por ID como DTO
         public async Task<FormDto> GetFormByIdAsync(int id)
         {
             if (id <= 0)
-            {
-                _logger.LogWarning("Se intentó obtener un formulario con ID inválido: {FormId}", id);
-                throw new Utilities.Exceptions.ValidationException("id", "El ID del formulario debe ser mayor que cero");
-            }
+                throw new ValidationException("id", "El ID del formulario debe ser mayor que cero");
 
             try
             {
                 var form = await _formData.GetByIdAsync(id);
                 if (form == null)
-                {
-                    _logger.LogInformation("No se encontró ningún formulario con ID: {FormId}", id);
                     throw new EntityNotFoundException("Form", id);
-                }
 
-                return new FormDto
-                {
-                    Id = form.Id,
-                    Name = form.Name,
-                    Code = form.Code,
-                    Active = form.Active
-                };
+                return MapToDto(form);
             }
             catch (Exception ex)
             {
@@ -81,13 +55,11 @@ namespace Business
             }
         }
 
-        // Método para crear un formulario desde un DTO
         public async Task<FormDto> CreateFormAsync(FormDto formDto)
         {
             try
             {
                 ValidateForm(formDto);
-
                 var form = new Form
                 {
                     Name = formDto.Name,
@@ -95,37 +67,77 @@ namespace Business
                     Active = formDto.Active
                 };
 
-                var formCreado = await _formData.CreateAsync(form);
+                
+                 form.CreateAt=DateTime.Now;
 
-                return new FormDto
-                {
-                    Id = formCreado.Id,
-                    Code = formCreado.Code,
-                    Active = formCreado.Active// Si existe en la entidad
-                };
+                var formCreado = await _formData.CreateAsync(form);
+                return MapToDto(formCreado);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo formulario: {FormNombre}", formDto?.Name ?? "null");
+                _logger.LogError(ex, "Error al crear formulario: {FormNombre}", formDto?.Name ?? "null");
                 throw new ExternalServiceException("Base de datos", "Error al crear el formulario", ex);
             }
         }
 
-        // Método para validar el DTO
+        public async Task UpdateFormAsync(FormDto formDto)
+        {
+            if (formDto == null || formDto.Id <= 0)
+                throw new ValidationException("Id", "El formulario a actualizar debe tener un ID válido");
+
+            ValidateForm(formDto);
+
+            try
+            {
+                var existing = await _formData.GetByIdAsync(formDto.Id);
+                if (existing == null)
+                    throw new EntityNotFoundException("Form", formDto.Id);
+
+                existing.Name = formDto.Name;
+                existing.Code = formDto.Code;
+                existing.Active = formDto.Active;
+
+                var result = await _formData.UpdateAsync(existing);
+                if (!result)
+                    throw new ExternalServiceException("Base de datos", "Error al actualizar el formulario");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar formulario con ID: {FormId}", formDto.Id);
+                throw;
+            }
+        }
+
+        public async Task DeleteFormAsync(int id)
+        {
+            if (id <= 0)
+                throw new ValidationException("id", "El ID del formulario debe ser mayor que cero");
+
+            try
+            {
+                var existing = await _formData.GetByIdAsync(id);
+                if (existing == null)
+                    throw new EntityNotFoundException("Form", id);
+
+                var result = await _formData.DeleteAsync(id);
+                if (!result)
+                    throw new ExternalServiceException("Base de datos", "No se pudo eliminar el formulario");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar formulario con ID: {FormId}", id);
+                throw;
+            }
+        }
+
         private void ValidateForm(FormDto formDto)
         {
             if (formDto == null)
-            {
-                throw new Utilities.Exceptions.ValidationException("El objeto formulario no puede ser nulo");
-            }
+                throw new ValidationException("formDto", "El objeto formulario no puede ser nulo");
 
             if (string.IsNullOrWhiteSpace(formDto.Name))
-            {
-                _logger.LogWarning("Se intentó crear/actualizar un formulario con Name vacío");
-                throw new Utilities.Exceptions.ValidationException("Name", "El Name del formulario es obligatorio");
-            }
+                throw new ValidationException("Name", "El Name del formulario es obligatorio");
         }
-        //Metodo para mapear FormDto
 
         private FormDto MapToDto(Form form)
         {
@@ -135,36 +147,7 @@ namespace Business
                 Name = form.Name,
                 Code = form.Code,
                 Active = form.Active
-
-
             };
-        }
-
-
-
-        private Form MapToEntity(FormDto FormDto)
-        {
-            return new Form
-            {
-                Id = FormDto.Id,
-                Name = FormDto.Name,
-                Code = FormDto.Code,
-                Active = FormDto.Active
-
-
-
-
-            };
-        }
-        // Método para mapear una lista de Rol a una lista de FormDto
-        private IEnumerable<FormDto> MapToDtoList(IEnumerable<Form> forms)
-        {
-            var FormDtos = new List<FormDto>();
-            foreach (var form in forms)
-            {
-                FormDtos.Add(MapToDto(form));
-            }
-            return FormDtos;
         }
     }
 }

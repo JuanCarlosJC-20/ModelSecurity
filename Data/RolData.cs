@@ -10,13 +10,13 @@ namespace Data
     public class RolData
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<Rol> _logger;
 
         ///<summary>
         ///Constructor que recibe el contexto de la base de datos
         ///</summary>
         ///<param name="context">Instancia de <see cref="ApplicationDbContext"/>para la conexion con la base de datos</param>
-        public RolData(ApplicationDbContext context, ILogger logger)
+        public RolData(ApplicationDbContext context, ILogger<Rol> logger)
         {
             _context = context;
             _logger = logger;
@@ -48,8 +48,10 @@ namespace Data
         ///<returns>Lista de los roles</returns>
         public async Task<IEnumerable<Rol>> GetAllAsync()
         {
-            return await _context.Set<Rol>().ToListAsync();
+            IEnumerable<Rol> lstRols = await _context.Set<Rol>().ToListAsync();
+            return lstRols;
         }
+        
         ///<summary>Obtiene un rol especifico por su identificador</summary>
         public async Task<Rol?> GetByIdAsync(int id)
         {
@@ -59,7 +61,7 @@ namespace Data
             }
             catch(Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener rol con ID {RolId}", id);
+                _logger.LogError(ex, "Error al obtener rol con ID {RolId}  " + ex.Message, id);
                 throw;
             }
         }

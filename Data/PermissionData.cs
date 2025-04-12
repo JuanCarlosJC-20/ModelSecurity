@@ -10,13 +10,13 @@ namespace Data
     public class PermissionData
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<PermissionData> _logger;
 
         ///<summary>
         ///Constructor que recibe el contexto de la base de datos
         ///</summary>
         ///<param name="context">Instancia de <see cref="ApplicationDbContext"/>para la conexion con la base de datos</param>
-        public PermissionData(ApplicationDbContext context, ILogger logger)
+        public PermissionData(ApplicationDbContext context, ILogger<PermissionData> logger)
         {
             _context = context;
             _logger = logger;

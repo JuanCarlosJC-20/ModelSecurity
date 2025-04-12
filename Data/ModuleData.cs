@@ -11,13 +11,13 @@ namespace Data
     public class ModuleData
     {
         private readonly ApplicationDbContext _context;
-        private readonly ILogger _logger;
+        private readonly ILogger<ModuleData> _logger;
 
         ///<summary>
         ///Constructor que recibe el contexto de la base de datos
         ///</summary>
         ///<param name="context">Instancia de <see cref="ApplicationDbContext"/>para la conexion con la base de datos</param>
-        public ModuleData(ApplicationDbContext context, ILogger logger)
+        public ModuleData(ApplicationDbContext context, ILogger<ModuleData> logger)
         {
             _context = context;
             _logger = logger;

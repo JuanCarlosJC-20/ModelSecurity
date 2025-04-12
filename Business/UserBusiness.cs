@@ -12,34 +12,22 @@ namespace Business
     public class UserBusiness
     {
         private readonly UserData _userData;
-        private readonly ILogger _logger;
+        private readonly PersonData _personData; // 🔍 Inyectamos PersonData
+        private readonly ILogger<UserBusiness> _logger;
 
-        public UserBusiness(UserData userData, ILogger logger)
+        public UserBusiness(UserData userData, PersonData personData, ILogger<UserBusiness> logger)
         {
             _userData = userData;
+            _personData = personData;
             _logger = logger;
         }
 
-        // Método para obtener todos las personas como DTOs
         public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
         {
             try
             {
                 var users = await _userData.GetAllAsync();
-                var usersDTO = new List<UserDto>();
-
-                foreach (var user in users)
-                {
-                    usersDTO.Add(new UserDto
-                    {
-                        Id = user.Id,
-                        UserName = user.UserName,
-                        Code = user.Code,
-                        Active = user.Active
-                    });
-                }
-
-                return usersDTO;
+                return MapToDtoList(users);
             }
             catch (Exception ex)
             {
@@ -48,13 +36,12 @@ namespace Business
             }
         }
 
-        // Método para obtener un usuario por ID como DTO
         public async Task<UserDto> GetUserByIdAsync(int id)
         {
             if (id <= 0)
             {
-                _logger.LogWarning("Se intentó obtener un usuario con ID inválido: {UserId}", id);
-                throw new Utilities.Exceptions.ValidationException("id", "El ID del usuario debe ser mayor que cero");
+                _logger.LogWarning("ID inválido: {UserId}", id);
+                throw new ValidationException("id", "El ID del usuario debe ser mayor que cero");
             }
 
             try
@@ -66,13 +53,7 @@ namespace Business
                     throw new EntityNotFoundException("User", id);
                 }
 
-                return new UserDto
-                {
-                    Id = user.Id,
-                    UserName = user.UserName,
-                    Code = user.Code,
-                    Active = user.Active
-                };
+                return MapToDto(user);
             }
             catch (Exception ex)
             {
@@ -81,68 +62,107 @@ namespace Business
             }
         }
 
-        // Método para crear un usuario desde un DTO
-        public async Task<UserDto> CreateUserAsync(UserDto UserDto)
+        public async Task<UserDto> CreateUserAsync(UserDto dto)
         {
             try
             {
-                ValidateUser(UserDto);
+                ValidateUser(dto);
 
-                var user = new User
+                //  Validación de PersonId antes de guardar
+                var person = await _personData.GetByIdAsync(dto.PersonId);
+                if (person == null)
                 {
-                    UserName = UserDto.UserName,
-                    Code = UserDto.Code,
-                    Active = UserDto.Active
-                };
+                    _logger.LogWarning("No se encontró la persona con ID: {PersonId}", dto.PersonId);
+                    throw new ValidationException("PersonId", "No existe una persona con el ID proporcionado");
+                }
 
-                var userCreado = await _userData.CreateAsync(user);
+                var entity = MapToEntity(dto);
+                entity.CreateAt = DateTime.Now;
 
-                return new UserDto
-                {
-                    Id = userCreado.Id,
-                    UserName = userCreado.UserName,
-                    Code = userCreado.Code,
-                    Active = userCreado.Active
-                };
+                var created = await _userData.CreateAsync(entity);
+
+                return MapToDto(created);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo usuario: {UserNombre}", UserDto?.UserName ?? "null");
+                _logger.LogError(ex, "Error al crear nuevo usuario: {UserName}", dto?.UserName ?? "null");
                 throw new ExternalServiceException("Base de datos", "Error al crear el usuario", ex);
             }
         }
 
-        // Método para validar el DTO
-        private void ValidateUser(UserDto UserDto)
+        public async Task<UserDto> UpdateUserAsync(int id, UserDto dto)
         {
-            if (UserDto == null)
+            if (dto == null || dto.Id <= 0)
             {
-                throw new Utilities.Exceptions.ValidationException("El objeto User no puede ser nulo");
+                throw new ValidationException("id", "El ID del usuario debe ser mayor que cero");
             }
 
-            if (string.IsNullOrWhiteSpace(UserDto.UserName))
+            try
             {
-                _logger.LogWarning("Se intentó crear/actualizar un usuario con UserName vacío");
-                throw new Utilities.Exceptions.ValidationException("UserName", "El UserName del usuario es obligatorio");
+                ValidateUser(dto);
+
+                var existing = await _userData.GetByIdAsync(dto.Id);
+                if (existing == null)
+                {
+                    _logger.LogInformation("Usuario no encontrado para actualizar con ID: {Id}", dto.Id);
+                    throw new EntityNotFoundException("User", dto.Id);
+                }
+
+                var updated = await _userData.UpdateAsync(MapToEntity(dto));
+                return MapToDto(updated);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar usuario con ID: {Id}", dto.Id);
+                throw new ExternalServiceException("Base de datos", "Error al actualizar el usuario", ex);
             }
         }
 
-        // Método para validar el DTO
-        private void ValidateRolUser(RolUserDto RolUserDto)
+        private UserDto MapToDto(bool updated)
         {
-            if (RolUserDto == null)
-            {
-                throw new Utilities.Exceptions.ValidationException("El objeto rolUser no puede ser nulo");
-            }
+            throw new NotImplementedException();
+        }
 
-            if (RolUserDto.RolId <= 0)
+        public async Task DeleteUserAsync(int id)
+        {
+            if (id <= 0)
+                throw new ValidationException("id", "El ID del usuario debe ser mayor que cero");
+
+            try
             {
-                _logger.LogWarning("Se intentó crear/actualizar un rolUser con RolId vacío");
-                throw new Utilities.Exceptions.ValidationException("RolId", "El RolId del rol es obligatorio");
+                var existing = await _userData.GetByIdAsync(id);
+                if (existing == null)
+                {
+                    _logger.LogInformation("Usuario no encontrado para eliminar con ID: {Id}", id);
+                    throw new EntityNotFoundException("User", id);
+                }
+
+                await _userData.DeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar usuario con ID: {Id}", id);
+                throw new ExternalServiceException("Base de datos", "Error al eliminar el usuario", ex);
             }
         }
 
-        //Metodo para mapear UserDto
+        private void ValidateUser(UserDto dto)
+        {
+            if (dto == null)
+                throw new ValidationException("El objeto User no puede ser nulo");
+
+            if (string.IsNullOrWhiteSpace(dto.UserName))
+            {
+                _logger.LogWarning("UserName vacío al crear/actualizar usuario");
+                throw new ValidationException("UserName", "El UserName del usuario es obligatorio");
+            }
+
+            if (string.IsNullOrWhiteSpace(dto.Code))
+            {
+                _logger.LogWarning("Code vacío al crear/actualizar usuario");
+                throw new ValidationException("Code", "El código del usuario es obligatorio");
+            }
+        }
 
         private UserDto MapToDto(User user)
         {
@@ -151,34 +171,26 @@ namespace Business
                 Id = user.Id,
                 UserName = user.UserName,
                 Code = user.Code,
-                Active = user.Active
-
+                Active = user.Active,
+                PersonId = user.PersonId // Agregado para reflejarlo también en el DTO
             };
         }
 
-
-
-        private User MapToEntity(UserDto UserDto)
+        private User MapToEntity(UserDto dto)
         {
             return new User
             {
-                Id = UserDto.Id,
-                UserName = UserDto.UserName,
-                Code = UserDto.Code,
-                Active = UserDto.Active
-
-
+                Id = dto.Id,
+                UserName = dto.UserName,
+                Code = dto.Code,
+                Active = dto.Active,
+                PersonId = dto.PersonId // 🔍 Asegura que se asigne correctamente
             };
         }
-        // Método para mapear una lista de Rol a una lista de UserDto
+
         private IEnumerable<UserDto> MapToDtoList(IEnumerable<User> users)
         {
-            var UserDtos = new List<UserDto>();
-            foreach (var user in users)
-            {
-                UserDtos.Add(MapToDto(user));
-            }
-            return UserDtos;
+            return users.Select(MapToDto).ToList();
         }
     }
 }

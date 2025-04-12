@@ -1,5 +1,4 @@
 using Business;
-using Data;
 using Entity.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,7 +9,7 @@ using Utilities.Exceptions;
 namespace Web.ContUserlers
 {
     /// <summary>
-    /// Controlador para la gestión de permisos en el sistema
+    /// Controlador para la gestión de relaciones entre usuarios y roles
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
@@ -20,11 +19,6 @@ namespace Web.ContUserlers
         private readonly RolUserBusiness _RolUserBusiness;
         private readonly ILogger<RolUserController> _logger;
 
-        /// <summary>
-        /// Constructor del controlador de permisos
-        /// </summary>
-        /// <param name="RolUserBusiness">Capa de negocio de permisos</param>
-        /// <param name="logger">Logger para registro de eventos</param>
         public RolUserController(RolUserBusiness RolUserBusiness, ILogger<RolUserController> logger)
         {
             _RolUserBusiness = RolUserBusiness;
@@ -32,11 +26,8 @@ namespace Web.ContUserlers
         }
 
         /// <summary>
-        /// Obtiene todos los permisos del sistema
+        /// Obtiene todas las relaciones Rol-Usuario
         /// </summary>
-        /// <returns>Lista de permisos</returns>
-        /// <response code="200">Retorna la lista de permisos</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<RolUserDto>), 200)]
         [ProducesResponseType(500)]
@@ -49,20 +40,14 @@ namespace Web.ContUserlers
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al obtener permisos");
+                _logger.LogError(ex, "Error al obtener RolUsers");
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
         /// <summary>
-        /// Obtiene un permiso específico por su ID
+        /// Obtiene una relación Rol-Usuario por ID
         /// </summary>
-        /// <param name="id">ID del permiso</param>
-        /// <returns>Permiso solicitado</returns>
-        /// <response code="200">Retorna el permiso solicitado</response>
-        /// <response code="400">ID proporcionado no válido</response>
-        /// <response code="404">Permiso no encontrado</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(RolUserDto), 200)]
         [ProducesResponseType(400)]
@@ -77,51 +62,110 @@ namespace Web.ContUserlers
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida para el permiso con ID: {RolUserlId}", id);
+                _logger.LogWarning(ex, "ID inválido: {id}", id);
                 return BadRequest(new { message = ex.Message });
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Permiso no encontrado con ID: {RolUserlId}", id);
+                _logger.LogInformation(ex, "RolUser no encontrado: {id}", id);
                 return NotFound(new { message = ex.Message });
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al obtener permiso con ID: {RolUserId}", id);
+                _logger.LogError(ex, "Error al obtener RolUser: {id}", id);
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
         /// <summary>
-        /// Crea un nuevo permiso en el sistema
+        /// Crea una nueva relación Rol-Usuario
         /// </summary>
-        /// <param name="RolRolUserDto">Datos del permiso a crear</param>
-        /// <returns>Permiso creado</returns>
-        /// <response code="201">Retorna el permiso creado</response>
-        /// <response code="400">Datos del permiso no válidos</response>
-        /// <response code="500">Error interno del servidor</response>
         [HttpPost]
         [ProducesResponseType(typeof(RolUserDto), 201)]
         [ProducesResponseType(400)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateUser([FromBody] RolUserDto RolUserDto)
+        public async Task<IActionResult> CreateRolUser([FromBody] RolUserDto RolUserDto)
         {
             try
             {
-                var createdRolUser = await _RolUserBusiness.CreateRolAsync(RolUserDto);
+                var createdRolUser = await _RolUserBusiness.CreateRolUserAsync(RolUserDto);
                 return CreatedAtAction(nameof(GetRolUserById), new { id = createdRolUser.Id }, createdRolUser);
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida al crear permiso");
+                _logger.LogWarning(ex, "Validación fallida al crear RolUser");
                 return BadRequest(new { message = ex.Message });
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al crear permiso");
+                _logger.LogError(ex, "Error al crear RolUser");
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
+        /// <summary>
+        /// Actualiza una relación Rol-Usuario existente
+        /// </summary>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(RolUserDto), 200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> UpdateRolUser(int id, [FromBody] RolUserDto RolUserDto)
+        {
+            try
+            {
+                RolUserDto.Id = id; // Aseguramos que el ID del cuerpo coincida con el de la URL
+                var updated = await _RolUserBusiness.UpdateRolUserAsync(id, RolUserDto);
+                return Ok(updated);
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al actualizar RolUser");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "RolUser no encontrado para actualizar: {id}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al actualizar RolUser: {id}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+        /// <summary>
+        /// Elimina una relación Rol-Usuario
+        /// </summary>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> DeleteRolUser(int id)
+        {
+            try
+            {
+                await _RolUserBusiness.DeleteRolUserAsync(id);
+                return NoContent();
+            }
+            catch (ValidationException ex)
+            {
+                _logger.LogWarning(ex, "Validación fallida al eliminar RolUser");
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "RolUser no encontrado para eliminar: {id}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al eliminar RolUser: {id}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

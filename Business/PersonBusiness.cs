@@ -13,49 +13,36 @@ namespace Business
     public class PersonBusiness
     {
         private readonly PersonData _personData;
-        private readonly ILogger _logger;
+        private readonly ILogger<PersonBusiness> _logger;
 
-        public PersonBusiness(PersonData personData, ILogger logger)
+        public PersonBusiness(PersonData personData, ILogger<PersonBusiness> logger)
         {
             _personData = personData;
             _logger = logger;
         }
 
-        // Método para obtener todos las personas como DTOs
+        // Obtener todas las personas
         public async Task<IEnumerable<PersonDto>> GetAllPersonAsync()
         {
             try
             {
                 var persons = await _personData.GetAllAsync();
-                var personsDTO = new List<PersonDto>();
-
-                foreach (var person in persons)
-                {
-                    personsDTO.Add(new PersonDto
-                    {
-                        Id = person.Id,
-                        FirstName = person.FirstName,
-                        LastName = person.LastName,
-                        Email = person.Email
-                    });
-                }
-
-                return personsDTO;
+                return MapToDtoList(persons);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener todos las personas");
+                _logger.LogError(ex, "Error al obtener todas las personas");
                 throw new ExternalServiceException("Base de datos", "Error al recuperar la lista de personas", ex);
             }
         }
 
-        // Método para obtener una persona por ID como DTO
+        // Obtener persona por ID
         public async Task<PersonDto> GetPersonByIdAsync(int id)
         {
             if (id <= 0)
             {
-                _logger.LogWarning("Se intentó obtener una persona con ID inválido: {PersonId}", id);
-                throw new Utilities.Exceptions.ValidationException("id", "El ID de la persona debe ser mayor que cero");
+                _logger.LogWarning("ID inválido al buscar persona: {PersonId}", id);
+                throw new ValidationException("id", "El ID de la persona debe ser mayor que cero");
             }
 
             try
@@ -63,86 +50,126 @@ namespace Business
                 var person = await _personData.GetByIdAsync(id);
                 if (person == null)
                 {
-                    _logger.LogInformation("No se encontró ningúna persona con ID: {PersonId}", id);
+                    _logger.LogInformation("Persona no encontrada con ID: {PersonId}", id);
                     throw new EntityNotFoundException("Person", id);
                 }
 
-                return new PersonDto
-                {
-                    Id = person.Id,
-                    FirstName = person.FirstName,
-                    LastName = person.LastName,
-                    Email = person.Email
-                };
+                return MapToDto(person);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener la persona con ID: {PersonId}", id);
+                _logger.LogError(ex, "Error al obtener persona con ID: {PersonId}", id);
                 throw new ExternalServiceException("Base de datos", $"Error al recuperar la persona con ID {id}", ex);
             }
         }
 
-        // Método para crear una persona desde un DTO
+        // Crear persona
         public async Task<PersonDto> CreatePersonAsync(PersonDto personDto)
         {
             try
             {
                 ValidatePerson(personDto);
 
-                var person = new Person
-                {
-                    FirstName = personDto.FirstName,
-                    LastName = personDto.LastName,
-                    Email = personDto.Email
-                };
+                var entity = MapToEntity(personDto);
+                var created = await _personData.CreateAsync(entity);
 
-                var personaCreada = await _personData.CreateAsync(person);
-
-                return new PersonDto
-                {
-                    Id = personaCreada.Id,
-                    FirstName = personaCreada.FirstName,
-                    LastName = personaCreada.LastName,
-                    Email = personaCreada.Email
-                };
+                return MapToDto(created);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nueva persona: {PersonNombre}", personDto?.FirstName ?? "null");
+                _logger.LogError(ex, "Error al crear nueva persona: {FirstName}", personDto?.FirstName ?? "null");
                 throw new ExternalServiceException("Base de datos", "Error al crear la persona", ex);
             }
         }
 
-        // Método para validar el DTO
+        // Actualizar persona
+        public async Task<PersonDto> UpdatePersonAsync(int id, PersonDto personDto)
+        {
+            if (personDto == null || personDto.Id <= 0)
+            {
+                throw new ValidationException("id", "El ID de la persona debe ser mayor que cero");
+            }
+
+            try
+            {
+                ValidatePerson(personDto);
+
+                var existing = await _personData.GetByIdAsync(personDto.Id);
+                if (existing == null)
+                {
+                    _logger.LogInformation("Persona no encontrada para actualizar: {PersonId}", personDto.Id);
+                    throw new EntityNotFoundException("Person", personDto.Id);
+                }
+
+                var updated = await _personData.UpdateAsync(MapToEntity(personDto));
+                return MapToDto(updated);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar persona con ID: {PersonId}", personDto.Id);
+                throw new ExternalServiceException("Base de datos", "Error al actualizar la persona", ex);
+            }
+        }
+
+        private PersonDto MapToDto(bool updated)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Eliminar persona
+        public async Task DeletePersonAsync(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ValidationException("id", "El ID de la persona debe ser mayor que cero");
+            }
+
+            try
+            {
+                var existing = await _personData.GetByIdAsync(id);
+                if (existing == null)
+                {
+                    _logger.LogInformation("Persona no encontrada para eliminar con ID: {PersonId}", id);
+                    throw new EntityNotFoundException("Person", id);
+                }
+
+                await _personData.DeleteAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al eliminar persona con ID: {PersonId}", id);
+                throw new ExternalServiceException("Base de datos", "Error al eliminar la persona", ex);
+            }
+        }
+
+        // Validación
         private void ValidatePerson(PersonDto personDto)
         {
             if (personDto == null)
             {
-                throw new Utilities.Exceptions.ValidationException("El objeto person no puede ser nulo");
+                throw new ValidationException("El objeto persona no puede ser nulo");
             }
 
             if (string.IsNullOrWhiteSpace(personDto.FirstName))
             {
-                _logger.LogWarning("Se intentó crear/actualizar una persona con FirstName vacío");
-                throw new Utilities.Exceptions.ValidationException("FirstName", "El FirstName de la persona es obligatorio");
-            }
-        }
-        // Método para validar el DTO
-        private void ValidateRol(RolDto RolDto)
-        {
-            if (RolDto == null)
-            {
-                throw new Utilities.Exceptions.ValidationException("El objeto rol no puede ser nulo");
+                _logger.LogWarning("FirstName vacío al crear/actualizar persona");
+                throw new ValidationException("FirstName", "El FirstName de la persona es obligatorio");
             }
 
-            if (string.IsNullOrWhiteSpace(RolDto.Name))
+            if (string.IsNullOrWhiteSpace(personDto.LastName))
             {
-                _logger.LogWarning("Se intentó crear/actualizar un rol con Name vacío");
-                throw new Utilities.Exceptions.ValidationException("Name", "El Name del rol es obligatorio");
+                _logger.LogWarning("LastName vacío al crear/actualizar persona");
+                throw new ValidationException("LastName", "El LastName de la persona es obligatorio");
+            }
+
+            if (string.IsNullOrWhiteSpace(personDto.Email))
+            {
+                _logger.LogWarning("Email vacío al crear/actualizar persona");
+                throw new ValidationException("Email", "El Email de la persona es obligatorio");
             }
         }
-        //Metodo para mapear PersonDto
 
+        // Mapeos
         private PersonDto MapToDto(Person person)
         {
             return new PersonDto
@@ -151,33 +178,23 @@ namespace Business
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 Email = person.Email
-
             };
         }
 
-
-
-        private Person MapToEntity(PersonDto PersonDto)
+        private Person MapToEntity(PersonDto dto)
         {
             return new Person
             {
-                Id = PersonDto.Id,
-                FirstName = PersonDto.FirstName,
-                LastName = PersonDto.LastName,
-                Email = PersonDto.Email
-
-
+                Id = dto.Id,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email
             };
         }
-        // Método para mapear una lista de Rol a una lista de PersonDto
+
         private IEnumerable<PersonDto> MapToDtoList(IEnumerable<Person> persons)
         {
-            var personDtos = new List<PersonDto>();
-            foreach (var person in persons)
-            {
-                personDtos.Add(MapToDto(person));
-            }
-            return personDtos;
+            return persons.Select(MapToDto).ToList();
         }
     }
 }
