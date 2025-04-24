@@ -184,7 +184,7 @@ namespace Business
                 UserName = dto.UserName,
                 Code = dto.Code,
                 Active = dto.Active,
-                PersonId = dto.PersonId // 🔍 Asegura que se asigne correctamente
+                PersonId = dto.PersonId 
             };
         }
 
