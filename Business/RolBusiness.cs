@@ -186,5 +186,32 @@ namespace Business
         {
             return roles.Select(MapToDto).ToList();
         }
+
+
+           /// <summary>
+/// Realiza una eliminación lógica del rol.
+/// </summary>
+/// <param name="id">ID del rol</param>
+public async Task DisableFormAsync(int id)
+{
+    if (id <= 0)
+        throw new ValidationException("id", "El ID del rol debe ser mayor que cero");
+
+    try
+    {
+        var existing = await _rolData.GetByIdAsync(id);
+        if (existing == null)
+            throw new EntityNotFoundException("Form", id);
+
+        var result = await _rolData.DisableAsync(id);
+        if (!result)
+            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el rol");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al desactivar rol con ID: {RolId}", id);
+        throw;
+    }
+}
     }
 }

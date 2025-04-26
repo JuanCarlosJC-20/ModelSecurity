@@ -106,5 +106,31 @@ namespace Data
                 return false;
             }
         }
+
+
+         /// <summary>
+    /// Realiza una eliminación lógica del permission, marcándolo como inactivo.
+    /// </summary>
+    /// <param name="id">ID del permission a desactivar</param>
+    /// <returns>True si se desactivó correctamente, false si no se encontró</returns>
+    public async Task<bool> DisableAsync(int id)
+    {
+        try
+        {
+            var permission = await _context.Set<Permission>().FindAsync(id);
+            if (permission == null)
+                return false;
+
+            permission.Active = false;
+            _context.Set<Permission>().Update(permission);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al realizar eliminación lógica del permission con ID {PermissionId}", id);
+            return false;
+        }
+    }
     }
 }

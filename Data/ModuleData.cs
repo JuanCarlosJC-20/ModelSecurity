@@ -107,5 +107,44 @@ namespace Data
                 return false;
             }
         }
+
+        /// <summary>
+    /// Realiza una eliminación lógica del module, marcándolo como inactivo.
+    /// </summary>
+    /// <param name="id">ID del module a desactivar</param>
+    /// <returns>True si se desactivó correctamente, false si no se encontró</returns>
+    public async Task<bool> DisableAsync(int id)
+    {
+        try
+        {
+            var module = await _context.Set<Module>().FindAsync(id);
+            if (module == null)
+                return false;
+
+            module.Active = false;
+            _context.Set<Module>().Update(module);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al realizar eliminación lógica del module con ID {FormId}", id);
+            return false;
+        }
+    }
+
+    //datos de patch para actualizar parcialmente un formulario
+    public async Task PartialUpdateFormAsync(Module module, params string[] propertiesToUpdate)
+{
+    var entry = _context.Entry(module);
+
+    foreach (var property in propertiesToUpdate)
+    {
+        entry.Property(property).IsModified = true;
+    }
+
+    await _context.SaveChangesAsync();
+}
+
     }
 }

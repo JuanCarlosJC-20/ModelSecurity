@@ -108,5 +108,31 @@ namespace Data
                 return false;
             }
         }
+
+
+            /// <summary>
+    /// Realiza una eliminación lógica del rol, marcándolo como inactivo.
+    /// </summary>
+    /// <param name="id">ID del rol a desactivar</param>
+    /// <returns>True si se desactivó correctamente, false si no se encontró</returns>
+    public async Task<bool> DisableAsync(int id)
+    {
+        try
+        {
+            var rol = await _context.Set<Rol>().FindAsync(id);
+            if (rol == null)
+                return false;
+
+            rol.Active = false;
+            _context.Set<Rol>().Update(rol);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al realizar eliminación lógica del rol con ID {rolId}", id);
+            return false;
+        }
+    }
     }
 }

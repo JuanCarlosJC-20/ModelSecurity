@@ -149,5 +149,58 @@ namespace Business
                 Active = form.Active
             };
         }
+
+        /// <summary>
+/// Realiza una eliminación lógica del formulario.
+/// </summary>
+/// <param name="id">ID del formulario</param>
+public async Task DisableFormAsync(int id)
+{
+    if (id <= 0)
+        throw new ValidationException("id", "El ID del formulario debe ser mayor que cero");
+
+    try
+    {
+        var existing = await _formData.GetByIdAsync(id);
+        if (existing == null)
+            throw new EntityNotFoundException("Form", id);
+
+        var result = await _formData.DisableAsync(id);
+        if (!result)
+            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el formulario");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al desactivar formulario con ID: {FormId}", id);
+        throw;
+    }
+}
+
+
+//metodo patch para actualizar solo el estado activo del formulario
+public async Task PartialUpdateFormAsync(FormDto formDto)
+{
+    var existingForm = await _formData.GetByIdAsync(formDto.Id);
+    if (existingForm == null)
+    {
+        throw new EntityNotFoundException($"No se encontró el permiso con ID {formDto.Id}.");
+    }
+
+    if (!string.IsNullOrEmpty(formDto.Name))
+        existingForm.Name = formDto.Name;
+
+    if (!string.IsNullOrEmpty(formDto.Code))
+        existingForm.Code = formDto.Code;
+
+    // Active es tipo bool, simplemente lo actualizamos.
+    existingForm.Active = formDto.Active;
+
+    await _formData.PartialUpdateFormAsync(existingForm,
+        nameof(existingForm.Name),
+        nameof(existingForm.Code),
+        nameof(existingForm.Active));
+}
+
+
     }
 }

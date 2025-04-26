@@ -205,5 +205,54 @@ namespace Business
             }
             return moduleDtos;
         }
+
+         /// <summary>
+/// Realiza una eliminación lógica del module.
+/// </summary>
+/// <param name="id">ID del module</param>
+public async Task DisableFormAsync(int id)
+{
+    if (id <= 0)
+        throw new ValidationException("id", "El ID del module debe ser mayor que cero");
+
+    try
+    {
+        var existing = await _moduleData.GetByIdAsync(id);
+        if (existing == null)
+            throw new EntityNotFoundException("Form", id);
+
+        var result = await _moduleData.DisableAsync(id);
+        if (!result)
+            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el module");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al desactivar module con ID: {ModuleId}", id);
+        throw;
+    }
+}
+
+//metodo patch para actualizar solo el estado activo del formulario
+public async Task PartialUpdateFormAsync(ModuleDto moduleDto)
+{
+    var existingForm = await _moduleData.GetByIdAsync(moduleDto.Id);
+    if (existingForm == null)
+    {
+        throw new EntityNotFoundException($"No se encontró el permiso con ID {moduleDto.Id}.");
+    }
+
+    if (!string.IsNullOrEmpty(moduleDto.Name))
+        existingForm.Name = moduleDto.Name;
+
+
+    // Active es tipo bool, simplemente lo actualizamos.
+    existingForm.Active = moduleDto.Active;
+
+    await _moduleData.PartialUpdateFormAsync(existingForm,
+        nameof(existingForm.Name),
+        nameof(existingForm.Active));
+}
+
+        
     }
 }

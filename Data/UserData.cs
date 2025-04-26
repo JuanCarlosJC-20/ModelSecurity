@@ -106,5 +106,30 @@ namespace Data
                 return false;
             }
         }
+
+                    /// <summary>
+    /// Realiza una eliminación lógica del user, marcándolo como inactivo.
+    /// </summary>
+    /// <param name="id">ID del user a desactivar</param>
+    /// <returns>True si se desactivó correctamente, false si no se encontró</returns>
+    public async Task<bool> DisableAsync(int id)
+    {
+        try
+        {
+            var user = await _context.Set<User>().FindAsync(id);
+            if (user == null)
+                return false;
+
+            user.Active = false;
+            _context.Set<User>().Update(user);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al realizar eliminación lógica del user con ID {userId}", id);
+            return false;
+        }
+    }
     }
 }

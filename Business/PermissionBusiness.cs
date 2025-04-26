@@ -199,5 +199,31 @@ namespace Business
             }
             return list;
         }
+
+          /// <summary>
+/// Realiza una eliminación lógica del permission.
+/// </summary>
+/// <param name="id">ID del permission</param>
+public async Task DisableFormAsync(int id)
+{
+    if (id <= 0)
+        throw new ValidationException("id", "El ID del permission debe ser mayor que cero");
+
+    try
+    {
+        var existing = await _permissionData.GetByIdAsync(id);
+        if (existing == null)
+            throw new EntityNotFoundException("Form", id);
+
+        var result = await _permissionData.DisableAsync(id);
+        if (!result)
+            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el permission");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al desactivar permission con ID: {PermissionId}", id);
+        throw;
+    }
+}
     }
 }

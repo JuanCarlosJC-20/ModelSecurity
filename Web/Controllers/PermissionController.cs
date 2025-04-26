@@ -160,5 +160,35 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+
+         ///<summary>
+        /// <summary>
+        /// Desactiva un permission (eliminación lógica)
+        /// </summary>
+        /// <param name="id">ID del permission a desactivar</param>
+        /// <returns>NoContent si fue exitoso</returns>
+        [HttpDelete("{id}/disable")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> Disablepermission(int id)
+        {
+            try
+            {
+                await _PermissionBusiness.DisableFormAsync(id);
+                return NoContent();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "Permission no encontrado para desactivación con ID: {PermissionId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al desactivar Permission con ID: {FormId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
     }
 }

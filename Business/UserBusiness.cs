@@ -192,5 +192,33 @@ namespace Business
         {
             return users.Select(MapToDto).ToList();
         }
+
+
+        
+           /// <summary>
+/// Realiza una eliminación lógica del user.
+/// </summary>
+/// <param name="id">ID del user</param>
+public async Task DisableFormAsync(int id)
+{
+    if (id <= 0)
+        throw new ValidationException("id", "El ID del user debe ser mayor que cero");
+
+    try
+    {
+        var existing = await _userData.GetByIdAsync(id);
+        if (existing == null)
+            throw new EntityNotFoundException("Form", id);
+
+        var result = await _userData.DisableAsync(id);
+        if (!result)
+            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el user");
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al desactivar user con ID: {UserId}", id);
+        throw;
+    }
+}
     }
 }
