@@ -69,6 +69,7 @@ namespace Business
 
                 
                  form.CreateAt=DateTime.Now;
+                 form.DeleteAt=DateTime.Now;
 
                 var formCreado = await _formData.CreateAsync(form);
                 return MapToDto(formCreado);
@@ -150,7 +151,8 @@ namespace Business
             };
         }
 
-        /// <summary>
+
+ /// <summary>
 /// Realiza una eliminación lógica del formulario.
 /// </summary>
 /// <param name="id">ID del formulario</param>
@@ -168,6 +170,9 @@ public async Task DisableFormAsync(int id)
         var result = await _formData.DisableAsync(id);
         if (!result)
             throw new ExternalServiceException("Base de datos", "No se pudo desactivar el formulario");
+
+
+        //form.DeleteAt=DateTime.Now;    
     }
     catch (Exception ex)
     {

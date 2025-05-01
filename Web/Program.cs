@@ -58,7 +58,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:3000") // Cambia este origen si tu frontend está en otro lugar
+        policy.WithOrigins("*") // Cambia este origen si tu frontend está en otro lugar
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

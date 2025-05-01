@@ -49,66 +49,19 @@
 
             <!-- Users Section -->
             <section id="users" class="section">
-                <h2>Gestión de Usuarios</h2>
-                <div class="crud-container">
-                    <div class="form-container">
-                        <h3>Añadir/Editar Usuario</h3>
-                        <form id="user-form">
-                            <input type="hidden" id="user-id">
-                            <div class="form-group">
-                                <label for="user-username">Nombre de Usuario:</label>
-                                <input type="text" id="user-username" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="user-code">Código:</label>
-                                <input type="text" id="user-code" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="user-active">Activo:</label>
-                                <input type="checkbox" id="user-active" checked>
-                            </div>
-                            <div class="form-group">
-                                <label for="user-person">Persona:</label>
-                                <select id="user-person" required>
-                                    <option value="">-- Seleccionar Persona --</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="user-roles">Roles:</label>
-                                <select id="user-roles" multiple>
-                                </select>
-                            </div>
-                            <div class="button-group">
-                                <button type="submit">Guardar</button>
-                                <button type="reset" id="user-cancel">Cancelar</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="table-container">
-                        <div class="table-actions">
-                            <input type="text" id="user-search" placeholder="Buscar...">
-                        </div>
-                        <table id="user-table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Nombre de Usuario</th>
-                                    <th>Código</th>
-                                    <th>Activo</th>
-                                    <th>Persona</th>
-                                    <th>Creado</th>
-                                    <th>Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- User data will be loaded here -->
-                            </tbody>
-                        </table>
-                        <div class="pagination" id="user-pagination">
-                            <!-- Pagination will be added here -->
-                        </div>
-                    </div>
-                </div>
+                <form id="formularioUsuario">
+                    <label for="userName">Nombre de Usuario:</label>
+                    <input type="text" id="userName" name="userName" required><br><br>
+                
+                    <label for="code">Código:</label>
+                    <input type="text" id="code" name="code" required><br><br>
+                
+                    <label for="personId">ID de Persona:</label>
+                    <input type="number" id="personId" name="personId" required><br><br>
+                
+                    <button type="submit">Crear Usuario</button>
+                </form>
+                
             </section>
 
             <!-- Persons Section -->

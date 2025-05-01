@@ -26,3 +26,10 @@ C:\Users\SENA\Desktop\sdasd\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.Assem
 C:\Users\SENA\Desktop\sdasd\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.CoreCompileInputs.cache
 C:\Users\SENA\Desktop\sdasd\ModelSecurity\Diagram\obj\Debug\Diagram.dll
 C:\Users\SENA\Desktop\sdasd\ModelSecurity\Diagram\obj\Debug\Diagram.pdb
+C:\Users\AdminSen\Desktop\MODELSECURIOTRRRR\ModelSecurity\Diagram\bin\Debug\Diagram.dll.config
+C:\Users\AdminSen\Desktop\MODELSECURIOTRRRR\ModelSecurity\Diagram\bin\Debug\Diagram.dll
+C:\Users\AdminSen\Desktop\MODELSECURIOTRRRR\ModelSecurity\Diagram\bin\Debug\Diagram.pdb
+C:\Users\AdminSen\Desktop\MODELSECURIOTRRRR\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.AssemblyReference.cache
+C:\Users\AdminSen\Desktop\MODELSECURIOTRRRR\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.CoreCompileInputs.cache
+C:\Users\AdminSen\Desktop\MODELSECURIOTRRRR\ModelSecurity\Diagram\obj\Debug\Diagram.dll
+C:\Users\AdminSen\Desktop\MODELSECURIOTRRRR\ModelSecurity\Diagram\obj\Debug\Diagram.pdb
