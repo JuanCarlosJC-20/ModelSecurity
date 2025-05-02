@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistema de Gestión Natural</title>
-    <style>
+
         :root {
             /* Paleta de colores inspirada en la naturaleza y animales */
             --primary-color: #2c6e49;     /* Verde bosque */
@@ -391,71 +385,4 @@
             animation-delay: 1.0s;
             opacity: 0;
         }
-    </style>
-</head>
-<body>
-    <div class="login-container">
-        <div class="login-header">
-            <div class="login-logo">🌿</div>
-            <h1 class="login-title">Sistema de Gestión Natural</h1>
-            <p class="login-subtitle">Inicia sesión para continuar</p>
-        </div>
-        <div class="login-form">
-            <div class="form-group">
-                <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" placeholder="Ingresa tu nombre de usuario">
-                <span class="input-icon">👤</span>
-            </div>
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña">
-                <span class="input-icon">🔒</span>
-            </div>
-            <div class="remember-forgot">
-                <div class="remember-me">
-                    <input type="checkbox" id="remember" name="remember">
-                    <label for="remember">Recordarme</label>
-                </div>
-                <a href="#" class="forgot-password">¿Olvidaste tu contraseña?</a>
-            </div>
-            <button type="submit" class="login-button">Iniciar Sesión</button>
-            <div class="login-divider">
-                <span>O continúa con</span>
-            </div>
-            <div class="social-login">
-                <a href="#" class="social-button">🐦</a>
-                <a href="#" class="social-button">🔵</a>
-                <a href="#" class="social-button">🍎</a>
-            </div>
-            <div class="register-link">
-                <p>¿No tienes una cuenta? <a href="#">Regístrate ahora</a></p>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // Simple form validation
-        document.querySelector('.login-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username.trim() === '' || password.trim() === '') {
-                alert('Por favor, completa todos los campos.');
-                return;
-            }
-            
-            // Aquí iría la lógica de autenticación
-            alert('¡Inicio de sesión exitoso! (Esta es solo una demostración)');
-        });
-
-        // Toggle password visibility
-        document.querySelector('.input-icon:last-of-type').addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.textContent = type === 'password' ? '🔒' : '👁️';
-        });
-    </script>
-</body>
-</html>
+    
