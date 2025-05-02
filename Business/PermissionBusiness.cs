@@ -225,5 +225,30 @@ public async Task DisableFormAsync(int id)
         throw;
     }
 }
+
+
+//metodo patch para actualizar solo el estado activo del formulario
+public async Task PartialUpdateFormAsync(PermissionDto permissionDto)
+{
+    var existingForm = await _permissionData.GetByIdAsync(permissionDto.Id);
+    if (existingForm == null)
+    {
+        throw new EntityNotFoundException($"No se encontró el permiso con ID {permissionDto.Id}.");
+    }
+
+    if (!string.IsNullOrEmpty(permissionDto.Name))
+        existingForm.Name = permissionDto.Name;
+
+    if (!string.IsNullOrEmpty(permissionDto.Code))
+        existingForm.Code = permissionDto.Code;
+
+    // Active es tipo bool, simplemente lo actualizamos.
+    existingForm.Active = permissionDto.Active;
+
+    await _permissionData.PartialUpdateFormAsync(existingForm,
+        nameof(existingForm.Name),
+        nameof(existingForm.Code),
+        nameof(existingForm.Active));
+}
     }
 }

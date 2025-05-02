@@ -4745,7 +4745,7 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\AdminSen\\.nuget\\packages\\": {},
+    "C:\\Users\\JUANSE\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
@@ -4754,14 +4754,14 @@
       "projectUniqueName": "C:\\xampp\\htdocs\\ModelSecurity\\Entity\\Entity.csproj",
       "projectName": "Entity",
       "projectPath": "C:\\xampp\\htdocs\\ModelSecurity\\Entity\\Entity.csproj",
-      "packagesPath": "C:\\Users\\AdminSen\\.nuget\\packages\\",
+      "packagesPath": "C:\\Users\\JUANSE\\.nuget\\packages\\",
       "outputPath": "C:\\xampp\\htdocs\\ModelSecurity\\Entity\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\AdminSen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\JUANSE\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

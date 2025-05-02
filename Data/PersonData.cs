@@ -107,5 +107,46 @@ namespace Data
                 return false;
             }
         }
+
+
+ /// <summary>
+    /// Realiza una eliminación lógica del formulario, marcándolo como inactivo.
+    /// </summary>
+    /// <param name="id">ID del formulario a desactivar</param>
+    /// <returns>True si se desactivó correctamente, false si no se encontró</returns>
+    public async Task<bool> DisableAsync(int id)
+    {
+        try
+        {
+            var person = await _context.Set<Person>().FindAsync(id);
+            if (person == null)
+                return false;
+
+           
+            _context.Set<Person>().Update(person);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al realizar eliminación lógica de la persona con ID {FormId}", id);
+            return false;
+        }
+    }
+        
+
+    //datos de patch para actualizar parcialmente un formulario
+    public async Task PartialUpdateFormAsync(Person person, params string[] propertiesToUpdate)
+{
+    var entry = _context.Entry(person);
+
+    foreach (var property in propertiesToUpdate)
+    {
+        entry.Property(property).IsModified = true;
+    }
+
+    await _context.SaveChangesAsync();
+}
+
     }
 }

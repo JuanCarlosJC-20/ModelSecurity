@@ -159,5 +159,76 @@ namespace Web.ContUserlers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+  ///<summary>
+        /// <summary>
+        /// Desactiva un rol (eliminación lógica)
+        /// </summary>
+        /// <param name="id">ID del rol a desactivar</param>
+        /// <returns>NoContent si fue exitoso</returns>
+        [HttpDelete("{id}/disable")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> Disablerol(int id)
+        {
+            try
+            {
+                await _UserBusiness.DisableFormAsync(id);
+                return NoContent();
+            }
+            catch (EntityNotFoundException ex)
+            {
+                _logger.LogInformation(ex, "rol no encontrado para desactivación con ID: {rolId}", id);
+                return NotFound(new { message = ex.Message });
+            }
+            catch (ExternalServiceException ex)
+            {
+                _logger.LogError(ex, "Error al desactivar rol con ID: {FormId}", id);
+                return StatusCode(500, new { message = ex.Message });
+            }
+        }
+
+
+        
+         /// <summary>
+/// Actualiza parcialmente un permiso existente.
+/// </summary>
+/// <param name="id">ID del permiso a actualizar.</param>
+/// <param name="formDto">Datos parciales del permiso.</param>
+/// <returns>Resultado de la operación.</returns>
+[HttpPatch("{id}")]
+[ProducesResponseType(204)]
+[ProducesResponseType(400)]
+[ProducesResponseType(404)]
+[ProducesResponseType(500)]
+public async Task<IActionResult> PartialUpdateForm(int id, [FromBody] UserDto userDto)
+{
+    if (id != userDto.Id)
+    {
+        return BadRequest(new { message = "El ID del permiso no coincide con el del objeto." });
+    }
+
+    try
+    {
+        await _UserBusiness.PartialUpdateFormAsync(userDto);
+        return NoContent(); // 204: Actualizado correctamente sin contenido de respuesta
+    }
+    catch (ValidationException ex)
+    {
+        _logger.LogWarning(ex, "Validación fallida al actualizar parcialmente el permiso con ID: {FormId}", id);
+        return BadRequest(new { message = ex.Message });
+    }
+    catch (EntityNotFoundException ex)
+    {
+        _logger.LogInformation(ex, "Permiso no encontrado para actualización parcial. ID: {FormId}", id);
+        return NotFound(new { message = ex.Message });
+    }
+    catch (ExternalServiceException ex)
+    {
+        _logger.LogError(ex, "Error de servicio externo al actualizar permiso parcialmente con ID: {FormId}", id);
+        return StatusCode(500, new { message = ex.Message });
+    }
+}
+
     }
 }

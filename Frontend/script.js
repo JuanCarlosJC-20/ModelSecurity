@@ -15,7 +15,7 @@ function showSection(sectionId) {
 
     currentSection = sectionId;
 
-user
+
   
 }
 

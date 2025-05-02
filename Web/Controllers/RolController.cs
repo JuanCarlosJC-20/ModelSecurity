@@ -184,5 +184,47 @@ namespace Web.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+
+        
+         /// <summary>
+/// Actualiza parcialmente un permiso existente.
+/// </summary>
+/// <param name="id">ID del permiso a actualizar.</param>
+/// <param name="formDto">Datos parciales del permiso.</param>
+/// <returns>Resultado de la operación.</returns>
+[HttpPatch("{id}")]
+[ProducesResponseType(204)]
+[ProducesResponseType(400)]
+[ProducesResponseType(404)]
+[ProducesResponseType(500)]
+public async Task<IActionResult> PartialUpdateForm(int id, [FromBody] RolDto rolDto)
+{
+    if (id != rolDto.Id)
+    {
+        return BadRequest(new { message = "El ID del permiso no coincide con el del objeto." });
+    }
+
+    try
+    {
+        await _RolBusiness.PartialUpdateFormAsync(rolDto);
+        return NoContent(); // 204: Actualizado correctamente sin contenido de respuesta
+    }
+    catch (ValidationException ex)
+    {
+        _logger.LogWarning(ex, "Validación fallida al actualizar parcialmente el permiso con ID: {FormId}", id);
+        return BadRequest(new { message = ex.Message });
+    }
+    catch (EntityNotFoundException ex)
+    {
+        _logger.LogInformation(ex, "Permiso no encontrado para actualización parcial. ID: {FormId}", id);
+        return NotFound(new { message = ex.Message });
+    }
+    catch (ExternalServiceException ex)
+    {
+        _logger.LogError(ex, "Error de servicio externo al actualizar permiso parcialmente con ID: {FormId}", id);
+        return StatusCode(500, new { message = ex.Message });
+    }
+}
     }
 }

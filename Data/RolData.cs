@@ -134,5 +134,19 @@ namespace Data
             return false;
         }
     }
+
+    //datos de patch para actualizar parcialmente un formulario
+    public async Task PartialUpdateFormAsync(Rol rol, params string[] propertiesToUpdate)
+{
+    var entry = _context.Entry(rol);
+
+    foreach (var property in propertiesToUpdate)
+    {
+        entry.Property(property).IsModified = true;
+    }
+
+    await _context.SaveChangesAsync();
+}
+
     }
 }

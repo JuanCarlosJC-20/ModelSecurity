@@ -196,5 +196,66 @@ namespace Business
         {
             return persons.Select(MapToDto).ToList();
         }
+
+
+
+ /// <summary>
+/// Realiza una eliminación lógica del formulario.
+/// </summary>
+/// <param name="id">ID del formulario</param>
+public async Task DisableFormAsync(int id)
+{
+    if (id <= 0)
+        throw new ValidationException("id", "El ID de la persona debe ser mayor que cero");
+
+    try
+    {
+        var existing = await _personData.GetByIdAsync(id);
+        if (existing == null)
+            throw new EntityNotFoundException("Person", id);
+
+        var result = await _personData.DisableAsync(id);
+        if (!result)
+            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el formulario");
+
+
+        //form.DeleteAt=DateTime.Now;    
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError(ex, "Error al desactivar la persona con ID: {personId}", id);
+        throw;
+    }
+}
+
+
+
+        //metodo patch para actualizar solo el estado activo del formulario// Método PATCH para actualizar campos específicos de una persona
+public async Task PartialUpdateFormAsync(PersonDto personDto)
+{
+    var existingPerson = await _personData.GetByIdAsync(personDto.Id);
+    if (existingPerson == null)
+    {
+        throw new EntityNotFoundException($"No se encontró la persona con ID {personDto.Id}.");
+    }
+
+    if (!string.IsNullOrEmpty(personDto.FirstName))
+        existingPerson.FirstName = personDto.FirstName;
+
+    if (!string.IsNullOrEmpty(personDto.LastName))
+        existingPerson.LastName = personDto.LastName;
+
+    if (!string.IsNullOrEmpty(personDto.Email))
+        existingPerson.Email = personDto.Email;
+
+    // Active es de tipo bool, así que se actualiza directamente
+   
+
+    await _personData.PartialUpdateFormAsync(existingPerson,
+        nameof(existingPerson.FirstName),
+        nameof(existingPerson.LastName),
+        nameof(existingPerson.Email) );
+}
+
     }
 }
