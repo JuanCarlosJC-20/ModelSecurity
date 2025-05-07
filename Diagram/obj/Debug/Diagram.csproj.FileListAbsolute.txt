@@ -40,3 +40,10 @@ C:\xampp\htdocs\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.AssemblyReference
 C:\xampp\htdocs\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.CoreCompileInputs.cache
 C:\xampp\htdocs\ModelSecurity\Diagram\obj\Debug\Diagram.dll
 C:\xampp\htdocs\ModelSecurity\Diagram\obj\Debug\Diagram.pdb
+C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\bin\Debug\Diagram.dll.config
+C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\bin\Debug\Diagram.dll
+C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\bin\Debug\Diagram.pdb
+C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.AssemblyReference.cache
+C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.CoreCompileInputs.cache
+C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\obj\Debug\Diagram.dll
+C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\obj\Debug\Diagram.pdb

@@ -8,6 +8,7 @@
 CREATE TABLE "User" (
     Id INT PRIMARY KEY IDENTITY(1,1),
     UserName NVARCHAR(20) NOT NULL,
+      PasswordHash NVARCHAR(4000) NULL,  -- Aquí se agrega la columna PasswordHash
     Code NVARCHAR(50) NOT NULL UNIQUE,
     Active BIT NOT NULL DEFAULT 1,
     CreateAt DATETIME2 NOT NULL DEFAULT GETDATE(),
@@ -51,7 +52,7 @@ CREATE TABLE Module (
     DeleteAt DATETIME2 NULL
 );
 
-CREATE TABLE RoleUser (
+CREATE TABLE RolUser (
     Id INT PRIMARY KEY IDENTITY(1,1),
     UserId INT NOT NULL,
     RolId INT NOT NULL,

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro - Sistema de Gestión Natural</title>
-    <link rel="stylesheet" href="register.css">
+    <link rel="stylesheet" href="./styles/register.css">
     
 </head>
 <body>
@@ -15,7 +15,7 @@
             <p class="register-subtitle">Crea una cuenta para acceder al sistema</p>
         </div>
         <div class="register-form">
-            <form id="registration-form">
+            <form id="registration">
                 <div class="form-columns">
                     <div class="form-group required">
                         <label for="firstname">Nombre</label>
@@ -65,7 +65,7 @@
                     <label for="terms">He leído y acepto los <a href="#">Términos y Condiciones</a> y la <a href="#">Política de Privacidad</a> del sistema.</label>
                 </div>
 
-                <button type="submit" class="register-button">Crear cuenta</button>
+                <button type="submit"  class="register-button">Crear cuenta</button>
             </form>
             <div class="login-link">
                 <p>¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
@@ -73,183 +73,6 @@
         </div>
     </div>
 
-    <script>
-        // Validación y animaciones del formulario
-        document.addEventListener('DOMContentLoaded', function() {
-            // Elementos del formulario
-            const registrationForm = document.getElementById('registration-form');
-            const passwordInput = document.getElementById('password');
-            const confirmPasswordInput = document.getElementById('confirm-password');
-            const passwordStrengthBar = document.getElementById('password-strength-bar');
-            const passwordTips = document.getElementById('password-tips');
-            const emailInput = document.getElementById('email');
-            const firstnameInput = document.getElementById('firstname');
-            const lastnameInput = document.getElementById('lastname');
-            const passwordMatchFeedback = document.getElementById('password-match-feedback');
-            const emailFeedback = document.getElementById('email-feedback');
-            const firstnameFeedback = document.getElementById('firstname-feedback');
-            const lastnameFeedback = document.getElementById('lastname-feedback');
-
-            // Toggle contraseña visible/oculta
-            document.querySelectorAll('.toggle-password').forEach(icon => {
-                icon.addEventListener('click', function() {
-                    const input = this.previousElementSibling;
-                    const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                    input.setAttribute('type', type);
-                    this.textContent = type === 'password' ? '🔒' : '👁️';
-                });
-            });
-
-            // Mostrar tips de contraseña
-            passwordInput.addEventListener('focus', function() {
-                passwordTips.style.display = 'block';
-            });
-
-            // Validar fuerza de contraseña
-            passwordInput.addEventListener('input', function() {
-                const password = this.value;
-                let strength = 0;
-                
-                if (password.length >= 8) strength += 1;
-                if (password.match(/[A-Z]/)) strength += 1;
-                if (password.match(/[0-9]/)) strength += 1;
-                if (password.match(/[^A-Za-z0-9]/)) strength += 1;
-
-                passwordStrengthBar.className = 'password-strength-bar';
-                
-                if (strength === 0) {
-                    passwordStrengthBar.style.width = '0';
-                } else if (strength <= 2) {
-                    passwordStrengthBar.classList.add('weak');
-                } else if (strength === 3) {
-                    passwordStrengthBar.classList.add('medium');
-                } else {
-                    passwordStrengthBar.classList.add('strong');
-                }
-            });
-
-            // Validar coincidencia de contraseñas
-            confirmPasswordInput.addEventListener('input', function() {
-                if (this.value === passwordInput.value) {
-                    passwordMatchFeedback.textContent = '¡Las contraseñas coinciden!';
-                    passwordMatchFeedback.classList.remove('error');
-                    passwordMatchFeedback.classList.add('success', 'active');
-                    this.parentElement.classList.add('valid');
-                    this.parentElement.classList.remove('invalid');
-                } else {
-                    passwordMatchFeedback.textContent = 'Las contraseñas no coinciden';
-                    passwordMatchFeedback.classList.remove('success');
-                    passwordMatchFeedback.classList.add('error', 'active');
-                    this.parentElement.classList.add('invalid');
-                    this.parentElement.classList.remove('valid');
-                }
-            });
-
-            // Validar email
-            emailInput.addEventListener('input', function() {
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (emailRegex.test(this.value)) {
-                    emailFeedback.textContent = '¡Email válido!';
-                    emailFeedback.classList.remove('error');
-                    emailFeedback.classList.add('success', 'active');
-                    this.parentElement.classList.add('valid');
-                    this.parentElement.classList.remove('invalid');
-                } else {
-                    emailFeedback.textContent = 'Por favor, introduce un email válido';
-                    emailFeedback.classList.remove('success');
-                    emailFeedback.classList.add('error', 'active');
-                    this.parentElement.classList.add('invalid');
-                    this.parentElement.classList.remove('valid');
-                }
-            });
-
-            // Validar nombre
-            firstnameInput.addEventListener('input', function() {
-                if (this.value.length >= 2) {
-                    firstnameFeedback.textContent = '';
-                    firstnameFeedback.classList.remove('error', 'active');
-                    this.parentElement.classList.add('valid');
-                    this.parentElement.classList.remove('invalid');
-                } else {
-                    firstnameFeedback.textContent = 'El nombre debe tener al menos 2 caracteres';
-                    firstnameFeedback.classList.add('error', 'active');
-                    this.parentElement.classList.add('invalid');
-                    this.parentElement.classList.remove('valid');
-                }
-            });
-
-            // Validar apellido
-            lastnameInput.addEventListener('input', function() {
-                if (this.value.length >= 2) {
-                    lastnameFeedback.textContent = '';
-                    lastnameFeedback.classList.remove('error', 'active');
-                    this.parentElement.classList.add('valid');
-                    this.parentElement.classList.remove('invalid');
-                } else {
-                    lastnameFeedback.textContent = 'El apellido debe tener al menos 2 caracteres';
-                    lastnameFeedback.classList.add('error', 'active');
-                    this.parentElement.classList.add('invalid');
-                    this.parentElement.classList.remove('valid');
-                }
-            });
-
-            // Envío del formulario
-            registrationForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Validación básica
-                let isValid = true;
-                
-                if (firstnameInput.value.trim() === '') {
-                    firstnameFeedback.textContent = 'El nombre es obligatorio';
-                    firstnameFeedback.classList.add('error', 'active');
-                    firstnameInput.parentElement.classList.add('invalid');
-                    isValid = false;
-                }
-                
-                if (lastnameInput.value.trim() === '') {
-                    lastnameFeedback.textContent = 'El apellido es obligatorio';
-                    lastnameFeedback.classList.add('error', 'active');
-                    lastnameInput.parentElement.classList.add('invalid');
-                    isValid = false;
-                }
-                
-                if (!emailRegex.test(emailInput.value)) {
-                    emailFeedback.textContent = 'Por favor, introduce un email válido';
-                    emailFeedback.classList.add('error', 'active');
-                    emailInput.parentElement.classList.add('invalid');
-                    isValid = false;
-                }
-                
-                if (passwordInput.value.length < 8) {
-                    passwordTips.style.display = 'block';
-                    passwordInput.parentElement.classList.add('invalid');
-                    isValid = false;
-                }
-                
-                if (passwordInput.value !== confirmPasswordInput.value) {
-                    passwordMatchFeedback.textContent = 'Las contraseñas no coinciden';
-                    passwordMatchFeedback.classList.add('error', 'active');
-                    confirmPasswordInput.parentElement.classList.add('invalid');
-                    isValid = false;
-                }
-                
-                if (!document.getElementById('terms').checked) {
-                    alert('Debes aceptar los términos y condiciones');
-                    isValid = false;
-                }
-                
-                if (isValid) {
-                    // Aquí iría el código para enviar el formulario al servidor
-                    alert('¡Registro exitoso! (Esta es solo una demostración)');
-                    // Opcional: redirigir a la página de login
-                    // window.location.href = 'login.html';
-                }
-            });
-
-            // Declarar emailRegex en el ámbito adecuado
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        });
-    </script>
+   <script src="./js/register.js"></script>
 </body>
 </html>
