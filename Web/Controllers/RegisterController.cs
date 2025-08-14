@@ -65,7 +65,7 @@ namespace Web.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
         {
-            var user = _context.User.FirstOrDefault(u => u.UserName == dto.Username && u.Active);
+            var user = _context.User.FirstOrDefault(u => u.UserName == dto.UserName && u.Active);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
             {
