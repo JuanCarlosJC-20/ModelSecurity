@@ -1,41 +1,45 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\",
+  "WorkspaceRootPath": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\ddl\\mysql.sql||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\ddl\\mysql.sql||{3B902123-F8A7-4915-9F01-361F908088D0}"
+      "AbsoluteMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|solutionrelative:web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\ddl\\sqlserver.sql||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\ddl\\sqlserver.sql||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\ddl\\postgresql.sql||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\ddl\\postgresql.sql||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
-      "RelativeMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|solutionrelative:diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\entity.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\entity.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{0FA65BEB-5E8E-42D5-8ADE-76E8CC736AD9}|Web\\Web.csproj|solutionrelative:web\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\juanse\\desktop\\modelsecurity\\entity\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\entity\\ddl\\mysql.sql||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\ddl\\mysql.sql||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\entity\\ddl\\sqlserver.sql||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\ddl\\sqlserver.sql||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\entity\\ddl\\postgresql.sql||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\ddl\\postgresql.sql||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|",
+      "RelativeMoniker": "D:0:0:{24236DA6-5DAE-4B31-A079-6EFCF466FD79}|Diagram\\Diagram.csproj|solutionrelative:diagram\\dbmodel.edmx||{C99AEA30-8E36-4515-B76F-496F5A48A6AA}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\context\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\entity\\entity.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\entity.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\entity\\model\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\person.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|c:\\users\\sampf\\desktop\\api\\modelsecurity\\entity\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{AD502254-FA18-4D21-BAC1-3C33C0E1C44C}|Entity\\Entity.csproj|solutionrelative:entity\\model\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -51,118 +55,124 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Web\\appsettings.json",
+              "RelativeDocumentMoniker": "Web\\appsettings.json",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Web\\appsettings.json*",
+              "RelativeToolTip": "Web\\appsettings.json*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-14T02:21:15.371Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "MySQL.sql",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DDL\\MySQL.sql",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\DDL\\MySQL.sql",
               "RelativeDocumentMoniker": "Entity\\DDL\\MySQL.sql",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DDL\\MySQL.sql",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\DDL\\MySQL.sql",
               "RelativeToolTip": "Entity\\DDL\\MySQL.sql",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAmAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAApAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
               "WhenOpened": "2025-04-12T00:09:01.939Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "PostgreSql.sql",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DDL\\PostgreSql.sql",
-              "RelativeDocumentMoniker": "Entity\\DDL\\PostgreSql.sql",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DDL\\PostgreSql.sql",
-              "RelativeToolTip": "Entity\\DDL\\PostgreSql.sql",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAlAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-04-12T00:07:56.431Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 3,
               "Title": "SqlServer.sql",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DDL\\SqlServer.sql",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\DDL\\SqlServer.sql",
               "RelativeDocumentMoniker": "Entity\\DDL\\SqlServer.sql",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\DDL\\SqlServer.sql",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\DDL\\SqlServer.sql",
               "RelativeToolTip": "Entity\\DDL\\SqlServer.sql",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAbAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
-              "WhenOpened": "2025-04-11T23:57:55.216Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Entity",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Entity.csproj",
-              "RelativeDocumentMoniker": "Entity\\Entity.csproj",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Entity.csproj",
-              "RelativeToolTip": "Entity\\Entity.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2025-04-11T23:56:36.71Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "DBModel.edmx [Diagram1]",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx",
-              "RelativeDocumentMoniker": "Diagram\\DBModel.edmx",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx [Diagram1]",
-              "RelativeToolTip": "Diagram\\DBModel.edmx [Diagram1]",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
-              "WhenOpened": "2025-04-11T23:53:24.815Z",
-              "EditorCaption": " [Diagram1]"
+              "WhenOpened": "2025-04-11T23:57:55.216Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
+              "Title": "Entity.csproj",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\Entity.csproj",
+              "RelativeDocumentMoniker": "Entity\\Entity.csproj",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\Entity.csproj",
+              "RelativeToolTip": "Entity\\Entity.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-11T23:56:36.71Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DBModel.edmx [Diagram1]",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Diagram\\DBModel.edmx",
+              "RelativeDocumentMoniker": "Diagram\\DBModel.edmx",
+              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx [Diagram1]",
+              "RelativeToolTip": "..\\..\\..\\..\\JUANSE\\Desktop\\ModelSecurity\\Diagram\\DBModel.edmx [Diagram1]",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001116|",
+              "WhenOpened": "2025-04-11T23:53:24.815Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Web\\Program.cs",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Web\\Program.cs",
               "RelativeDocumentMoniker": "Web\\Program.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Web\\Program.cs",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Web\\Program.cs",
               "RelativeToolTip": "Web\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADoAAAAAAAAAAAAowE4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-04-11T23:51:25.978Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
+              "Title": "PostgreSql.sql",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\DDL\\PostgreSql.sql",
+              "RelativeDocumentMoniker": "Entity\\DDL\\PostgreSql.sql",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\DDL\\PostgreSql.sql",
+              "RelativeToolTip": "Entity\\DDL\\PostgreSql.sql",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000826|",
+              "WhenOpened": "2025-04-12T00:07:56.431Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\User.cs",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\Model\\User.cs",
               "RelativeDocumentMoniker": "Entity\\Model\\User.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\User.cs",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\Model\\User.cs",
               "RelativeToolTip": "Entity\\Model\\User.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-11T23:40:53.516Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-11T23:40:53.516Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Person.cs",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\Model\\Person.cs",
+              "RelativeDocumentMoniker": "Entity\\Model\\Person.cs",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\Model\\Person.cs",
+              "RelativeToolTip": "Entity\\Model\\Person.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAIAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-11T23:40:47.077Z"
             },
             {
               "$type": "Document",
               "DocumentIndex": 6,
-              "Title": "Person.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Person.cs",
-              "RelativeDocumentMoniker": "Entity\\Model\\Person.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Model\\Person.cs",
-              "RelativeToolTip": "Entity\\Model\\Person.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAIAAAASAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-11T23:40:47.077Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
               "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
               "RelativeDocumentMoniker": "Entity\\Context\\ApplicationDbContext.cs",
-              "ToolTip": "C:\\Users\\JUANSE\\Desktop\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Entity\\Context\\ApplicationDbContext.cs",
               "RelativeToolTip": "Entity\\Context\\ApplicationDbContext.cs",
               "ViewState": "AgIAAEwAAAAAAAAAAAAcwF0AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-11T23:28:55.225Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-04-11T23:28:55.225Z"
             }
           ]
         }

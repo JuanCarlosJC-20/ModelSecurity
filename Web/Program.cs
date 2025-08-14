@@ -53,7 +53,7 @@ builder.Services.AddScoped<RolFormPermissionBusiness>();
 builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
     opciones.UseSqlServer("name=DefaultConnection"));
 
-//  Configurar política de CORS
+// Configurar política de CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirFrontend", policy =>
@@ -66,16 +66,17 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+// Middleware para Swagger siempre activo (Producción y Desarrollo)
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
+    c.RoutePrefix = string.Empty; // Muestra Swagger en la raíz "/"
+});
 
 app.UseHttpsRedirection();
 
-//  Usar CORS antes de Authorization
+// Usar CORS antes de Authorization
 app.UseCors("PermitirFrontend");
 
 app.UseAuthorization();

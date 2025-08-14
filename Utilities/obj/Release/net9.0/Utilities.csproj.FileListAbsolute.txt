@@ -1,0 +1,12 @@
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\bin\Release\net9.0\Utilities.deps.json
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\bin\Release\net9.0\Utilities.dll
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\bin\Release\net9.0\Utilities.pdb
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\Utilities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\Utilities.AssemblyInfoInputs.cache
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\Utilities.AssemblyInfo.cs
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\Utilities.csproj.CoreCompileInputs.cache
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\Utilities.sourcelink.json
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\Utilities.dll
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\refint\Utilities.dll
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\Utilities.pdb
+C:\Users\sampf\Desktop\api\ModelSecurity\Utilities\obj\Release\net9.0\ref\Utilities.dll
