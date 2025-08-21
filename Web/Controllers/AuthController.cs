@@ -4,22 +4,38 @@ using Entity.DTOs;
 using Entity.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Threading.Tasks;
-using System.Linq;
 
-namespace Web.Controllers
+namespace Api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     [Produces("application/json")]
     public class AuthController : ControllerBase
     {
+        private readonly AuthBusiness _authBusiness;
         private readonly ApplicationDbContext _context;
 
-        public AuthController(ApplicationDbContext context)
+        public AuthController(AuthBusiness authBusiness, ApplicationDbContext context)
         {
+            _authBusiness = authBusiness;
             _context = context;
+        }
+
+        // ==========================
+        // LOGIN
+        // ==========================
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto login)
+        {
+            if (login == null || string.IsNullOrEmpty(login.UserName) || string.IsNullOrEmpty(login.Password))
+                return BadRequest(new { message = "Username y password son requeridos" });
+
+            var result = await _authBusiness.LoginAsync(login);
+
+            if (result == null)
+                return Unauthorized(new { message = "Credenciales inválidas" });
+
+            return Ok(result);
         }
 
         // ==========================
@@ -28,6 +44,23 @@ namespace Web.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto dto)
         {
+            if (dto == null)
+                return BadRequest(new { message = "Datos de registro requeridos" });
+
+            // Validar que no existe el usuario
+            var existingUser = await _context.User
+                .FirstOrDefaultAsync(u => u.UserName == dto.UserName);
+            
+            if (existingUser != null)
+                return BadRequest(new { message = "El nombre de usuario ya existe" });
+
+            // Validar que no existe el email
+            var existingEmail = await _context.Person
+                .FirstOrDefaultAsync(p => p.Email == dto.Email);
+            
+            if (existingEmail != null)
+                return BadRequest(new { message = "El email ya está registrado" });
+
             using var transaction = await _context.Database.BeginTransactionAsync();
 
             try
@@ -56,7 +89,9 @@ namespace Web.Controllers
                 await _context.SaveChangesAsync();
 
                 // 3. Obtener rol por defecto
-                var defaultRolEntity = await _context.Rol.FirstOrDefaultAsync(r => r.Name == "Admin");
+                var defaultRolEntity = await _context.Rol
+                    .FirstOrDefaultAsync(r => r.Name == "Admin");
+                
                 if (defaultRolEntity == null)
                 {
                     return BadRequest(new { message = "No se encontró el rol por defecto 'Admin'." });
@@ -73,31 +108,16 @@ namespace Web.Controllers
 
                 await transaction.CommitAsync();
 
-                return Ok(new { message = "Usuario registrado correctamente" });
+                return Ok(new { 
+                    message = "Usuario registrado correctamente",
+                    userName = user.UserName
+                });
             }
             catch (Exception ex)
             {
                 await transaction.RollbackAsync();
-                return StatusCode(500, new { message = ex.Message });
+                return StatusCode(500, new { message = $"Error interno: {ex.Message}" });
             }
-        }
-
-        // ==========================
-        // LOGIN DE USUARIO
-        // ==========================
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginRequestDto dto)
-        {
-            var user = await _context.User
-                .FirstOrDefaultAsync(u => u.UserName == dto.UserName && u.Active);
-
-            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
-            {
-                return Unauthorized(new { message = "Credenciales inválidas" });
-            }
-
-            // Aquí puedes generar JWT si quieres
-            return Ok(new { message = "Inicio de sesión exitoso" });
         }
     }
 }

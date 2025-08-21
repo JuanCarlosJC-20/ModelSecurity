@@ -1,8 +1,11 @@
 using Business;
 using Data;
 using Entity.Context;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,41 +14,100 @@ builder.Services.AddLogging();
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-// Registrar clases de Rol
+// === Swagger con soporte de JWT ===
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mi API", Version = "v1" });
+
+    // Configuración para que Swagger acepte JWT
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Introduce el token JWT con el formato: Bearer {tu_token}",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
+// === Configurar JWT Authentication ===
+var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? "MiClaveSuperSecreta123!");
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.RequireHttpsMetadata = false; // true en producción con HTTPS
+    options.SaveToken = true;
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(key)
+    };
+});
+
+// === Registrar tus servicios ===
+// Rol
 builder.Services.AddScoped<RolData>();
 builder.Services.AddScoped<RolBusiness>();
 
-// Registrar clases de RolUser
+// RolUser
 builder.Services.AddScoped<RolUserData>();
 builder.Services.AddScoped<RolUserBusiness>();
 
-// Registrar clases de User
+// User
 builder.Services.AddScoped<UserData>();
 builder.Services.AddScoped<UserBusiness>();
 
-// Registrar clases de Form
+// === Auth (nuevo, separado de User) ===
+builder.Services.AddScoped<AuthData>();
+builder.Services.AddScoped<AuthBusiness>();
+
+// Form
 builder.Services.AddScoped<FormData>();
 builder.Services.AddScoped<FormBusiness>();
 
-// Registrar clases de FormModule
+// FormModule
 builder.Services.AddScoped<FormModuleData>();
 builder.Services.AddScoped<FormModuleBusiness>();
 
-// Registrar clases de Module
+// Module
 builder.Services.AddScoped<ModuleData>();
 builder.Services.AddScoped<ModuleBusiness>();
 
-// Registrar clases de Permission
+// Permission
 builder.Services.AddScoped<PermissionData>();
 builder.Services.AddScoped<PermissionBusiness>();
 
-// Registrar clases de Person
+// Person
 builder.Services.AddScoped<PersonData>();
 builder.Services.AddScoped<PersonBusiness>();
 
-// Registrar clases de RolFormPermission
+// RolFormPermission
 builder.Services.AddScoped<RolFormPermissionData>();
 builder.Services.AddScoped<RolFormPermissionBusiness>();
 
@@ -58,7 +120,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirFrontend", policy =>
     {
-        policy.WithOrigins("*") // Cambia este origen si tu frontend está en otro lugar
+        policy.WithOrigins("*") // cambia si tu frontend está en otro host
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
@@ -79,6 +141,8 @@ app.UseHttpsRedirection();
 // Usar CORS antes de Authorization
 app.UseCors("PermitirFrontend");
 
+// Habilitar autenticación y autorización
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

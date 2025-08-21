@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "zWCGkxFTb9c=",
+  "dgSpecHash": "JfCfK5BM1e4=",
   "success": true,
-  "projectFilePath": "C:\\Users\\sampf\\Desktop\\api\\ModelSecurity\\Business\\Business.csproj",
+  "projectFilePath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Business\\Business.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sampf\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\sampf\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
+    "C:\\Users\\sampf\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\sampf\\.nuget\\packages\\dapper\\2.1.66\\dapper.2.1.66.nupkg.sha512",
     "C:\\Users\\sampf\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\sampf\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

@@ -1,0 +1,7 @@
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\bin\Release\Diagram.dll.config
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\bin\Release\Diagram.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\bin\Release\Diagram.pdb
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\obj\Release\Diagram.csproj.AssemblyReference.cache
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\obj\Release\Diagram.csproj.CoreCompileInputs.cache
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\obj\Release\Diagram.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\obj\Release\Diagram.pdb

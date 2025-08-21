@@ -1,5 +1,6 @@
 ﻿using Business;
 using Entity.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace Web.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
+    [Authorize] // 👈 Ahora TODOS los endpoints de este controlador requieren token JWT
     public class FormModuleController : ControllerBase
     {
         private readonly FormModuleBusiness _FormModuleBusiness;
@@ -91,9 +93,6 @@ namespace Web.Controllers
             }
         }
 
-        /// <summary>
-        /// Actualiza un FormModule existente
-        /// </summary>
         [HttpPut("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -126,9 +125,6 @@ namespace Web.Controllers
             }
         }
 
-        /// <summary>
-        /// Elimina un FormModule por su ID
-        /// </summary>
         [HttpDelete("{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
