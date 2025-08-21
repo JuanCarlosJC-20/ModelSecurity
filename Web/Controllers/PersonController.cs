@@ -2,6 +2,8 @@ using Business;
 using Data;
 using Entity.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization; 
+
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ namespace Web.ContUserlers
     [Route("api/[controller]")]
     [ApiController]
     [Produces("application/json")]
+    [Authorize] //  Ahora TODOS los endpoints de este controlador requieren token JWT
     public class PersonController : ControllerBase
     {
         private readonly PersonBusiness _PersonBusiness;

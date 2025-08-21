@@ -9,6 +9,7 @@ namespace Web.Controllers
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
+    [Authorize] // Ahora TODOS los endpoints de este controlador requieren token JWT
     public class UserController : ControllerBase
     {
         private readonly UserBusiness _userBusiness;
