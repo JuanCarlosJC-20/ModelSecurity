@@ -42,30 +42,8 @@
             </div>
         </div>
     </div>
+    <script src="/js/login.js"></script>
 
-    <script>
-        // Simple form validation
-        document.querySelector('.login-button').addEventListener('click', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            if (username.trim() === '' || password.trim() === '') {
-                alert('Por favor, completa todos los campos.');
-                return;
-            }
-            
-            // Aquí iría la lógica de autenticación
-            alert('¡Inicio de sesión exitoso! (Esta es solo una demostración)');
-        });
-
-        // Toggle password visibility
-        document.querySelector('.input-icon:last-of-type').addEventListener('click', function() {
-            const passwordInput = document.getElementById('password');
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.textContent = type === 'password' ? '🔒' : '👁️';
-        });
-    </script>
+    
 </body>
 </html>
