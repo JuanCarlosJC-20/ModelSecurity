@@ -1,4 +1,5 @@
 using Data;
+using Entity.Context;
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Configuration;
@@ -6,36 +7,52 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using BCrypt.Net; // Agregar esta línea
 
 namespace Business
 {
     public class AuthBusiness
     {
-        private readonly AuthData _authData; // Cambio: usar AuthData en lugar de UserData
+        private readonly AuthData<SqlServerDbContext> _sqlAuthData;
+        private readonly AuthData<PostgresDbContext> _pgAuthData;
+        private readonly AuthData<MySqlDbContext> _myAuthData;
         private readonly IConfiguration _config;
 
-        public AuthBusiness(AuthData authData, IConfiguration config) // Cambio aquí también
+        public AuthBusiness(
+            AuthData<SqlServerDbContext> sqlAuthData,
+            AuthData<PostgresDbContext> pgAuthData,
+            AuthData<MySqlDbContext> myAuthData,
+            IConfiguration config)
         {
-            _authData = authData;
+            _sqlAuthData = sqlAuthData;
+            _pgAuthData = pgAuthData;
+            _myAuthData = myAuthData;
             _config = config;
         }
 
         public async Task<LoginResponseDto?> LoginAsync(LoginRequestDto login)
         {
-            // Buscar usuario usando AuthData
-            var user = await _authData.GetByUserNameAsync(login.UserName);
+            // Intentar login en SQL Server primero
+            var user = await _sqlAuthData.GetByUserNameAsync(login.UserName);
+
+            // Si no se encuentra, intentar en PostgreSQL
+            if (user == null)
+                user = await _pgAuthData.GetByUserNameAsync(login.UserName);
+
+            // Si aún no se encuentra, intentar en MySQL
+            if (user == null)
+                user = await _myAuthData.GetByUserNameAsync(login.UserName);
 
             if (user == null) return null;
 
-            // ✅ CORRECCIÓN: Verificar contraseña con BCrypt
-            if (!BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash)) 
+            if (!BCrypt.Net.BCrypt.Verify(login.Password, user.PasswordHash))
                 return null;
 
-            // Actualizar último login (opcional)
-            await _authData.UpdateLastLoginAsync(user.Id, DateTime.UtcNow);
+            // Actualizar último login en todas las bases de datos
+            var lastLogin = DateTime.UtcNow;
+            await _sqlAuthData.UpdateLastLoginAsync(user.Id, lastLogin);
+            await _pgAuthData.UpdateLastLoginAsync(user.Id, lastLogin);
+            await _myAuthData.UpdateLastLoginAsync(user.Id, lastLogin);
 
-            // Generar JWT
             var token = GenerateJwtToken(user);
 
             return new LoginResponseDto

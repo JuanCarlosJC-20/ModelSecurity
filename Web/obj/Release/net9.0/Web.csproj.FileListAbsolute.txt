@@ -352,3 +352,16 @@ C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\obj\Release\net9.0\refin
 C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\obj\Release\net9.0\Web.pdb
 C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\obj\Release\net9.0\Web.genruntimeconfig.cache
 C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\obj\Release\net9.0\ref\Web.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\MySqlConnector.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Npgsql.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Pomelo.EntityFrameworkCore.MySql.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Microsoft.Extensions.Configuration.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Microsoft.Extensions.Configuration.FileExtensions.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Microsoft.Extensions.Configuration.Json.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Microsoft.Extensions.FileProviders.Abstractions.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Microsoft.Extensions.FileProviders.Physical.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\Microsoft.Extensions.FileSystemGlobbing.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\System.Formats.Asn1.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Web\bin\Release\net9.0\System.Text.Json.dll

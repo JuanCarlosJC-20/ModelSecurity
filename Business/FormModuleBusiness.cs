@@ -1,4 +1,5 @@
 ﻿using Data;
+using Entity.Context;
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
@@ -6,17 +7,22 @@ using Utilities.Exceptions;
 
 namespace Business
 {
-    /// <summary>
-    /// Clase de negocio encargada de la lógica relacionada con los formModules del sistema.
-    /// </summary>
     public class FormModuleBusiness
     {
-        private readonly FormModuleData _formModuleData;
+        private readonly FormModuleData<SqlServerDbContext> _sqlFormModuleData;
+        private readonly FormModuleData<PostgresDbContext> _pgFormModuleData;
+        private readonly FormModuleData<MySqlDbContext> _myFormModuleData;
         private readonly ILogger<FormModuleBusiness> _logger;
 
-        public FormModuleBusiness(FormModuleData formModuleData, ILogger<FormModuleBusiness> logger)
+        public FormModuleBusiness(
+            FormModuleData<SqlServerDbContext> sqlFormModuleData,
+            FormModuleData<PostgresDbContext> pgFormModuleData,
+            FormModuleData<MySqlDbContext> myFormModuleData,
+            ILogger<FormModuleBusiness> logger)
         {
-            _formModuleData = formModuleData;
+            _sqlFormModuleData = sqlFormModuleData;
+            _pgFormModuleData = pgFormModuleData;
+            _myFormModuleData = myFormModuleData;
             _logger = logger;
         }
 
@@ -24,8 +30,9 @@ namespace Business
         {
             try
             {
-                var formModules = await _formModuleData.GetAllAsync();
-                return MapToDtoList(formModules);
+                // Obtenemos de SQL Server por defecto
+                var formModules = await _sqlFormModuleData.GetAllAsync();
+                return formModules.Select(MapToDto);
             }
             catch (Exception ex)
             {
@@ -37,19 +44,13 @@ namespace Business
         public async Task<FormModuleDto> GetFormModuleByIdAsync(int id)
         {
             if (id <= 0)
-            {
-                _logger.LogWarning("Se intentó obtener un formModule con ID inválido: {FormModuleId}", id);
                 throw new ValidationException("id", "El ID del formModule debe ser mayor que cero");
-            }
 
             try
             {
-                var formModule = await _formModuleData.GetByIdAsync(id);
+                var formModule = await _sqlFormModuleData.GetByIdAsync(id);
                 if (formModule == null)
-                {
-                    _logger.LogInformation("No se encontró ningún formModule con ID: {FormModuleId}", id);
                     throw new EntityNotFoundException("FormModule", id);
-                }
 
                 return MapToDto(formModule);
             }
@@ -65,93 +66,78 @@ namespace Business
             try
             {
                 ValidateFormModule(formModuleDto);
-
                 var formModule = MapToEntity(formModuleDto);
-                var created = await _formModuleData.CreateAsync(formModule);
 
-                return MapToDto(created);
+                // Crear en todas las bases de datos
+                var sqlFormModule = await _sqlFormModuleData.CreateAsync(formModule);
+                await _pgFormModuleData.CreateAsync(formModule);
+                await _myFormModuleData.CreateAsync(formModule);
+
+                return MapToDto(sqlFormModule);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo formModule");
+                _logger.LogError(ex, "Error al crear formModule");
                 throw new ExternalServiceException("Base de datos", "Error al crear el formModule", ex);
             }
         }
 
-        public async Task<FormModuleDto> UpdateFormModuleAsync(FormModuleDto formModuleDto)
+        public async Task UpdateFormModuleAsync(FormModuleDto formModuleDto)
         {
+            if (formModuleDto.Id <= 0)
+                throw new ValidationException("id", "El ID del formModule debe ser mayor que cero");
+
+            ValidateFormModule(formModuleDto);
+
             try
             {
-                if (formModuleDto.Id <= 0)
-                {
-                    throw new ValidationException("id", "El ID del formModule debe ser mayor que cero");
-                }
-
-                ValidateFormModule(formModuleDto);
-
-                var existing = await _formModuleData.GetByIdAsync(formModuleDto.Id);
+                var existing = await _sqlFormModuleData.GetByIdAsync(formModuleDto.Id);
                 if (existing == null)
-                {
                     throw new EntityNotFoundException("FormModule", formModuleDto.Id);
-                }
 
                 var entityToUpdate = MapToEntity(formModuleDto);
-                var updated = await _formModuleData.UpdateAsync(entityToUpdate);
 
-                return MapToDto(updated);
+                // Actualizar en todas las bases de datos
+                await _sqlFormModuleData.UpdateAsync(entityToUpdate);
+                await _pgFormModuleData.UpdateAsync(entityToUpdate);
+                await _myFormModuleData.UpdateAsync(entityToUpdate);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar formModule");
-                throw new ExternalServiceException("Base de datos", "Error al actualizar el formModule", ex);
+                _logger.LogError(ex, "Error al actualizar formModule con ID: {FormModuleId}", formModuleDto.Id);
+                throw;
             }
-        }
-
-        private FormModuleDto MapToDto(bool updated)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task DeleteFormModuleAsync(int id)
         {
+            if (id <= 0)
+                throw new ValidationException("id", "El ID del formModule debe ser mayor que cero");
+
             try
             {
-                if (id <= 0)
-                {
-                    throw new ValidationException("id", "El ID del formModule debe ser mayor que cero");
-                }
-
-                var existing = await _formModuleData.GetByIdAsync(id);
-                if (existing == null)
-                {
-                    throw new EntityNotFoundException("FormModule", id);
-                }
-
-                await _formModuleData.DeleteAsync(id);
+                // Eliminar de todas las bases de datos
+                await _sqlFormModuleData.DeleteAsync(id);
+                await _pgFormModuleData.DeleteAsync(id);
+                await _myFormModuleData.DeleteAsync(id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al eliminar formModule con ID: {FormModuleId}", id);
-                throw new ExternalServiceException("Base de datos", $"Error al eliminar el formModule con ID {id}", ex);
+                throw;
             }
         }
 
         private void ValidateFormModule(FormModuleDto formModuleDto)
         {
             if (formModuleDto == null)
-            {
                 throw new ValidationException("El objeto formModule no puede ser nulo");
-            }
 
             if (formModuleDto.FormId <= 0)
-            {
                 throw new ValidationException("FormId", "El FormId del formModule es obligatorio");
-            }
 
             if (formModuleDto.ModuleId <= 0)
-            {
                 throw new ValidationException("ModuleId", "El ModuleId del formModule es obligatorio");
-            }
         }
 
         private FormModuleDto MapToDto(FormModule formModule)
@@ -173,15 +159,5 @@ namespace Business
                 FormId = dto.FormId
             };
         }
-
-        private IEnumerable<FormModuleDto> MapToDtoList(IEnumerable<FormModule> entities)
-        {
-            return entities.Select(MapToDto).ToList();
-        }
-
-
-
-       
-
     }
 }

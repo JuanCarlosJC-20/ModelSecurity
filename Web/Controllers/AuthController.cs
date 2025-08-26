@@ -13,12 +13,12 @@ namespace Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AuthBusiness _authBusiness;
-        private readonly ApplicationDbContext _context;
+        private readonly IDbContextFactory<SqlServerDbContext> _contextFactory; // O PostgresDbContext, MySqlDbContext
 
-        public AuthController(AuthBusiness authBusiness, ApplicationDbContext context)
+        public AuthController(AuthBusiness authBusiness, IDbContextFactory<SqlServerDbContext> contextFactory)
         {
             _authBusiness = authBusiness;
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         // ==========================
@@ -46,6 +46,8 @@ namespace Api.Controllers
         {
             if (dto == null)
                 return BadRequest(new { message = "Datos de registro requeridos" });
+
+            using var _context = _contextFactory.CreateDbContext();
 
             // Validar que no existe el usuario
             var existingUser = await _context.User
@@ -90,7 +92,7 @@ namespace Api.Controllers
 
                 // 3. Obtener rol por defecto
                 var defaultRolEntity = await _context.Rol
-                    .FirstOrDefaultAsync(r => r.Name == "Admin");
+                    .FirstOrDefaultAsync(r => r.Name == "User");
                 
                 if (defaultRolEntity == null)
                 {

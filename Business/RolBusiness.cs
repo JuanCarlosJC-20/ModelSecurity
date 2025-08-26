@@ -1,243 +1,203 @@
 ﻿using Data;
+using Entity.Context;
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
-using System;
 using Utilities.Exceptions;
 
 namespace Business
 {
-    /// <summary>
-    /// Clase de negocio encargada de la lógica relacionada con los roles del sistema.
-    /// </summary>
     public class RolBusiness
     {
-        private readonly RolData _rolData;
-        private readonly ILogger<Rol> _logger;
+        private readonly RolData<SqlServerDbContext> _sqlRolData;
+        private readonly RolData<PostgresDbContext> _pgRolData;
+        private readonly RolData<MySqlDbContext> _myRolData;
+        private readonly ILogger<RolBusiness> _logger;
 
-        public RolBusiness(RolData rolData, ILogger<Rol> logger)
+        public RolBusiness(
+            RolData<SqlServerDbContext> sqlRolData,
+            RolData<PostgresDbContext> pgRolData,
+            RolData<MySqlDbContext> myRolData,
+            ILogger<RolBusiness> logger)
         {
-            _rolData = rolData;
+            _sqlRolData = sqlRolData;
+            _pgRolData = pgRolData;
+            _myRolData = myRolData;
             _logger = logger;
         }
 
-        // Obtener todos los roles
         public async Task<IEnumerable<RolDto>> GetAllRolesAsync()
         {
             try
             {
-                var roles = await _rolData.GetAllAsync();
+                var roles = await _sqlRolData.GetAllAsync();
                 return MapToDtoList(roles);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al obtener todos los roles " + ex.Message);
+                _logger.LogError(ex, "Error al obtener todos los roles");
                 throw new ExternalServiceException("Base de datos", "Error al recuperar la lista de roles", ex);
             }
         }
 
-        // Obtener rol por ID
         public async Task<RolDto> GetRolByIdAsync(int id)
         {
             if (id <= 0)
-            {
-                _logger.LogWarning("ID inválido al buscar rol: {RolId}", id);
                 throw new ValidationException("id", "El ID del rol debe ser mayor que cero");
-            }
 
-            try
-            {
-                var rol = await _rolData.GetByIdAsync(id);
-                if (rol == null)
-                {
-                    _logger.LogInformation("Rol no encontrado con ID: {RolId}", id);
-                    throw new EntityNotFoundException("Rol", id);
-                }
+            var rol = await _sqlRolData.GetByIdAsync(id);
+            if (rol == null)
+                throw new EntityNotFoundException("Rol", id);
 
-                return MapToDto(rol);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener rol con ID: {RolId} " + ex.Message, id);
-                throw new ExternalServiceException("Base de datos", $"Error al recuperar el rol con ID {id}", ex);
-            }
+            return MapToDto(rol);
         }
 
-        // Crear nuevo rol
         public async Task<RolDto> CreateRolAsync(RolDto rolDto)
         {
             try
             {
                 ValidateRol(rolDto);
+                var rol = MapToEntity(rolDto);
 
-                var entity = MapToEntity(rolDto);
-                var createdRol = await _rolData.CreateAsync(entity);
+                // Crear en todas las bases de datos
+                var sqlRol = await _sqlRolData.CreateAsync(rol);
+                await _pgRolData.CreateAsync(rol);
+                await _myRolData.CreateAsync(rol);
 
-                return MapToDto(createdRol);
+                return MapToDto(sqlRol);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear nuevo rol: {RolNombre}", rolDto?.Name ?? "null");
-                throw new ExternalServiceException("Base de datos", "Error al crear el rol", ex);
+                _logger.LogError(ex, "Error al crear rol: {RolName}", rolDto?.Name);
+                throw;
             }
         }
 
-        // Actualizar rol existente
         public async Task<RolDto> UpdateRolAsync(int id, RolDto rolDto)
         {
-            if (rolDto == null || rolDto.Id <= 0)
-            {
+            if (id <= 0 || rolDto == null)
                 throw new ValidationException("id", "El ID del rol debe ser mayor que cero");
-            }
+
+            ValidateRol(rolDto);
 
             try
             {
-                ValidateRol(rolDto);
+                var rol = MapToEntity(rolDto);
 
-                var existing = await _rolData.GetByIdAsync(rolDto.Id);
-                if (existing == null)
-                {
-                    _logger.LogInformation("Rol no encontrado para actualizar: {RolId}", rolDto.Id);
-                    throw new EntityNotFoundException("Rol", rolDto.Id);
-                }
+                // Actualizar en todas las bases de datos
+                await _sqlRolData.UpdateAsync(rol);
+                await _pgRolData.UpdateAsync(rol);
+                await _myRolData.UpdateAsync(rol);
 
-                var updated = await _rolData.UpdateAsync(MapToEntity(rolDto));
-                return MapToDto(updated);
+                return MapToDto(rol);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar rol con ID: {RolId}", rolDto.Id);
-                throw new ExternalServiceException("Base de datos", "Error al actualizar el rol", ex);
+                _logger.LogError(ex, "Error al actualizar rol con ID: {RolId}", id);
+                throw;
             }
         }
 
-        private RolDto MapToDto(bool updated)
-        {
-            throw new NotImplementedException();
-        }
-
-        // Eliminar rol
         public async Task DeleteRolAsync(int id)
         {
             if (id <= 0)
-            {
                 throw new ValidationException("id", "El ID del rol debe ser mayor que cero");
-            }
 
             try
             {
-                var existing = await _rolData.GetByIdAsync(id);
-                if (existing == null)
-                {
-                    _logger.LogInformation("Rol no encontrado para eliminar con ID: {RolId}", id);
-                    throw new EntityNotFoundException("Rol", id);
-                }
-
-                await _rolData.DeleteAsync(id);
+                await _sqlRolData.DeleteAsync(id);
+                await _pgRolData.DeleteAsync(id);
+                await _myRolData.DeleteAsync(id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al eliminar rol con ID: {RolId}", id);
-                throw new ExternalServiceException("Base de datos", "Error al eliminar el rol", ex);
+                throw;
             }
         }
 
-        // Validar DTO de rol
+        public async Task DisableRolAsync(int id)
+        {
+            if (id <= 0)
+                throw new ValidationException("id", "El ID del rol debe ser mayor que cero");
+
+            try
+            {
+                await _sqlRolData.DisableAsync(id);
+                await _pgRolData.DisableAsync(id);
+                await _myRolData.DisableAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al desactivar rol con ID: {RolId}", id);
+                throw;
+            }
+        }
+
+        public async Task PartialUpdateRolAsync(RolDto rolDto)
+        {
+            try
+            {
+                var existingRol = await _sqlRolData.GetByIdAsync(rolDto.Id);
+                if (existingRol == null)
+                    throw new EntityNotFoundException("Rol", rolDto.Id);
+
+                if (!string.IsNullOrEmpty(rolDto.Name))
+                    existingRol.Name = rolDto.Name;
+                if (!string.IsNullOrEmpty(rolDto.Description))
+                    existingRol.Description = rolDto.Description;
+
+                existingRol.Active = rolDto.Active;
+
+                // Actualizar parcialmente en todas las bases de datos
+                await _sqlRolData.PartialUpdateRolAsync(existingRol,
+                    nameof(existingRol.Name),
+                    nameof(existingRol.Description),
+                    nameof(existingRol.Active));
+
+                await _pgRolData.PartialUpdateRolAsync(existingRol,
+                    nameof(existingRol.Name),
+                    nameof(existingRol.Description),
+                    nameof(existingRol.Active));
+
+                await _myRolData.PartialUpdateRolAsync(existingRol,
+                    nameof(existingRol.Name),
+                    nameof(existingRol.Description),
+                    nameof(existingRol.Active));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar parcialmente el rol con ID: {RolId}", rolDto.Id);
+                throw;
+            }
+        }
+
         private void ValidateRol(RolDto rolDto)
         {
             if (rolDto == null)
-            {
                 throw new ValidationException("El objeto rol no puede ser nulo");
-            }
 
             if (string.IsNullOrWhiteSpace(rolDto.Name))
-            {
-                _logger.LogWarning("Nombre vacío al crear/actualizar rol");
-                throw new ValidationException("Name", "El Name del rol es obligatorio");
-            }
+                throw new ValidationException("Name", "El nombre del rol es obligatorio");
         }
 
-        // Mapeo a DTO
-        private RolDto MapToDto(Rol rol)
+        private RolDto MapToDto(Rol rol) => new()
         {
-            return new RolDto
-            {
-                Id = rol.Id,
-                Name = rol.Name,
-                Description = rol.Description,
-                Active = rol.Active
-            };
-        }
+            Id = rol.Id,
+            Name = rol.Name,
+            Description = rol.Description,
+            Active = rol.Active
+        };
 
-        // Mapeo a entidad
-        private Rol MapToEntity(RolDto dto)
+        private Rol MapToEntity(RolDto dto) => new()
         {
-            return new Rol
-            {
-                Id = dto.Id,
-                Name = dto.Name,
-                Description = dto.Description,
-                Active = dto.Active
-            };
-        }
+            Id = dto.Id,
+            Name = dto.Name,
+            Description = dto.Description,
+            Active = dto.Active
+        };
 
-        // Mapeo de lista
         private IEnumerable<RolDto> MapToDtoList(IEnumerable<Rol> roles)
-        {
-            return roles.Select(MapToDto).ToList();
-        }
-
-
-           /// <summary>
-/// Realiza una eliminación lógica del rol.
-/// </summary>
-/// <param name="id">ID del rol</param>
-public async Task DisableFormAsync(int id)
-{
-    if (id <= 0)
-        throw new ValidationException("id", "El ID del rol debe ser mayor que cero");
-
-    try
-    {
-        var existing = await _rolData.GetByIdAsync(id);
-        if (existing == null)
-            throw new EntityNotFoundException("Form", id);
-
-        var result = await _rolData.DisableAsync(id);
-        if (!result)
-            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el rol");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error al desactivar rol con ID: {RolId}", id);
-        throw;
-    }
-}
-
-
-
-//metodo patch para actualizar solo el estado activo del formulario
-public async Task PartialUpdateFormAsync(RolDto rolDto)
-{
-    var existingForm = await _rolData.GetByIdAsync(rolDto.Id);
-    if (existingForm == null)
-    {
-        throw new EntityNotFoundException($"No se encontró el permiso con ID {rolDto.Id}.");
-    }
-
-    if (!string.IsNullOrEmpty(rolDto.Name))
-        existingForm.Name = rolDto.Name;
-
-    if (!string.IsNullOrEmpty(rolDto.Description))
-        existingForm.Description = rolDto.Description;
-
-    // Active es tipo bool, simplemente lo actualizamos.
-    existingForm.Active = rolDto.Active;
-
-    await _rolData.PartialUpdateFormAsync(existingForm,
-        nameof(existingForm.Name),
-        nameof(existingForm.Description),
-        nameof(existingForm.Active));
-}
+            => roles.Select(MapToDto);
     }
 }

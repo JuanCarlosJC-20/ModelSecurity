@@ -6,16 +6,16 @@ using Microsoft.Extensions.Logging;
 namespace Data
 {
     /// <summary>
-    /// Repositorio encargado de la gestión de la entidad User en la base de datos
+    /// Repositorio genérico encargado de la gestión de la entidad User en cualquier base de datos
     /// </summary>
-    public class UserData
+    public class UserData<TContext> where TContext : ApplicationDbContext<TContext>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<UserData> _logger;
+        private readonly IDbContextFactory<TContext> _contextFactory;
+        private readonly ILogger<UserData<TContext>> _logger;
 
-        public UserData(ApplicationDbContext context, ILogger<UserData> logger)
+        public UserData(IDbContextFactory<TContext> contextFactory, ILogger<UserData<TContext>> logger)
         {
-            _context = context;
+            _contextFactory = contextFactory;
             _logger = logger;
         }
 
@@ -23,8 +23,9 @@ namespace Data
         {
             try
             {
-                await _context.Set<User>().AddAsync(user);
-                await _context.SaveChangesAsync();
+                using var context = await _contextFactory.CreateDbContextAsync();
+                await context.Set<User>().AddAsync(user);
+                await context.SaveChangesAsync();
                 return user;
             }
             catch (Exception ex)
@@ -36,14 +37,20 @@ namespace Data
 
         public async Task<IEnumerable<User>> GetAllAsync()
         {
-            return await _context.Set<User>().ToListAsync();
+            using var context = await _contextFactory.CreateDbContextAsync();
+            return await context.Set<User>()
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public async Task<User?> GetByIdAsync(int id)
         {
             try
             {
-                return await _context.Set<User>().FindAsync(id);
+                using var context = await _contextFactory.CreateDbContextAsync();
+                return await context.Set<User>()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception ex)
             {
@@ -56,13 +63,14 @@ namespace Data
         {
             try
             {
-                _context.Set<User>().Update(user);
-                await _context.SaveChangesAsync();
+                using var context = await _contextFactory.CreateDbContextAsync();
+                context.Set<User>().Update(user);
+                await context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al actualizar el usuario: {ex.Message}");
+                _logger.LogError(ex, "Error al actualizar el usuario con ID {UserId}", user.Id);
                 return false;
             }
         }
@@ -71,33 +79,31 @@ namespace Data
         {
             try
             {
-                var existingUser = await _context.Set<User>().FindAsync(userId);
+                using var context = await _contextFactory.CreateDbContextAsync();
+                var existingUser = await context.Set<User>().FindAsync(userId);
                 if (existingUser == null)
                 {
                     _logger.LogError($"Usuario con ID {userId} no encontrado.");
                     return false;
                 }
+
                 if (user.PersonId != 0)
                     existingUser.PersonId = user.PersonId;
-
                 if (!string.IsNullOrEmpty(user.UserName))
                     existingUser.UserName = user.UserName;
-                
                 if (!string.IsNullOrEmpty(user.PasswordHash))
                     existingUser.PasswordHash = user.PasswordHash;
-
-                if(!string.IsNullOrEmpty(user.Code))
+                if (!string.IsNullOrEmpty(user.Code))
                     existingUser.Code = user.Code;
-
                 if (user.Active != null)
                     existingUser.Active = user.Active;
 
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al actualizar parcialmente el usuario: {ex.Message}");
+                _logger.LogError($"Error al actualizar parcialmente el usuario con ID {userId}: {ex.Message}");
                 return false;
             }
         }
@@ -106,14 +112,15 @@ namespace Data
         {
             try
             {
-                var user = await _context.Set<User>().FindAsync(id);
+                using var context = await _contextFactory.CreateDbContextAsync();
+                var user = await context.Set<User>().FindAsync(id);
                 if (user == null)
                     return false;
 
                 user.Active = false;
                 user.DeleteAt = DateTime.Now;
-                _context.Set<User>().Update(user);
-                await _context.SaveChangesAsync();
+                context.Set<User>().Update(user);
+                await context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
@@ -127,17 +134,18 @@ namespace Data
         {
             try
             {
-                var user = await _context.Set<User>().FindAsync(id);
+                using var context = await _contextFactory.CreateDbContextAsync();
+                var user = await context.Set<User>().FindAsync(id);
                 if (user == null)
                     return false;
 
-                _context.Set<User>().Remove(user);
-                await _context.SaveChangesAsync();
+                context.Set<User>().Remove(user);
+                await context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al eliminar el usuario: {ex.Message}");
+                _logger.LogError(ex, "Error al eliminar usuario con ID {UserId}", id);
                 return false;
             }
         }

@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using Module = Entity.Model.Module;
-
 using System.Reflection;
 
 namespace Entity.Context
@@ -14,28 +13,26 @@ namespace Entity.Context
     /// Representa el contexto de la base de datos de la aplicación, proporcionando configuraciones y métodos
     /// para la gestión de entidades y consultas personalizadas con Dapper.
     /// </summary>
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext<T> : DbContext where T : DbContext
     {
         protected readonly IConfiguration _configuration;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
+        public ApplicationDbContext(DbContextOptions<T> options, IConfiguration configuration)
             : base(options)
         {
             _configuration = configuration;
         }
-//tablas de la base de datos
+
+        // === Tablas de la base de datos ===
         public DbSet<Rol> Rol { get; set; }
-        public DbSet<Form> Form {get;set;}
-
-        public DbSet<FormModule> formModule  {get;set;}
-         public DbSet<Module> module  {get;set;}
-          public DbSet<Permission> Permission  {get;set;}
-           public DbSet<Person> Person  {get;set;}
-            public DbSet<RolFormPermission> RolFormPermission  {get;set;}
-             public DbSet<RolUser> RolUser  {get;set;}
-              public DbSet<User> User  {get;set;}
-
-              
+        public DbSet<Form> Form { get; set; }
+        public DbSet<FormModule> formModule { get; set; }
+        public DbSet<Module> module { get; set; }
+        public DbSet<Permission> Permission { get; set; }
+        public DbSet<Person> Person { get; set; }
+        public DbSet<RolFormPermission> RolFormPermission { get; set; }
+        public DbSet<RolUser> RolUser { get; set; }
+        public DbSet<User> User { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -70,18 +67,19 @@ namespace Entity.Context
             return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
-        public async Task<IEnumerable<T>> QueryAsync<T>(string text, object parameters = null, int? timeout = null, CommandType? type = null)
+        // === Métodos auxiliares con Dapper ===
+        public async Task<IEnumerable<TModel>> QueryAsync<TModel>(string text, object parameters = null, int? timeout = null, CommandType? type = null)
         {
             using var command = new DapperEFCoreCommand(this, text, parameters, timeout, type, CancellationToken.None);
             var connection = this.Database.GetDbConnection();
-            return await connection.QueryAsync<T>(command.Definition);
+            return await connection.QueryAsync<TModel>(command.Definition);
         }
 
-        public async Task<T?> QueryFirstOrDefaultAsync<T>(string text, object parameters = null, int? timeout = null, CommandType? type = null)
+        public async Task<TModel?> QueryFirstOrDefaultAsync<TModel>(string text, object parameters = null, int? timeout = null, CommandType? type = null)
         {
             using var command = new DapperEFCoreCommand(this, text, parameters, timeout, type, CancellationToken.None);
             var connection = this.Database.GetDbConnection();
-            return await connection.QueryFirstOrDefaultAsync<T>(command.Definition);
+            return await connection.QueryFirstOrDefaultAsync<TModel>(command.Definition);
         }
 
         public async Task<int> ExecuteAsync(string text, object parameters = null, int? timeout = null, CommandType? type = null)
@@ -91,11 +89,11 @@ namespace Entity.Context
             return await connection.ExecuteAsync(command.Definition);
         }
 
-        public async Task<T?> ExecuteScalarAsync<T>(string query, object parameters = null, int? timeout = null, CommandType? type = null)
+        public async Task<TModel?> ExecuteScalarAsync<TModel>(string query, object parameters = null, int? timeout = null, CommandType? type = null)
         {
             using var command = new DapperEFCoreCommand(this, query, parameters, timeout, type, CancellationToken.None);
             var connection = this.Database.GetDbConnection();
-            return await connection.ExecuteScalarAsync<T>(command.Definition);
+            return await connection.ExecuteScalarAsync<TModel>(command.Definition);
         }
 
         private void EnsureAudit()

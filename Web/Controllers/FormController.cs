@@ -1,232 +1,80 @@
 ﻿using Business;
 using Entity.DTOs;
-using Microsoft.AspNetCore.Authorization; // 👈 Importante
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Utilities.Exceptions;
 
-namespace Web.Controllers
+namespace Api.Controllers
 {
-    /// <summary>
-    /// Controlador para la gestión de permisos en el sistema
-    /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     [Produces("application/json")]
-    [Authorize] // 👈 Protege TODO el controlador con JWT
+    [Authorize]
     public class FormController : ControllerBase
     {
-        private readonly FormBusiness _FormBusiness;
+        private readonly FormBusiness _formBusiness;
         private readonly ILogger<FormController> _logger;
 
-        public FormController(FormBusiness FormBusiness, ILogger<FormController> logger)
+        public FormController(FormBusiness formBusiness, ILogger<FormController> logger)
         {
-            _FormBusiness = FormBusiness;
+            _formBusiness = formBusiness;
             _logger = logger;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<FormDto>), 200)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> GetAllForms()
+        public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                var Forms = await _FormBusiness.GetAllFormsAsync();
-                return Ok(Forms);
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al obtener permisos");
-                return StatusCode(500, new { message = ex.Message });
-            }
+            var forms = await _formBusiness.GetAllFormsAsync();
+            return Ok(forms);
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(FormDto), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> GetFormById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            try
-            {
-                var Form = await _FormBusiness.GetFormByIdAsync(id);
-                return Ok(Form);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida para el permiso con ID: {FormId}", id);
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Permiso no encontrado con ID: {FormId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al obtener permiso con ID: {FormId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            var form = await _formBusiness.GetFormByIdAsync(id);
+            return Ok(form);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(FormDto), 201)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateForm([FromBody] FormDto FormDto)
+        public async Task<IActionResult> Create([FromBody] FormDto dto)
         {
-            try
-            {
-                var createdForm = await _FormBusiness.CreateFormAsync(FormDto);
-                return CreatedAtAction(nameof(GetFormById), new { id = createdForm.Id }, createdForm);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al crear permiso");
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al crear permiso");
-                return StatusCode(500, new { message = ex.Message });
-            }
+            var created = await _formBusiness.CreateFormAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> UpdateForm(int id, [FromBody] FormDto FormDto)
+        public async Task<IActionResult> Update(int id, [FromBody] FormDto dto)
         {
-            if (FormDto == null)
-            {
-                _logger.LogWarning("El cuerpo de la solicitud está vacío al intentar actualizar permiso.");
-                return BadRequest(new { message = "El cuerpo de la solicitud está vacío." });
-            }
+            if (id != dto.Id)
+                return BadRequest(new { message = "ID de la URL no coincide con el objeto." });
 
-            if (id != FormDto.Id)
-            {
-                _logger.LogWarning("ID del permiso no coincide. ID en ruta: {RouteId}, ID en objeto: {ObjectId}", id, FormDto.Id);
-                return BadRequest(new { message = "El ID del permiso no coincide con el del objeto." });
-            }
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogWarning("Modelo de permiso inválido al actualizar permiso con ID: {FormId}", id);
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                await _FormBusiness.UpdateFormAsync(FormDto);
-                _logger.LogInformation("Permiso actualizado exitosamente con ID: {FormId}", id);
-                return NoContent();
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al actualizar permiso con ID: {FormId}", id);
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Permiso no encontrado con ID: {FormId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error externo al actualizar permiso con ID: {FormId}", id);
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error inesperado al actualizar permiso con ID: {FormId}", id);
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Ocurrió un error inesperado." });
-            }
+            await _formBusiness.UpdateFormAsync(dto);
+            return NoContent();
         }
 
         [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> DeleteForm(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await _FormBusiness.DeleteFormAsync(id);
-                return NoContent();
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Permiso no encontrado para eliminación con ID: {FormId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al eliminar permiso con ID: {FormId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            await _formBusiness.DeleteFormAsync(id);
+            return NoContent();
         }
 
         [HttpDelete("{id}/disable")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> DisableForm(int id)
+        public async Task<IActionResult> Disable(int id)
         {
-            try
-            {
-                await _FormBusiness.DisableFormAsync(id);
-                return NoContent();
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Formulario no encontrado para desactivación con ID: {FormId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al desactivar formulario con ID: {FormId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            await _formBusiness.DisableFormAsync(id);
+            return NoContent();
         }
 
         [HttpPatch("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> PartialUpdateForm(int id, [FromBody] FormDto formDto)
+        public async Task<IActionResult> PartialUpdate(int id, [FromBody] FormDto dto)
         {
-            if (id != formDto.Id)
-            {
-                return BadRequest(new { message = "El ID del permiso no coincide con el del objeto." });
-            }
+            if (id != dto.Id)
+                return BadRequest(new { message = "ID de la URL no coincide con el objeto." });
 
-            try
-            {
-                await _FormBusiness.PartialUpdateFormAsync(formDto);
-                return NoContent();
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al actualizar parcialmente el permiso con ID: {FormId}", id);
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Permiso no encontrado para actualización parcial. ID: {FormId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error de servicio externo al actualizar permiso parcialmente con ID: {FormId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            await _formBusiness.PartialUpdateFormAsync(dto);
+            return NoContent();
         }
     }
 }

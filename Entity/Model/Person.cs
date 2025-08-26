@@ -11,6 +11,7 @@ namespace Entity.Model
         public int Id { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
+         public bool Active { get; set; } = true;
         public required string Email { get; set; }
         public User User { get; set; }
     }

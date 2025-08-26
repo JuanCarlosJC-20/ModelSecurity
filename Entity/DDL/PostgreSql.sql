@@ -1,85 +1,112 @@
-﻿CREATE TABLE "User" (
-    id SERIAL PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    code VARCHAR(100) NOT NULL,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at TIMESTAMP,
-    person_id INT NOT NULL,
-    CONSTRAINT fk_user_person FOREIGN KEY (person_id) REFERENCES person(id)
+﻿-- ========================== 
+-- TABLA PERSON 
+-- ========================== 
+CREATE TABLE Person (
+    Id SERIAL PRIMARY KEY,
+    FirstName VARCHAR(20) NOT NULL,
+    LastName VARCHAR(20) NOT NULL,
+    Email VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE person (
-    id SERIAL PRIMARY KEY,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL
+-- ========================== 
+-- TABLA USER 
+-- ========================== 
+CREATE TABLE "User" (
+    Id SERIAL PRIMARY KEY,
+    UserName VARCHAR(20) NOT NULL,
+    PasswordHash VARCHAR(4000),
+    Code VARCHAR(50) NOT NULL UNIQUE,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL,
+    PersonId INTEGER NOT NULL,
+    FOREIGN KEY (PersonId) REFERENCES Person(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE rol (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at TIMESTAMP
+-- ========================== 
+-- TABLA ROL 
+-- ========================== 
+CREATE TABLE Rol (
+    Id SERIAL PRIMARY KEY,
+    Description VARCHAR(100) NOT NULL,
+    Name VARCHAR(20) NOT NULL UNIQUE,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL
 );
 
-CREATE TABLE rol_user (
-    id SERIAL PRIMARY KEY,
-    user_id INT NOT NULL,
-    rol_id INT NOT NULL,
-    CONSTRAINT fk_roluser_user FOREIGN KEY (user_id) REFERENCES "User"(id),
-    CONSTRAINT fk_roluser_rol FOREIGN KEY (rol_id) REFERENCES rol(id)
+-- ========================== 
+-- TABLA PERMISSION 
+-- ========================== 
+CREATE TABLE Permission (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Code VARCHAR(50) NOT NULL UNIQUE,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL
 );
 
-CREATE TABLE module (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at TIMESTAMP
+-- ========================== 
+-- TABLA FORM 
+-- ========================== 
+CREATE TABLE Form (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Code VARCHAR(50) NOT NULL UNIQUE,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL
 );
 
-CREATE TABLE form (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    code VARCHAR(100) NOT NULL,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at TIMESTAMP
+-- ========================== 
+-- TABLA MODULE 
+-- ========================== 
+CREATE TABLE Module (
+    Id SERIAL PRIMARY KEY,
+    Name VARCHAR(50) NOT NULL,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL
 );
 
-CREATE TABLE form_module (
-    id SERIAL PRIMARY KEY,
-    module_id INT NOT NULL,
-    form_id INT NOT NULL,
-    CONSTRAINT fk_formmodule_module FOREIGN KEY (module_id) REFERENCES module(id),
-    CONSTRAINT fk_formmodule_form FOREIGN KEY (form_id) REFERENCES form(id)
+-- ========================== 
+-- TABLA ROLUSER 
+-- ========================== 
+CREATE TABLE RolUser (
+    Id SERIAL PRIMARY KEY,
+    UserId INTEGER NOT NULL,
+    RolId INTEGER NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES "User"(Id) ON DELETE CASCADE,
+    FOREIGN KEY (RolId) REFERENCES Rol(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE permission (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    active BOOLEAN NOT NULL DEFAULT TRUE,
-    code VARCHAR(100) NOT NULL,
-    create_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at TIMESTAMP
+-- ========================== 
+-- TABLA ROLEFORMPERMISSION 
+-- ========================== 
+CREATE TABLE RoleFormPermission (
+    Id SERIAL PRIMARY KEY,
+    RolId INTEGER NOT NULL,
+    PermissionId INTEGER NOT NULL,
+    FormId INTEGER NOT NULL,
+    FOREIGN KEY (RolId) REFERENCES Rol(Id) ON DELETE CASCADE,
+    FOREIGN KEY (PermissionId) REFERENCES Permission(Id) ON DELETE CASCADE,
+    FOREIGN KEY (FormId) REFERENCES Form(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE rol_form_permission (
-    id SERIAL PRIMARY KEY,
-    rol_id INT NOT NULL,
-    permission_id INT NOT NULL,
-    form_id INT NOT NULL,
-    CONSTRAINT fk_rolformpermission_rol FOREIGN KEY (rol_id) REFERENCES rol(id),
-    CONSTRAINT fk_rolformpermission_permission FOREIGN KEY (permission_id) REFERENCES permission(id),
-    CONSTRAINT fk_rolformpermission_form FOREIGN KEY (form_id) REFERENCES form(id)
+-- ========================== 
+-- TABLA FORMMODULE 
+-- ========================== 
+CREATE TABLE FormModule (
+    Id SERIAL PRIMARY KEY,
+    ModuleId INTEGER NOT NULL,
+    FormId INTEGER NOT NULL,
+    FOREIGN KEY (ModuleId) REFERENCES Module(Id) ON DELETE CASCADE,
+    FOREIGN KEY (FormId) REFERENCES Form(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE changelog (
-    id SERIAL PRIMARY KEY,
-    table_id INT NOT NULL,
-    user_id INT NOT NULL,
-    date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_changelog_user FOREIGN KEY (user_id) REFERENCES "User"(id)
-);
+-- ========================== 
+-- DATOS INICIALES DE ROL 
+-- ========================== 
+INSERT INTO Rol (Description, Name) VALUES ('Rol Administrador', 'Admin');
+INSERT INTO Rol (Description, Name) VALUES ('Rol Usuario', 'User');

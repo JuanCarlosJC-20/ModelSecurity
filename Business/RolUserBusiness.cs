@@ -1,4 +1,5 @@
 ﻿using Data;
+using Entity.Context;
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
@@ -7,16 +8,24 @@ using Utilities.Exceptions;
 namespace Business
 {
     /// <summary>
-    /// Clase de negocio encargada de la lógica relacionada con los rolUsers del sistema.
+    /// Clase de negocio encargada de la lógica relacionada con los RolUsers del sistema en múltiples bases de datos.
     /// </summary>
     public class RolUserBusiness
     {
-        private readonly RolUserData _rolUserData;
+        private readonly RolUserData<SqlServerDbContext> _sqlData;
+        private readonly RolUserData<PostgresDbContext> _pgData;
+        private readonly RolUserData<MySqlDbContext> _myData;
         private readonly ILogger<RolUserBusiness> _logger;
 
-        public RolUserBusiness(RolUserData rolUserData, ILogger<RolUserBusiness> logger)
+        public RolUserBusiness(
+            RolUserData<SqlServerDbContext> sqlData,
+            RolUserData<PostgresDbContext> pgData,
+            RolUserData<MySqlDbContext> myData,
+            ILogger<RolUserBusiness> logger)
         {
-            _rolUserData = rolUserData;
+            _sqlData = sqlData;
+            _pgData = pgData;
+            _myData = myData;
             _logger = logger;
         }
 
@@ -24,7 +33,7 @@ namespace Business
         {
             try
             {
-                var rolUsers = await _rolUserData.GetAllAsync();
+                var rolUsers = await _sqlData.GetAllAsync();
                 return MapToDtoList(rolUsers);
             }
             catch (Exception ex)
@@ -37,27 +46,13 @@ namespace Business
         public async Task<RolUserDto> GetRolUserByIdAsync(int id)
         {
             if (id <= 0)
-            {
-                _logger.LogWarning("ID inválido: {RolUserId}", id);
                 throw new ValidationException("id", "El ID del rolUser debe ser mayor que cero");
-            }
 
-            try
-            {
-                var rolUser = await _rolUserData.GetByIdAsync(id);
-                if (rolUser == null)
-                {
-                    _logger.LogInformation("No se encontró ningún rolUser con ID: {RolUserId}", id);
-                    throw new EntityNotFoundException("RolUser", id);
-                }
+            var rolUser = await _sqlData.GetByIdAsync(id);
+            if (rolUser == null)
+                throw new EntityNotFoundException("RolUser", id);
 
-                return MapToDto(rolUser);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener el rolUser con ID: {RolUserId}", id);
-                throw new ExternalServiceException("Base de datos", $"Error al recuperar el rolUser con ID {id}", ex);
-            }
+            return MapToDto(rolUser);
         }
 
         public async Task<RolUserDto> CreateRolUserAsync(RolUserDto dto)
@@ -65,48 +60,45 @@ namespace Business
             try
             {
                 ValidateRolUser(dto);
-
                 var entity = MapToEntity(dto);
-                var created = await _rolUserData.CreateAsync(entity);
+
+                // Crear en todas las bases de datos
+                var created = await _sqlData.CreateAsync(entity);
+                await _pgData.CreateAsync(entity);
+                await _myData.CreateAsync(entity);
 
                 return MapToDto(created);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al crear nuevo rolUser con UserId: {UserId}, RolId: {RolId}", dto?.UserId, dto?.RolId);
-                throw new ExternalServiceException("Base de datos", "Error al crear el rolUser", ex);
+                throw;
             }
         }
 
         public async Task<RolUserDto> UpdateRolUserAsync(int id, RolUserDto dto)
         {
-            if (dto == null || dto.Id <= 0)
+            if (id <= 0 || dto == null)
                 throw new ValidationException("id", "El ID del rolUser debe ser mayor que cero");
+
+            ValidateRolUser(dto);
 
             try
             {
-                ValidateRolUser(dto);
+                var entity = MapToEntity(dto);
 
-                var existing = await _rolUserData.GetByIdAsync(dto.Id);
-                if (existing == null)
-                {
-                    _logger.LogInformation("RolUser no encontrado para actualizar con ID: {Id}", dto.Id);
-                    throw new EntityNotFoundException("RolUser", dto.Id);
-                }
+                // Actualizar en todas las bases de datos
+                await _sqlData.UpdateAsync(entity);
+                await _pgData.UpdateAsync(entity);
+                await _myData.UpdateAsync(entity);
 
-                var updated = await _rolUserData.UpdateAsync(MapToEntity(dto));
-                return MapToDto(updated);
+                return MapToDto(entity);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar rolUser con ID: {Id}", dto.Id);
-                throw new ExternalServiceException("Base de datos", "Error al actualizar el rolUser", ex);
+                _logger.LogError(ex, "Error al actualizar rolUser con ID: {Id}", id);
+                throw;
             }
-        }
-
-        private RolUserDto MapToDto(bool updated)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task DeleteRolUserAsync(int id)
@@ -116,19 +108,52 @@ namespace Business
 
             try
             {
-                var existing = await _rolUserData.GetByIdAsync(id);
-                if (existing == null)
-                {
-                    _logger.LogInformation("RolUser no encontrado para eliminar con ID: {Id}", id);
-                    throw new EntityNotFoundException("RolUser", id);
-                }
-
-                await _rolUserData.DeleteAsync(id);
+                await _sqlData.DeleteAsync(id);
+                await _pgData.DeleteAsync(id);
+                await _myData.DeleteAsync(id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al eliminar rolUser con ID: {Id}", id);
-                throw new ExternalServiceException("Base de datos", "Error al eliminar el rolUser", ex);
+                throw;
+            }
+        }
+
+        // 🔹 Nuevo: Obtener todos los RolUsers de un usuario
+        public async Task<IEnumerable<RolUserDto>> GetRolUsersByUserIdAsync(int userId)
+        {
+            if (userId <= 0)
+                throw new ValidationException("userId", "El userId debe ser mayor que cero.");
+
+            try
+            {
+                var all = await _sqlData.GetAllAsync();
+                var filtered = all.Where(ru => ru.UserId == userId);
+                return MapToDtoList(filtered);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener RolUsers por userId {UserId}", userId);
+                throw new ExternalServiceException("Base de datos", "No se pudieron leer los RolUsers por usuario.", ex);
+            }
+        }
+
+        // 🔹 Nuevo: Obtener todos los RolUsers de un rol
+        public async Task<IEnumerable<RolUserDto>> GetRolUsersByRolIdAsync(int rolId)
+        {
+            if (rolId <= 0)
+                throw new ValidationException("rolId", "El rolId debe ser mayor que cero.");
+
+            try
+            {
+                var all = await _sqlData.GetAllAsync();
+                var filtered = all.Where(ru => ru.RolId == rolId);
+                return MapToDtoList(filtered);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener RolUsers por rolId {RolId}", rolId);
+                throw new ExternalServiceException("Base de datos", "No se pudieron leer los RolUsers por rol.", ex);
             }
         }
 
@@ -138,46 +163,27 @@ namespace Business
                 throw new ValidationException("El objeto rolUser no puede ser nulo");
 
             if (dto.RolId <= 0)
-            {
-                _logger.LogWarning("RolId inválido al crear/actualizar rolUser");
                 throw new ValidationException("RolId", "El RolId del rolUser es obligatorio y debe ser mayor que cero");
-            }
 
             if (dto.UserId <= 0)
-            {
-                _logger.LogWarning("UserId inválido al crear/actualizar rolUser");
                 throw new ValidationException("UserId", "El UserId del rolUser es obligatorio y debe ser mayor que cero");
-            }
         }
 
-        private RolUserDto MapToDto(RolUser entity)
+        private RolUserDto MapToDto(RolUser entity) => new()
         {
-            return new RolUserDto
-            {
-                Id = entity.Id,
-                UserId = entity.UserId,
-                RolId = entity.RolId
-            };
-        }
+            Id = entity.Id,
+            UserId = entity.UserId,
+            RolId = entity.RolId
+        };
 
-        private RolUser MapToEntity(RolUserDto dto)
+        private RolUser MapToEntity(RolUserDto dto) => new()
         {
-            return new RolUser
-            {
-                Id = dto.Id,
-                UserId = dto.UserId,
-                RolId = dto.RolId
-            };
-        }
+            Id = dto.Id,
+            UserId = dto.UserId,
+            RolId = dto.RolId
+        };
 
         private IEnumerable<RolUserDto> MapToDtoList(IEnumerable<RolUser> entities)
-        {
-            return entities.Select(MapToDto).ToList();
-        }
-
-        public void CreateRol(RolUserDto rolUserDto)
-        {
-            throw new NotImplementedException();
-        }
+            => entities.Select(MapToDto);
     }
 }

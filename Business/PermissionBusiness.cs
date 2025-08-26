@@ -1,4 +1,5 @@
 ﻿using Data;
+using Entity.Context;
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
@@ -6,26 +7,30 @@ using Utilities.Exceptions;
 
 namespace Business
 {
-    /// <summary>
-    /// Clase de negocio encargada de la lógica relacionada con los permisos del sistema.
-    /// </summary>
     public class PermissionBusiness
     {
-        private readonly PermissionData _permissionData;
+        private readonly PermissionData<SqlServerDbContext> _sqlPermissionData;
+        private readonly PermissionData<PostgresDbContext> _pgPermissionData;
+        private readonly PermissionData<MySqlDbContext> _myPermissionData;
         private readonly ILogger<PermissionBusiness> _logger;
 
-        public PermissionBusiness(PermissionData permissionData, ILogger<PermissionBusiness> logger)
+        public PermissionBusiness(
+            PermissionData<SqlServerDbContext> sqlPermissionData,
+            PermissionData<PostgresDbContext> pgPermissionData,
+            PermissionData<MySqlDbContext> myPermissionData,
+            ILogger<PermissionBusiness> logger)
         {
-            _permissionData = permissionData;
+            _sqlPermissionData = sqlPermissionData;
+            _pgPermissionData = pgPermissionData;
+            _myPermissionData = myPermissionData;
             _logger = logger;
         }
 
-        // Obtener todos los permisos
         public async Task<IEnumerable<PermissionDto>> GetAllPermissionAsync()
         {
             try
             {
-                var permissions = await _permissionData.GetAllAsync();
+                var permissions = await _sqlPermissionData.GetAllAsync();
                 return MapToDtoList(permissions);
             }
             catch (Exception ex)
@@ -35,220 +40,179 @@ namespace Business
             }
         }
 
-        // Obtener un permiso por ID
         public async Task<PermissionDto> GetPermissionByIdAsync(int id)
         {
             if (id <= 0)
-            {
-                _logger.LogWarning("ID de permiso inválido: {PermissionId}", id);
                 throw new ValidationException("id", "El ID del permiso debe ser mayor que cero");
-            }
 
             try
             {
-                var permission = await _permissionData.GetByIdAsync(id);
+                var permission = await _sqlPermissionData.GetByIdAsync(id);
                 if (permission == null)
-                {
-                    _logger.LogInformation("Permiso no encontrado con ID: {PermissionId}", id);
                     throw new EntityNotFoundException("Permission", id);
-                }
 
                 return MapToDto(permission);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al obtener el permiso con ID: {PermissionId}", id);
-                throw new ExternalServiceException("Base de datos", $"Error al recuperar el permiso con ID {id}", ex);
+                throw;
             }
         }
 
-        // Crear un nuevo permiso
         public async Task<PermissionDto> CreatePermissionAsync(PermissionDto permissionDto)
         {
             try
             {
                 ValidatePermission(permissionDto);
-
                 var permission = MapToEntity(permissionDto);
-                 permission.CreateAt=DateTime.Now;
-                var created = await _permissionData.CreateAsync(permission);
+                permission.CreateAt =DateTime.UtcNow;
 
-                return MapToDto(created);
+                // Crear en todas las bases de datos
+                var sqlPermission = await _sqlPermissionData.CreateAsync(permission);
+                await _pgPermissionData.CreateAsync(permission);
+                await _myPermissionData.CreateAsync(permission);
+
+                return MapToDto(sqlPermission);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al crear permiso: {PermissionNombre}", permissionDto?.Name ?? "null");
-                throw new ExternalServiceException("Base de datos", "Error al crear el permiso", ex);
+                _logger.LogError(ex, "Error al crear permiso: {PermissionName}", permissionDto?.Name);
+                throw;
             }
         }
 
-        // Actualizar permiso existente
-        public async Task<PermissionDto> UpdatePermissionAsync(int id, PermissionDto permissionDto)
+        public async Task<PermissionDto> UpdatePermissionAsync(PermissionDto permissionDto)
         {
+            if (permissionDto?.Id <= 0)
+                throw new ValidationException("Id", "El ID del permiso debe ser mayor que cero");
+
+            ValidatePermission(permissionDto);
+
             try
             {
-                if (permissionDto == null || permissionDto.Id <= 0)
-                {
-                    throw new ValidationException("Id", "El ID del permiso debe ser mayor que cero");
-                }
+                var permission = MapToEntity(permissionDto);
 
-                ValidatePermission(permissionDto);
+                // Actualizar en todas las bases de datos
+                var updateResult = await _sqlPermissionData.UpdateAsync(permission);
+                await _pgPermissionData.UpdateAsync(permission);
+                await _myPermissionData.UpdateAsync(permission);
 
-                var existing = await _permissionData.GetByIdAsync(permissionDto.Id);
-                if (existing == null)
-                {
-                    _logger.LogInformation("Permiso no encontrado para actualizar: {PermissionId}", permissionDto.Id);
-                    throw new EntityNotFoundException("Permission", permissionDto.Id);
-                }
+                if (!updateResult)
+                    throw new EntityNotFoundException("Permission", permission.Id);
 
-                var updated = await _permissionData.UpdateAsync(MapToEntity(permissionDto));
-                return MapToDto(updated);
+                var updatedPermission = await _sqlPermissionData.GetByIdAsync(permission.Id);
+                return MapToDto(updatedPermission);
             }
-            catch (ValidationException) { throw; }
-            catch (EntityNotFoundException) { throw; }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al actualizar permiso con ID: {PermissionId}", permissionDto?.Id ?? 0);
-                throw new ExternalServiceException("Base de datos", "Error al actualizar el permiso", ex);
+                _logger.LogError(ex, "Error al actualizar permiso con ID: {PermissionId}", permissionDto.Id);
+                throw;
             }
         }
 
-        private PermissionDto MapToDto(bool updated)
-        {
-            throw new NotImplementedException();
-        }
-
-        // Eliminar permiso por ID
         public async Task DeletePermissionAsync(int id)
         {
             if (id <= 0)
-            {
                 throw new ValidationException("id", "El ID del permiso debe ser mayor que cero");
-            }
 
             try
             {
-                var existing = await _permissionData.GetByIdAsync(id);
-                if (existing == null)
-                {
-                    _logger.LogInformation("Permiso no encontrado para eliminar con ID: {PermissionId}", id);
-                    throw new EntityNotFoundException("Permission", id);
-                }
-
-                await _permissionData.DeleteAsync(id);
+                // Eliminar de todas las bases de datos
+                await _sqlPermissionData.DeleteAsync(id);
+                await _pgPermissionData.DeleteAsync(id);
+                await _myPermissionData.DeleteAsync(id);
             }
-            catch (ValidationException) { throw; }
-            catch (EntityNotFoundException) { throw; }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al eliminar permiso con ID: {PermissionId}", id);
-                throw new ExternalServiceException("Base de datos", "Error al eliminar el permiso", ex);
+                throw;
             }
         }
 
-        // Validar DTO
+        public async Task DisablePermissionAsync(int id)
+        {
+            if (id <= 0)
+                throw new ValidationException("id", "El ID del permiso debe ser mayor que cero");
+
+            try
+            {
+                // Deshabilitar en todas las bases de datos
+                await _sqlPermissionData.DisableAsync(id);
+                await _pgPermissionData.DisableAsync(id);
+                await _myPermissionData.DisableAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al desactivar permiso con ID: {PermissionId}", id);
+                throw;
+            }
+        }
+
+        public async Task PartialUpdatePermissionAsync(PermissionDto permissionDto)
+        {
+            try
+            {
+                var existingPermission = await _sqlPermissionData.GetByIdAsync(permissionDto.Id);
+                if (existingPermission == null)
+                    throw new EntityNotFoundException($"No se encontró el permiso con ID {permissionDto.Id}");
+
+                if (!string.IsNullOrEmpty(permissionDto.Name))
+                    existingPermission.Name = permissionDto.Name;
+                if (!string.IsNullOrEmpty(permissionDto.Code))
+                    existingPermission.Code = permissionDto.Code;
+                existingPermission.Active = permissionDto.Active;
+
+                // Actualizar parcialmente en todas las bases de datos
+                await _sqlPermissionData.PartialUpdatePermissionAsync(existingPermission,
+                    nameof(existingPermission.Name),
+                    nameof(existingPermission.Code),
+                    nameof(existingPermission.Active));
+                await _pgPermissionData.PartialUpdatePermissionAsync(existingPermission,
+                    nameof(existingPermission.Name),
+                    nameof(existingPermission.Code),
+                    nameof(existingPermission.Active));
+                await _myPermissionData.PartialUpdatePermissionAsync(existingPermission,
+                    nameof(existingPermission.Name),
+                    nameof(existingPermission.Code),
+                    nameof(existingPermission.Active));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al actualizar parcialmente el permiso con ID: {PermissionId}", permissionDto.Id);
+                throw;
+            }
+        }
+
         private void ValidatePermission(PermissionDto permissionDto)
         {
             if (permissionDto == null)
-            {
                 throw new ValidationException("El objeto permiso no puede ser nulo");
-            }
 
             if (string.IsNullOrWhiteSpace(permissionDto.Name))
-            {
-                _logger.LogWarning("Nombre del permiso vacío");
-                throw new ValidationException("Name", "El Name del permiso es obligatorio");
-            }
+                throw new ValidationException("Name", "El nombre del permiso es obligatorio");
 
             if (string.IsNullOrWhiteSpace(permissionDto.Code))
-            {
-                _logger.LogWarning("Código del permiso vacío");
-                throw new ValidationException("Code", "El Code del permiso es obligatorio");
-            }
+                throw new ValidationException("Code", "El código del permiso es obligatorio");
         }
 
-        // Mapeos
-        private PermissionDto MapToDto(Permission permission)
+        private PermissionDto MapToDto(Permission permission) => new()
         {
-            return new PermissionDto
-            {
-                Id = permission.Id,
-                Name = permission.Name,
-                Code = permission.Code,
-                Active = permission.Active
-            };
-        }
+            Id = permission.Id,
+            Name = permission.Name,
+            Code = permission.Code,
+            Active = permission.Active
+        };
 
-        private Permission MapToEntity(PermissionDto dto)
+        private Permission MapToEntity(PermissionDto dto) => new()
         {
-            return new Permission
-            {
-                Id = dto.Id,
-                Name = dto.Name,
-                Code = dto.Code,
-                Active = dto.Active
-            };
-        }
+            Id = dto.Id,
+            Name = dto.Name,
+            Code = dto.Code,
+            Active = dto.Active
+        };
 
         private IEnumerable<PermissionDto> MapToDtoList(IEnumerable<Permission> permissions)
-        {
-            var list = new List<PermissionDto>();
-            foreach (var permission in permissions)
-            {
-                list.Add(MapToDto(permission));
-            }
-            return list;
-        }
-
-          /// <summary>
-/// Realiza una eliminación lógica del permission.
-/// </summary>
-/// <param name="id">ID del permission</param>
-public async Task DisableFormAsync(int id)
-{
-    if (id <= 0)
-        throw new ValidationException("id", "El ID del permission debe ser mayor que cero");
-
-    try
-    {
-        var existing = await _permissionData.GetByIdAsync(id);
-        if (existing == null)
-            throw new EntityNotFoundException("Form", id);
-
-        var result = await _permissionData.DisableAsync(id);
-        if (!result)
-            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el permission");
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error al desactivar permission con ID: {PermissionId}", id);
-        throw;
-    }
-}
-
-
-//metodo patch para actualizar solo el estado activo del formulario
-public async Task PartialUpdateFormAsync(PermissionDto permissionDto)
-{
-    var existingForm = await _permissionData.GetByIdAsync(permissionDto.Id);
-    if (existingForm == null)
-    {
-        throw new EntityNotFoundException($"No se encontró el permiso con ID {permissionDto.Id}.");
-    }
-
-    if (!string.IsNullOrEmpty(permissionDto.Name))
-        existingForm.Name = permissionDto.Name;
-
-    if (!string.IsNullOrEmpty(permissionDto.Code))
-        existingForm.Code = permissionDto.Code;
-
-    // Active es tipo bool, simplemente lo actualizamos.
-    existingForm.Active = permissionDto.Active;
-
-    await _permissionData.PartialUpdateFormAsync(existingForm,
-        nameof(existingForm.Name),
-        nameof(existingForm.Code),
-        nameof(existingForm.Active));
-}
+            => permissions.Select(MapToDto);
     }
 }

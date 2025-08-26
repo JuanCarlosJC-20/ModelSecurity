@@ -1,62 +1,112 @@
-﻿CREATE TABLE `User` (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    code VARCHAR(100) NOT NULL,
-    active TINYINT(1) NOT NULL DEFAULT 1,
-    create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at DATETIME DEFAULT NULL,
-    person_id INT NOT NULL,
-    CONSTRAINT fk_user_person FOREIGN KEY (person_id) REFERENCES person(id)
+﻿-- ========================== 
+-- TABLA PERSON 
+-- ========================== 
+CREATE TABLE Person (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    FirstName VARCHAR(20) NOT NULL,
+    LastName VARCHAR(20) NOT NULL,
+    Email VARCHAR(50) NOT NULL
 );
 
-CREATE TABLE person (
-    id INT AUTO_INCREMENT PRIMARY KEY,Pub
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL
+-- ========================== 
+-- TABLA USER 
+-- ========================== 
+CREATE TABLE `User` (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    UserName VARCHAR(20) NOT NULL,
+    PasswordHash VARCHAR(4000) NULL,
+    Code VARCHAR(50) NOT NULL UNIQUE,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL,
+    PersonId INT NOT NULL,
+    FOREIGN KEY (PersonId) REFERENCES Person(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE rol (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    active TINYINT(1) NOT NULL DEFAULT 1,
-    create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at DATETIME DEFAULT NULL
+-- ========================== 
+-- TABLA ROL 
+-- ========================== 
+CREATE TABLE Rol (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Description VARCHAR(100) NOT NULL,
+    Name VARCHAR(20) NOT NULL UNIQUE,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL
 );
 
-CREATE TABLE rol_user (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT NOT NULL,
-    rol_id INT NOT NULL,
-    CONSTRAINT fk_roluser_user FOREIGN KEY (user_id) REFERENCES `User`(id),
-    CONSTRAINT fk_roluser_rol FOREIGN KEY (rol_id) REFERENCES rol(id)
+-- ========================== 
+-- TABLA PERMISSION 
+-- ========================== 
+CREATE TABLE Permission (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(50) NOT NULL,
+    Code VARCHAR(50) NOT NULL UNIQUE,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL
 );
 
-CREATE TABLE module (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    active TINYINT(1) NOT NULL DEFAULT 1,
-    create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at DATETIME DEFAULT NULL
+-- ========================== 
+-- TABLA FORM 
+-- ========================== 
+CREATE TABLE Form (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(50) NOT NULL,
+    Code VARCHAR(50) NOT NULL UNIQUE,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL
 );
 
-CREATE TABLE form (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    code VARCHAR(100) NOT NULL,
-    active TINYINT(1) NOT NULL DEFAULT 1,
-    create_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    delete_at DATETIME DEFAULT NULL
+-- ========================== 
+-- TABLA MODULE 
+-- ========================== 
+CREATE TABLE Module (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(50) NOT NULL,
+    Active BOOLEAN NOT NULL DEFAULT TRUE,
+    CreateAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DeleteAt TIMESTAMP NULL
 );
 
-CREATE TABLE form_module (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    module_id INT NOT NULL,
-    form_id INT NOT NULL,
-    CONSTRAINT fk_formmodule_module FOREIGN KEY (module_id) REFERENCES module(id),
-    CONSTRAINT fk_formmodule_form FOREIGN KEY (form_id) REFERENCES form(id)
+-- ========================== 
+-- TABLA ROLUSER 
+-- ========================== 
+CREATE TABLE RolUser (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    UserId INT NOT NULL,
+    RolId INT NOT NULL,
+    FOREIGN KEY (UserId) REFERENCES `User`(Id) ON DELETE CASCADE,
+    FOREIGN KEY (RolId) REFERENCES Rol(Id) ON DELETE CASCADE
 );
 
-CREATE TABLE permission (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT
+-- ========================== 
+-- TABLA ROLEFORMPERMISSION 
+-- ========================== 
+CREATE TABLE RoleFormPermission (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    RolId INT NOT NULL,
+    PermissionId INT NOT NULL,
+    FormId INT NOT NULL,
+    FOREIGN KEY (RolId) REFERENCES Rol(Id) ON DELETE CASCADE,
+    FOREIGN KEY (PermissionId) REFERENCES Permission(Id) ON DELETE CASCADE,
+    FOREIGN KEY (FormId) REFERENCES Form(Id) ON DELETE CASCADE
+);
+
+-- ========================== 
+-- TABLA FORMMODULE 
+-- ========================== 
+CREATE TABLE FormModule (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    ModuleId INT NOT NULL,
+    FormId INT NOT NULL,
+    FOREIGN KEY (ModuleId) REFERENCES Module(Id) ON DELETE CASCADE,
+    FOREIGN KEY (FormId) REFERENCES Form(Id) ON DELETE CASCADE
+);
+
+-- ========================== 
+-- DATOS INICIALES DE ROL 
+-- ========================== 
+INSERT INTO Rol (Description, Name) VALUES ('Rol Administrador', 'Admin');
+INSERT INTO Rol (Description, Name) VALUES ('Rol Usuario', 'User');

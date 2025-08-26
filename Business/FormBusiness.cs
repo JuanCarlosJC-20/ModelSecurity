@@ -1,4 +1,5 @@
 ﻿using Data;
+using Entity.Context;
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
@@ -6,17 +7,22 @@ using Utilities.Exceptions;
 
 namespace Business
 {
-    /// <summary>
-    /// Clase de negocio encargada de la lógica relacionada con los formularios del sistema.
-    /// </summary>
     public class FormBusiness
     {
-        private readonly FormData _formData;
+        private readonly FormData<SqlServerDbContext> _sqlFormData;
+        private readonly FormData<PostgresDbContext> _pgFormData;
+        private readonly FormData<MySqlDbContext> _myFormData;
         private readonly ILogger<FormBusiness> _logger;
 
-        public FormBusiness(FormData formData, ILogger<FormBusiness> logger)
+        public FormBusiness(
+            FormData<SqlServerDbContext> sqlFormData,
+            FormData<PostgresDbContext> pgFormData,
+            FormData<MySqlDbContext> myFormData,
+            ILogger<FormBusiness> logger)
         {
-            _formData = formData;
+            _sqlFormData = sqlFormData;
+            _pgFormData = pgFormData;
+            _myFormData = myFormData;
             _logger = logger;
         }
 
@@ -24,8 +30,8 @@ namespace Business
         {
             try
             {
-
-                var forms = await _formData.GetAllAsync();
+                // Obtenemos de SQL Server por defecto
+                var forms = await _sqlFormData.GetAllAsync();
                 return forms.Select(MapToDto);
             }
             catch (Exception ex)
@@ -42,7 +48,7 @@ namespace Business
 
             try
             {
-                var form = await _formData.GetByIdAsync(id);
+                var form = await _sqlFormData.GetByIdAsync(id);
                 if (form == null)
                     throw new EntityNotFoundException("Form", id);
 
@@ -64,15 +70,16 @@ namespace Business
                 {
                     Name = formDto.Name,
                     Code = formDto.Code,
-                    Active = formDto.Active
+                    Active = formDto.Active,
+                    CreateAt = DateTime.UtcNow
                 };
 
-                
-                 form.CreateAt=DateTime.Now;
-                 form.DeleteAt=DateTime.Now;
+                // Crear en todas las bases de datos
+                var sqlForm = await _sqlFormData.CreateAsync(form);
+                await _pgFormData.CreateAsync(form);
+                await _myFormData.CreateAsync(form);
 
-                var formCreado = await _formData.CreateAsync(form);
-                return MapToDto(formCreado);
+                return MapToDto(sqlForm);
             }
             catch (Exception ex)
             {
@@ -90,7 +97,7 @@ namespace Business
 
             try
             {
-                var existing = await _formData.GetByIdAsync(formDto.Id);
+                var existing = await _sqlFormData.GetByIdAsync(formDto.Id);
                 if (existing == null)
                     throw new EntityNotFoundException("Form", formDto.Id);
 
@@ -98,9 +105,10 @@ namespace Business
                 existing.Code = formDto.Code;
                 existing.Active = formDto.Active;
 
-                var result = await _formData.UpdateAsync(existing);
-                if (!result)
-                    throw new ExternalServiceException("Base de datos", "Error al actualizar el formulario");
+                // Actualizar en todas las bases de datos
+                await _sqlFormData.UpdateAsync(existing);
+                await _pgFormData.UpdateAsync(existing);
+                await _myFormData.UpdateAsync(existing);
             }
             catch (Exception ex)
             {
@@ -116,19 +124,64 @@ namespace Business
 
             try
             {
-                var existing = await _formData.GetByIdAsync(id);
-                if (existing == null)
-                    throw new EntityNotFoundException("Form", id);
-
-                var result = await _formData.DeleteAsync(id);
-                if (!result)
-                    throw new ExternalServiceException("Base de datos", "No se pudo eliminar el formulario");
+                // Eliminar de todas las bases de datos
+                await _sqlFormData.DeleteAsync(id);
+                await _pgFormData.DeleteAsync(id);
+                await _myFormData.DeleteAsync(id);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al eliminar formulario con ID: {FormId}", id);
                 throw;
             }
+        }
+
+        public async Task DisableFormAsync(int id)
+        {
+            if (id <= 0)
+                throw new ValidationException("id", "El ID del formulario debe ser mayor que cero");
+
+            try
+            {
+                // Deshabilitar en todas las bases de datos
+                await _sqlFormData.DisableAsync(id);
+                await _pgFormData.DisableAsync(id);
+                await _myFormData.DisableAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al desactivar formulario con ID: {FormId}", id);
+                throw;
+            }
+        }
+
+        public async Task PartialUpdateFormAsync(FormDto formDto)
+        {
+            var existingForm = await _sqlFormData.GetByIdAsync(formDto.Id);
+            if (existingForm == null)
+            {
+                throw new EntityNotFoundException($"No se encontró el formulario con ID {formDto.Id}.");
+            }
+
+            if (!string.IsNullOrEmpty(formDto.Name))
+                existingForm.Name = formDto.Name;
+            if (!string.IsNullOrEmpty(formDto.Code))
+                existingForm.Code = formDto.Code;
+            existingForm.Active = formDto.Active;
+
+            // Actualizar parcialmente en todas las bases de datos
+            await _sqlFormData.PartialUpdateFormAsync(existingForm, 
+                nameof(existingForm.Name), 
+                nameof(existingForm.Code), 
+                nameof(existingForm.Active));
+            await _pgFormData.PartialUpdateFormAsync(existingForm, 
+                nameof(existingForm.Name), 
+                nameof(existingForm.Code), 
+                nameof(existingForm.Active));
+            await _myFormData.PartialUpdateFormAsync(existingForm, 
+                nameof(existingForm.Name), 
+                nameof(existingForm.Code), 
+                nameof(existingForm.Active));
         }
 
         private void ValidateForm(FormDto formDto)
@@ -150,62 +203,5 @@ namespace Business
                 Active = form.Active
             };
         }
-
-
- /// <summary>
-/// Realiza una eliminación lógica del formulario.
-/// </summary>
-/// <param name="id">ID del formulario</param>
-public async Task DisableFormAsync(int id)
-{
-    if (id <= 0)
-        throw new ValidationException("id", "El ID del formulario debe ser mayor que cero");
-
-    try
-    {
-        var existing = await _formData.GetByIdAsync(id);
-        if (existing == null)
-            throw new EntityNotFoundException("Form", id);
-
-        var result = await _formData.DisableAsync(id);
-        if (!result)
-            throw new ExternalServiceException("Base de datos", "No se pudo desactivar el formulario");
-
-
-        //form.DeleteAt=DateTime.Now;    
-    }
-    catch (Exception ex)
-    {
-        _logger.LogError(ex, "Error al desactivar formulario con ID: {FormId}", id);
-        throw;
-    }
-}
-
-
-//metodo patch para actualizar solo el estado activo del formulario
-public async Task PartialUpdateFormAsync(FormDto formDto)
-{
-    var existingForm = await _formData.GetByIdAsync(formDto.Id);
-    if (existingForm == null)
-    {
-        throw new EntityNotFoundException($"No se encontró el permiso con ID {formDto.Id}.");
-    }
-
-    if (!string.IsNullOrEmpty(formDto.Name))
-        existingForm.Name = formDto.Name;
-
-    if (!string.IsNullOrEmpty(formDto.Code))
-        existingForm.Code = formDto.Code;
-
-    // Active es tipo bool, simplemente lo actualizamos.
-    existingForm.Active = formDto.Active;
-
-    await _formData.PartialUpdateFormAsync(existingForm,
-        nameof(existingForm.Name),
-        nameof(existingForm.Code),
-        nameof(existingForm.Active));
-}
-
-
     }
 }

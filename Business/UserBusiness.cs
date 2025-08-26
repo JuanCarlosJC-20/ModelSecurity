@@ -1,4 +1,5 @@
 ﻿using Data;
+using Entity.Context;
 using Entity.DTOs;
 using Entity.Model;
 using Microsoft.Extensions.Logging;
@@ -8,12 +9,20 @@ namespace Business
 {
     public class UserBusiness
     {
-        private readonly UserData _userData;
+        private readonly UserData<SqlServerDbContext> _sqlData;
+        private readonly UserData<PostgresDbContext> _pgData;
+        private readonly UserData<MySqlDbContext> _myData;
         private readonly ILogger<UserBusiness> _logger;
 
-        public UserBusiness(UserData userData, ILogger<UserBusiness> logger)
+        public UserBusiness(
+            UserData<SqlServerDbContext> sqlData,
+            UserData<PostgresDbContext> pgData,
+            UserData<MySqlDbContext> myData,
+            ILogger<UserBusiness> logger)
         {
-            _userData = userData;
+            _sqlData = sqlData;
+            _pgData = pgData;
+            _myData = myData;
             _logger = logger;
         }
 
@@ -21,16 +30,8 @@ namespace Business
         {
             try
             {
-                var users = await _userData.GetAllAsync();
-                return users.Select(u => new UserDto
-                {
-                    Id = u.Id,
-                    PersonId = u.PersonId,
-                    UserName = u.UserName,
-                    PasswordHash = u.PasswordHash,
-                    Code = u.Code,
-                    Active = u.Active
-                });
+                var users = await _sqlData.GetAllAsync();
+                return users.Select(MapToDto);
             }
             catch (Exception ex)
             {
@@ -44,59 +45,32 @@ namespace Business
             if (id <= 0)
                 throw new ValidationException("id", "El ID del usuario debe ser mayor que cero");
 
-            try
-            {
-                var user = await _userData.GetByIdAsync(id);
-                if (user == null)
-                    throw new EntityNotFoundException("Usuario", id);
+            var user = await _sqlData.GetByIdAsync(id);
+            if (user == null)
+                throw new EntityNotFoundException("Usuario", id);
 
-                return new UserDto
-                {
-                    Id = user.Id,
-                    PersonId = user.PersonId,
-                    UserName = user.UserName,
-                    PasswordHash = user.PasswordHash,
-                    Code = user.Code,
-                    Active = user.Active
-                };
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error al obtener el usuario con ID: {UserId}", id);
-                throw new ExternalServiceException("Base de datos", $"Error al recuperar el usuario con ID {id}", ex);
-            }
+            return MapToDto(user);
         }
 
         public async Task<UserDto> CreateUserAsync(UserDto userDto)
         {
+            ValidateUser(userDto);
+
+            var entity = MapToEntity(userDto);
+            entity.CreateAt =DateTime.UtcNow;
+
             try
             {
-                ValidateUser(userDto);
-                var user = new User
-                {
-                    PersonId = userDto.PersonId,
-                    UserName = userDto.UserName,
-                    PasswordHash = userDto.PasswordHash,
-                    Code = userDto.Code,
-                    Active = userDto.Active,
-                    CreateAt = DateTime.Now
-                };
+                var created = await _sqlData.CreateAsync(entity);
+                await _pgData.CreateAsync(entity);
+                await _myData.CreateAsync(entity);
 
-                var createdUser = await _userData.CreateAsync(user);
-                return new UserDto
-                {
-                    Id = createdUser.Id,
-                    PersonId = createdUser.PersonId,
-                    UserName = createdUser.UserName,
-                    PasswordHash = createdUser.PasswordHash,
-                    Code = createdUser.Code,
-                    Active = createdUser.Active
-                };
+                return MapToDto(created);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al crear usuario: {UserName}", userDto?.UserName ?? "null");
-                throw new ExternalServiceException("Base de datos", "Error al crear el usuario", ex);
+                throw;
             }
         }
 
@@ -107,21 +81,13 @@ namespace Business
 
             ValidateUser(userDto);
 
+            var entity = MapToEntity(userDto);
+
             try
             {
-                var existing = await _userData.GetByIdAsync(userDto.Id);
-                if (existing == null)
-                    throw new EntityNotFoundException("Usuario", userDto.Id);
-
-                existing.PersonId = userDto.PersonId;
-                existing.UserName = userDto.UserName;
-                existing.PasswordHash = userDto.PasswordHash;
-                existing.Code = userDto.Code;
-                existing.Active = userDto.Active;
-
-                var result = await _userData.UpdateAsync(existing);
-                if (!result)
-                    throw new ExternalServiceException("Base de datos", "Error al actualizar el usuario");
+                await _sqlData.UpdateAsync(entity);
+                await _pgData.UpdateAsync(entity);
+                await _myData.UpdateAsync(entity);
             }
             catch (Exception ex)
             {
@@ -135,30 +101,21 @@ namespace Business
             if (userDto == null || userDto.Id <= 0)
                 throw new ValidationException("Id", "El usuario a actualizar debe tener un ID válido");
 
+            var existing = await _sqlData.GetByIdAsync(userDto.Id);
+            if (existing == null)
+                throw new EntityNotFoundException("Usuario", userDto.Id);
+
+            if (userDto.PersonId != 0) existing.PersonId = userDto.PersonId;
+            if (!string.IsNullOrEmpty(userDto.UserName)) existing.UserName = userDto.UserName;
+            if (!string.IsNullOrEmpty(userDto.PasswordHash)) existing.PasswordHash = userDto.PasswordHash;
+            if (!string.IsNullOrEmpty(userDto.Code)) existing.Code = userDto.Code;
+            if (userDto.Active != null) existing.Active = userDto.Active;
+
             try
             {
-                var existing = await _userData.GetByIdAsync(userDto.Id);
-                if (existing == null)
-                    throw new EntityNotFoundException("Usuario", userDto.Id);
-
-                if (userDto.PersonId != 0)
-                    existing.PersonId = userDto.PersonId;
-
-                if (!string.IsNullOrEmpty(userDto.UserName))
-                    existing.UserName = userDto.UserName;
-
-                if (!string.IsNullOrEmpty(userDto.PasswordHash))
-                    existing.PasswordHash = userDto.PasswordHash;
-
-                if (!string.IsNullOrEmpty(userDto.Code))
-                    existing.Code = userDto.Code;
-
-                if (userDto.Active != null)
-                    existing.Active = userDto.Active;
-
-                var result = await _userData.UpdateAsync(existing);
-                if (!result)
-                    throw new ExternalServiceException("Base de datos", "Error al actualizar parcialmente el usuario");
+                await _sqlData.UpdateAsync(existing);
+                await _pgData.UpdateAsync(existing);
+                await _myData.UpdateAsync(existing);
             }
             catch (Exception ex)
             {
@@ -174,13 +131,9 @@ namespace Business
 
             try
             {
-                var existing = await _userData.GetByIdAsync(id);
-                if (existing == null)
-                    throw new EntityNotFoundException("Usuario", id);
-
-                var result = await _userData.DisableAsync(id);
-                if (!result)
-                    throw new ExternalServiceException("Base de datos", "No se pudo desactivar el usuario");
+                await _sqlData.DisableAsync(id);
+                await _pgData.DisableAsync(id);
+                await _myData.DisableAsync(id);
             }
             catch (Exception ex)
             {
@@ -196,13 +149,9 @@ namespace Business
 
             try
             {
-                var existing = await _userData.GetByIdAsync(id);
-                if (existing == null)
-                    throw new EntityNotFoundException("Usuario", id);
-
-                var result = await _userData.DeleteAsync(id);
-                if (!result)
-                    throw new ExternalServiceException("Base de datos", "No se pudo eliminar el usuario");
+                await _sqlData.DeleteAsync(id);
+                await _pgData.DeleteAsync(id);
+                await _myData.DeleteAsync(id);
             }
             catch (Exception ex)
             {
@@ -211,22 +160,42 @@ namespace Business
             }
         }
 
-        private void ValidateUser(UserDto userDto)
+        private void ValidateUser(UserDto dto)
         {
-            if (userDto == null)
+            if (dto == null)
                 throw new ValidationException("userDto", "El objeto usuario no puede ser nulo");
 
-            if (userDto.PersonId <= 0)
+            if (dto.PersonId <= 0)
                 throw new ValidationException("PersonId", "El ID de la persona es obligatorio");
 
-            if (string.IsNullOrWhiteSpace(userDto.UserName))
+            if (string.IsNullOrWhiteSpace(dto.UserName))
                 throw new ValidationException("Username", "El nombre de usuario es obligatorio");
 
-            if (string.IsNullOrWhiteSpace(userDto.PasswordHash))
+            if (string.IsNullOrWhiteSpace(dto.PasswordHash))
                 throw new ValidationException("Password", "La contraseña es obligatoria");
 
-            if (string.IsNullOrWhiteSpace(userDto.Code))
-                throw new ValidationException("Username", "El Code de usuario es obligatorio");
+            if (string.IsNullOrWhiteSpace(dto.Code))
+                throw new ValidationException("Code", "El código de usuario es obligatorio");
         }
+
+        private UserDto MapToDto(User entity) => new()
+        {
+            Id = entity.Id,
+            PersonId = entity.PersonId,
+            UserName = entity.UserName,
+            PasswordHash = entity.PasswordHash,
+            Code = entity.Code,
+            Active = entity.Active
+        };
+
+        private User MapToEntity(UserDto dto) => new()
+        {
+            Id = dto.Id,
+            PersonId = dto.PersonId,
+            UserName = dto.UserName,
+            PasswordHash = dto.PasswordHash,
+            Code = dto.Code,
+            Active = dto.Active
+        };
     }
 }

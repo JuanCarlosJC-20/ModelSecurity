@@ -6,34 +6,26 @@ using Microsoft.Extensions.Logging;
 namespace Data
 {
     /// <summary>
-    /// Repositorio encargado de la gestion de la entidad RolUser en la base de datos
+    /// Repositorio genérico encargado de la gestión de la entidad RolUser en cualquier base de datos
     /// </summary>
-    public class RolUserData
+    public class RolUserData<TContext> where TContext : ApplicationDbContext<TContext>
     {
-        private readonly ApplicationDbContext _context;
-        private readonly ILogger<RolUserData> _logger;
+        private readonly IDbContextFactory<TContext> _contextFactory;
+        private readonly ILogger<RolUserData<TContext>> _logger;
 
-        ///<summary>
-        ///Constructor que recibe el contexto de la base de datos
-        ///</summary>
-        ///<param name="context">Instancia de <see cref="ApplicationDbContext"/>para la conexion con la base de datos</param>
-        public RolUserData(ApplicationDbContext context, ILogger<RolUserData> logger)
+        public RolUserData(IDbContextFactory<TContext> contextFactory, ILogger<RolUserData<TContext>> logger)
         {
-            _context = context;
+            _contextFactory = contextFactory;
             _logger = logger;
         }
 
-        ///<summary>
-        ///Crea un nuevo RolUser en la base de datos
-        ///</summary>
-        ///<param name="rolUser">Instancia del RolUser a crear</param>
-        ///<returns>El RolUser creado</returns>
         public async Task<RolUser> CreateAsync(RolUser rolUser)
         {
             try
             {
-                await _context.Set<RolUser>().AddAsync(rolUser);
-                await _context.SaveChangesAsync();
+                using var context = await _contextFactory.CreateDbContextAsync();
+                await context.Set<RolUser>().AddAsync(rolUser);
+                await context.SaveChangesAsync();
                 return rolUser;
             }
             catch (Exception ex)
@@ -43,20 +35,22 @@ namespace Data
             }
         }
 
-        ///<summary>
-        ///Obtiene todos los RolUsers almacenados en la base de datos
-        ///</summary>
-        ///<returns>Lista de los RolUsers</returns>
         public async Task<IEnumerable<RolUser>> GetAllAsync()
         {
-            return await _context.Set<RolUser>().ToListAsync();
+            using var context = await _contextFactory.CreateDbContextAsync();
+            return await context.Set<RolUser>()
+                .AsNoTracking()
+                .ToListAsync();
         }
-        ///<summary>Obtiene un RolUser especifico por su identificador</summary>
+
         public async Task<RolUser?> GetByIdAsync(int id)
         {
             try
             {
-                return await _context.Set<RolUser>().FindAsync(id);
+                using var context = await _contextFactory.CreateDbContextAsync();
+                return await context.Set<RolUser>()
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(r => r.Id == id);
             }
             catch (Exception ex)
             {
@@ -64,46 +58,39 @@ namespace Data
                 throw;
             }
         }
-        ///<summary>
-        ///Actualiza un RolUser existente en la base de datos
-        ///</summary>
-        ///<param name="rolUser">Objeto con la informacion actualizada</param>
-        ///<returns>True si la operacion fue exitosa, false en caso contrario</returns>
+
         public async Task<bool> UpdateAsync(RolUser rolUser)
         {
             try
             {
-                _context.Set<RolUser>().Update(rolUser);
-                await _context.SaveChangesAsync();
+                using var context = await _contextFactory.CreateDbContextAsync();
+                context.Set<RolUser>().Update(rolUser);
+                await context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Error al actualizar el RolUser: {ex.Message}");
+                _logger.LogError(ex, "Error al actualizar el RolUser con ID {RolUserId}", rolUser.Id);
                 return false;
             }
         }
-        ///<summary>
-        ///Elimina un RolUser de la base de datos
-        ///</summary>
-        ///<param name="id">Identificador unico del RolUser a eliminar</param>
-        ///<returns>True si la eliminacion fue exitosa, false en caso contrario</returns>
-        ///
+
         public async Task<bool> DeleteAsync(int id)
         {
             try
             {
-                var rolUser = await _context.Set<RolUser>().FindAsync(id);
+                using var context = await _contextFactory.CreateDbContextAsync();
+                var rolUser = await context.Set<RolUser>().FindAsync(id);
                 if (rolUser == null)
                     return false;
 
-                _context.Set<RolUser>().Remove(rolUser);
-                await _context.SaveChangesAsync();
+                context.Set<RolUser>().Remove(rolUser);
+                await context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error al elminar el RolUser: {ex.Message}");
+                _logger.LogError(ex, "Error al eliminar el RolUser con ID {RolUserId}", id);
                 return false;
             }
         }

@@ -1,233 +1,79 @@
 ﻿using Business;
 using Entity.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Utilities.Exceptions;
 
-namespace Web.Controllers
+namespace Api.Controllers
 {
-    /// <summary>
-    /// Controlador para la gestión de módulos en el sistema
-    /// </summary>
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     [Produces("application/json")]
-    [Authorize] // 👈 Protege TODO el controlador con JWT
+    [Authorize]
     public class ModuleController : ControllerBase
     {
-        private readonly ModuleBusiness _ModuleBusiness;
+        private readonly ModuleBusiness _moduleBusiness;
         private readonly ILogger<ModuleController> _logger;
 
-        public ModuleController(ModuleBusiness ModuleBusiness, ILogger<ModuleController> logger)
+        public ModuleController(ModuleBusiness moduleBusiness, ILogger<ModuleController> logger)
         {
-            _ModuleBusiness = ModuleBusiness;
+            _moduleBusiness = moduleBusiness;
             _logger = logger;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(IEnumerable<ModuleDto>), 200)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> GetAllModules()
+        public async Task<IActionResult> GetAll()
         {
-            try
-            {
-                var Modules = await _ModuleBusiness.GetAllModuleAsync();
-                return Ok(Modules);
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al obtener módulos");
-                return StatusCode(500, new { message = ex.Message });
-            }
+            var modules = await _moduleBusiness.GetAllModuleAsync();
+            return Ok(modules);
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(ModuleDto), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> GetModuleById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
-            try
-            {
-                var Module = await _ModuleBusiness.GetModuleByIdAsync(id);
-                return Ok(Module);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida para el módulo con ID: {ModuleId}", id);
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Módulo no encontrado con ID: {ModuleId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al obtener módulo con ID: {ModuleId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            var module = await _moduleBusiness.GetModuleByIdAsync(id);
+            return Ok(module);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(ModuleDto), 201)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateModule([FromBody] ModuleDto ModuleDto)
+        public async Task<IActionResult> Create([FromBody] ModuleDto dto)
         {
-            try
-            {
-                var createdModule = await _ModuleBusiness.CreateModuleAsync(ModuleDto);
-                return CreatedAtAction(nameof(GetModuleById), new { id = createdModule.Id }, createdModule);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al crear módulo");
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al crear módulo");
-                return StatusCode(500, new { message = ex.Message });
-            }
+            var created = await _moduleBusiness.CreateModuleAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
-        /// <summary>
-        /// Actualiza un módulo existente
-        /// </summary>
-        [HttpPut]
-        [ProducesResponseType(typeof(ModuleDto), 200)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> UpdateModule([FromBody] ModuleDto ModuleDto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] ModuleDto dto)
         {
-            try
-            {
-                var updated = await _ModuleBusiness.UpdateModuleAsync(ModuleDto);
-                return Ok(updated);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al actualizar módulo");
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Módulo no encontrado al actualizar con ID: {ModuleId}", ModuleDto.Id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al actualizar módulo");
-                return StatusCode(500, new { message = ex.Message });
-            }
+            if (id != dto.Id)
+                return BadRequest(new { message = "El ID de la URL no coincide con el objeto enviado" });
+
+            var updated = await _moduleBusiness.UpdateModuleAsync(dto);
+            return Ok(updated);
         }
 
-        /// <summary>
-        /// Elimina un módulo por ID
-        /// </summary>
         [HttpDelete("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> DeleteModule(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            try
-            {
-                await _ModuleBusiness.DeleteModuleAsync(id);
-                return NoContent();
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "ID inválido para eliminar módulo");
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Módulo no encontrado para eliminar con ID: {ModuleId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al eliminar módulo con ID: {ModuleId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            await _moduleBusiness.DeleteModuleAsync(id);
+            return NoContent();
         }
 
-        ///<summary>
-        /// <summary>
-        /// Desactiva un module (eliminación lógica)
-        /// </summary>
-        /// <param name="id">ID del module a desactivar</param>
-        /// <returns>NoContent si fue exitoso</returns>
         [HttpDelete("{id}/disable")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> DisableModule(int id)
+        public async Task<IActionResult> Disable(int id)
         {
-            try
-            {
-                await _ModuleBusiness.DisableFormAsync(id);
-                return NoContent();
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "module no encontrado para desactivación con ID: {FormId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al desactivar module con ID: {FormId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            await _moduleBusiness.DisableModuleAsync(id);
+            return NoContent();
         }
 
-
-        /// <summary>
-        /// Actualiza parcialmente un permiso existente.
-        /// </summary>
-        /// <param name="id">ID del permiso a actualizar.</param>
-        /// <param name="moduleDto">Datos parciales del permiso.</param>
-        /// <returns>Resultado de la operación.</returns>
         [HttpPatch("{id}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> PartialUpdateForm(int id, [FromBody] ModuleDto moduleDto)
+        public async Task<IActionResult> PartialUpdate(int id, [FromBody] ModuleDto dto)
         {
-            if (id != moduleDto.Id)
-            {
-                return BadRequest(new { message = "El ID del permiso no coincide con el del objeto." });
-            }
+            if (id != dto.Id)
+                return BadRequest(new { message = "El ID de la URL no coincide con el objeto enviado" });
 
-            try
-            {
-                await _ModuleBusiness.PartialUpdateFormAsync(moduleDto);
-                return NoContent(); // 204: Actualizado correctamente sin contenido de respuesta
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al actualizar parcialmente el permiso con ID: {FormId}", id);
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (EntityNotFoundException ex)
-            {
-                _logger.LogInformation(ex, "Permiso no encontrado para actualización parcial. ID: {FormId}", id);
-                return NotFound(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error de servicio externo al actualizar permiso parcialmente con ID: {FormId}", id);
-                return StatusCode(500, new { message = ex.Message });
-            }
+            await _moduleBusiness.PartialUpdateModuleAsync(dto);
+            return NoContent();
         }
     }
 }

@@ -18,12 +18,10 @@ builder.Services.AddEndpointsApiExplorer();
 // === Swagger con soporte de JWT ===
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Mi API", Version = "v1" });
-
-    // Configuración para que Swagger acepte JWT
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Security API", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = "Introduce el token JWT con el formato: Bearer {tu_token}",
+        Description = "JWT Authorization header using the Bearer scheme",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -41,7 +39,7 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
@@ -56,74 +54,87 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
-    options.RequireHttpsMetadata = false; // true en producción con HTTPS
+    options.RequireHttpsMetadata = false;
     options.SaveToken = true;
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
     };
 });
 
-// === Registrar tus servicios ===
-// Rol
-builder.Services.AddScoped<RolData>();
+// === Configuración de Factory de DbContext para múltiples bases de datos ===
+builder.Services.AddDbContextFactory<SqlServerDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlServerConnection")));
+
+builder.Services.AddDbContextFactory<PostgresDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresDb")));
+
+builder.Services.AddDbContextFactory<MySqlDbContext>(options =>
+    options.UseMySql(builder.Configuration.GetConnectionString("MySqlConnection"),
+        ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("MySqlConnection"))));
+
+// === Registrar servicios de Business ===
+builder.Services.AddScoped<AuthBusiness>();
+builder.Services.AddScoped<FormBusiness>();
+builder.Services.AddScoped<FormModuleBusiness>();
+builder.Services.AddScoped<ModuleBusiness>();
+builder.Services.AddScoped<PermissionBusiness>();
+builder.Services.AddScoped<PersonBusiness>();
 builder.Services.AddScoped<RolBusiness>();
-
-// RolUser
-builder.Services.AddScoped<RolUserData>();
+builder.Services.AddScoped<RolFormPermissionBusiness>();
 builder.Services.AddScoped<RolUserBusiness>();
-
-// User
-builder.Services.AddScoped<UserData>();
 builder.Services.AddScoped<UserBusiness>();
 
-// === Auth (nuevo, separado de User) ===
-builder.Services.AddScoped<AuthData>();
-builder.Services.AddScoped<AuthBusiness>();
+// === Registro de repositorios genéricos ===
+// SQL Server
+builder.Services.AddScoped<FormData<SqlServerDbContext>>();
+builder.Services.AddScoped<FormModuleData<SqlServerDbContext>>();
+builder.Services.AddScoped<ModuleData<SqlServerDbContext>>();
+builder.Services.AddScoped<PermissionData<SqlServerDbContext>>();
+builder.Services.AddScoped<PersonData<SqlServerDbContext>>();
+builder.Services.AddScoped<RolData<SqlServerDbContext>>();
+builder.Services.AddScoped<RolFormPermissionData<SqlServerDbContext>>();
+builder.Services.AddScoped<RolUserData<SqlServerDbContext>>();
+builder.Services.AddScoped<UserData<SqlServerDbContext>>();
+builder.Services.AddScoped<AuthData<SqlServerDbContext>>();
 
-// Form
-builder.Services.AddScoped<FormData>();
-builder.Services.AddScoped<FormBusiness>();
+// PostgreSQL
+builder.Services.AddScoped<FormData<PostgresDbContext>>();
+builder.Services.AddScoped<FormModuleData<PostgresDbContext>>();
+builder.Services.AddScoped<ModuleData<PostgresDbContext>>();
+builder.Services.AddScoped<PermissionData<PostgresDbContext>>();
+builder.Services.AddScoped<PersonData<PostgresDbContext>>();
+builder.Services.AddScoped<RolData<PostgresDbContext>>();
+builder.Services.AddScoped<RolFormPermissionData<PostgresDbContext>>();
+builder.Services.AddScoped<RolUserData<PostgresDbContext>>();
+builder.Services.AddScoped<UserData<PostgresDbContext>>();
+builder.Services.AddScoped<AuthData<PostgresDbContext>>();
 
-// FormModule
-builder.Services.AddScoped<FormModuleData>();
-builder.Services.AddScoped<FormModuleBusiness>();
-
-// Module
-builder.Services.AddScoped<ModuleData>();
-builder.Services.AddScoped<ModuleBusiness>();
-
-// Permission
-builder.Services.AddScoped<PermissionData>();
-builder.Services.AddScoped<PermissionBusiness>();
-
-// Person
-builder.Services.AddScoped<PersonData>();
-builder.Services.AddScoped<PersonBusiness>();
-
-// RolFormPermission
-builder.Services.AddScoped<RolFormPermissionData>();
-builder.Services.AddScoped<RolFormPermissionBusiness>();
-
-// Agregar DbContext
-builder.Services.AddDbContext<ApplicationDbContext>(opciones =>
-    opciones.UseSqlServer("name=DefaultConnection"));
+// MySQL
+builder.Services.AddScoped<FormData<MySqlDbContext>>();
+builder.Services.AddScoped<FormModuleData<MySqlDbContext>>();
+builder.Services.AddScoped<ModuleData<MySqlDbContext>>();
+builder.Services.AddScoped<PermissionData<MySqlDbContext>>();
+builder.Services.AddScoped<PersonData<MySqlDbContext>>();
+builder.Services.AddScoped<RolData<MySqlDbContext>>();
+builder.Services.AddScoped<RolFormPermissionData<MySqlDbContext>>();
+builder.Services.AddScoped<RolUserData<MySqlDbContext>>();
+builder.Services.AddScoped<UserData<MySqlDbContext>>();
+builder.Services.AddScoped<AuthData<MySqlDbContext>>();
 
 // Configurar política de CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("PermitirFrontend", policy =>
-    {
-        policy.WithOrigins("*") // cambia si tu frontend está en otro host
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
 });
 
 var app = builder.Build();
@@ -132,14 +143,11 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Mi API v1");
-    c.RoutePrefix = string.Empty; // Muestra Swagger en la raíz "/"
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Security API V1");
 });
 
-app.UseHttpsRedirection();
-
 // Usar CORS antes de Authorization
-app.UseCors("PermitirFrontend");
+app.UseCors("AllowAll");
 
 // Habilitar autenticación y autorización
 app.UseAuthentication();

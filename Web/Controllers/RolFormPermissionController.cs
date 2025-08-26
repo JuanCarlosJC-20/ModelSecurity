@@ -1,160 +1,144 @@
 using Business;
-using Data;
 using Entity.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Authorization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Utilities.Exceptions;
 
-namespace Web.ContUserlers
+namespace Web.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     [Produces("application/json")]
-    [Authorize] // Ahora TODOS los endpoints de este controlador requieren token JWT
     public class RolFormPermissionController : ControllerBase
     {
-        private readonly RolFormPermissionBusiness _RolFormPermissionBusiness;
+        private readonly RolFormPermissionBusiness _business;
         private readonly ILogger<RolFormPermissionController> _logger;
 
-        public RolFormPermissionController(RolFormPermissionBusiness RolFormPermissionBusiness, ILogger<RolFormPermissionController> logger)
+        public RolFormPermissionController(
+            RolFormPermissionBusiness business, 
+            ILogger<RolFormPermissionController> logger)
         {
-            _RolFormPermissionBusiness = RolFormPermissionBusiness;
+            _business = business;
             _logger = logger;
         }
 
+        /// <summary>
+        /// Obtener todos los RolFormPermissions
+        /// </summary>
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<RolFormPermissionDto>), 200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> GetAllRolFormPermission()
+        public async Task<IActionResult> GetAll()
         {
             try
             {
-                var RolFormPermission = await _RolFormPermissionBusiness.GetAllRolFormPermissionsAsync();
-                return Ok(RolFormPermission);
+                var result = await _business.GetAllRolFormPermissionsAsync();
+                return Ok(result);
             }
             catch (ExternalServiceException ex)
             {
-                _logger.LogError(ex, "Error al obtener permisos");
+                _logger.LogError(ex, "Error al obtener RolFormPermissions");
                 return StatusCode(500, new { message = ex.Message });
             }
         }
 
-        [HttpGet("{id}")]
+        /// <summary>
+        /// Obtener un RolFormPermission por ID
+        /// </summary>
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(RolFormPermissionDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> GetRolFormPermissionById(int id)
+        public async Task<IActionResult> GetById(int id)
         {
             try
             {
-                var RolFormPermission = await _RolFormPermissionBusiness.GetRolFormPermissionByIdAsync(id);
-                return Ok(RolFormPermission);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida para el permiso con ID: {RolFormPermissionId}", id);
-                return BadRequest(new { message = ex.Message });
+                var result = await _business.GetRolFormPermissionByIdAsync(id);
+                return Ok(result);
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Permiso no encontrado con ID: {RolFormPermissionId}", id);
+                _logger.LogInformation(ex, "RolFormPermission no encontrado con ID: {Id}", id);
                 return NotFound(new { message = ex.Message });
             }
-            catch (ExternalServiceException ex)
+            catch (ValidationException ex)
             {
-                _logger.LogError(ex, "Error al obtener permiso con ID: {RolFormPermissionId}", id);
-                return StatusCode(500, new { message = ex.Message });
+                _logger.LogWarning(ex, "Validación fallida para RolFormPermission con ID: {Id}", id);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
+        /// <summary>
+        /// Crear un nuevo RolFormPermission
+        /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(RolFormPermissionDto), 201)]
         [ProducesResponseType(400)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> CreateRolFormPermission([FromBody] RolFormPermissionDto RolFormPermissionDto)
+        public async Task<IActionResult> Create([FromBody] RolFormPermissionDto dto)
         {
             try
             {
-                var createdRolFormPermission = await _RolFormPermissionBusiness.CreateRolFormPermissionAsync(RolFormPermissionDto);
-                return CreatedAtAction(nameof(GetRolFormPermissionById), new { id = createdRolFormPermission.Id }, createdRolFormPermission);
+                var created = await _business.CreateRolFormPermissionAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
             }
             catch (ValidationException ex)
             {
-                _logger.LogWarning(ex, "Validación fallida al crear permiso");
+                _logger.LogWarning(ex, "Validación fallida al crear RolFormPermission");
                 return BadRequest(new { message = ex.Message });
-            }
-            catch (ExternalServiceException ex)
-            {
-                _logger.LogError(ex, "Error al crear permiso");
-                return StatusCode(500, new { message = ex.Message });
             }
         }
 
         /// <summary>
-        /// Actualiza un permiso específico por su ID
+        /// Actualizar un RolFormPermission
         /// </summary>
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(typeof(RolFormPermissionDto), 200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> UpdateRolFormPermission(int id, [FromBody] RolFormPermissionDto rolFormPermissionDto)
+        public async Task<IActionResult> Update(int id, [FromBody] RolFormPermissionDto dto)
         {
             try
             {
-                var updatedRolFormPermission = await _RolFormPermissionBusiness.UpdateRolFormPermissionAsync(id, rolFormPermissionDto);
-                return Ok(updatedRolFormPermission);
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al actualizar permiso con ID: {RolFormPermissionId}", id);
-                return BadRequest(new { message = ex.Message });
+                var updated = await _business.UpdateRolFormPermissionAsync(id, dto);
+                return Ok(updated);
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Permiso no encontrado con ID: {RolFormPermissionId}", id);
+                _logger.LogInformation(ex, "RolFormPermission no encontrado con ID: {Id}", id);
                 return NotFound(new { message = ex.Message });
             }
-            catch (ExternalServiceException ex)
+            catch (ValidationException ex)
             {
-                _logger.LogError(ex, "Error al actualizar permiso con ID: {RolFormPermissionId}", id);
-                return StatusCode(500, new { message = ex.Message });
+                _logger.LogWarning(ex, "Validación fallida al actualizar RolFormPermission con ID: {Id}", id);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
         /// <summary>
-        /// Elimina un permiso por su ID
+        /// Eliminar un RolFormPermission
         /// </summary>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        [ProducesResponseType(500)]
-        public async Task<IActionResult> DeleteRolFormPermission(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
-                await _RolFormPermissionBusiness.DeleteRolFormPermissionAsync(id);
+                await _business.DeleteRolFormPermissionAsync(id);
                 return NoContent();
-            }
-            catch (ValidationException ex)
-            {
-                _logger.LogWarning(ex, "Validación fallida al eliminar permiso con ID: {RolFormPermissionId}", id);
-                return BadRequest(new { message = ex.Message });
             }
             catch (EntityNotFoundException ex)
             {
-                _logger.LogInformation(ex, "Permiso no encontrado con ID: {RolFormPermissionId}", id);
+                _logger.LogInformation(ex, "RolFormPermission no encontrado con ID: {Id}", id);
                 return NotFound(new { message = ex.Message });
             }
-            catch (ExternalServiceException ex)
+            catch (ValidationException ex)
             {
-                _logger.LogError(ex, "Error al eliminar permiso con ID: {RolFormPermissionId}", id);
-                return StatusCode(500, new { message = ex.Message });
+                _logger.LogWarning(ex, "Validación fallida al eliminar RolFormPermission con ID: {Id}", id);
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

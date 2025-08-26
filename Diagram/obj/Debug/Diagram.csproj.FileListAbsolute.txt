@@ -47,3 +47,10 @@ C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\obj\Debug\Diagram.csp
 C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.CoreCompileInputs.cache
 C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\obj\Debug\Diagram.dll
 C:\xampp\htdocs\ModelSecurityProyect\ModelSecurity\Diagram\obj\Debug\Diagram.pdb
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\bin\Debug\Diagram.dll.config
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\bin\Debug\Diagram.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\bin\Debug\Diagram.pdb
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.AssemblyReference.cache
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\obj\Debug\Diagram.csproj.CoreCompileInputs.cache
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\obj\Debug\Diagram.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Diagram\obj\Debug\Diagram.pdb
