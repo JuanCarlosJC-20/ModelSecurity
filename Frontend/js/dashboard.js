@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (!authToken) {
         console.log('No auth token found, redirecting to login');
-        window.location.replace('./login.html');
+        window.location.replace('./index.html');
         return;
     }
 
@@ -439,7 +439,7 @@ async function authenticatedFetch(url, options = {}) {
             console.log('Token expired, redirecting to login');
             sessionStorage.removeItem('authToken');
             sessionStorage.removeItem('userData');
-            window.location.replace('./login.html');
+            window.location.replace('./index.html');
             return null;
         }
 
@@ -456,13 +456,88 @@ function logout() {
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('userData');
     dashboardInitialized = false;
-    window.location.replace('./login.html');
+    window.location.replace('./index.html');
 }
 
-// Funciones para modales (placeholder)
-function showModal(modalId) {
+// Funciones para modales
+function showModal(modalId, data = null) {
     console.log('Opening modal:', modalId);
-    showMessage(`Modal ${modalId} no implementado aún`, 'info');
+    const modal = document.getElementById(modalId);
+    if (!modal) {
+        showToast('Modal no encontrado', 'error');
+        return;
+    }
+    
+    // Resetear formulario
+    const form = modal.querySelector('form');
+    if (form) {
+        form.reset();
+        
+        // Si hay datos, llenar el formulario (modo edición)
+        if (data) {
+            Object.keys(data).forEach(key => {
+                const input = form.querySelector(`[name="${key}"]`);
+                if (input) {
+                    if (input.type === 'checkbox') {
+                        input.checked = data[key];
+                    } else {
+                        input.value = data[key] || '';
+                    }
+                }
+            });
+            
+            // Actualizar título del modal
+            const title = modal.querySelector('h3');
+            if (title) {
+                if (modalId === 'userModal') title.textContent = 'Editar Usuario';
+                else if (modalId === 'personModal') title.textContent = 'Editar Persona';
+                else if (modalId === 'roleModal') title.textContent = 'Editar Rol';
+            }
+            
+            // Para usuarios, hacer la contraseña opcional en modo edición
+            if (modalId === 'userModal') {
+                const passwordField = form.querySelector('#userPassword');
+                if (passwordField) {
+                    passwordField.required = false;
+                    passwordField.placeholder = 'Dejar en blanco para mantener la actual';
+                }
+            }
+        } else {
+            // Modo creación - resetear título
+            const title = modal.querySelector('h3');
+            if (title) {
+                if (modalId === 'userModal') title.textContent = 'Nuevo Usuario';
+                else if (modalId === 'personModal') title.textContent = 'Nueva Persona';
+                else if (modalId === 'roleModal') title.textContent = 'Nuevo Rol';
+            }
+            
+            // Para usuarios, hacer la contraseña obligatoria en modo creación
+            if (modalId === 'userModal') {
+                const passwordField = form.querySelector('#userPassword');
+                if (passwordField) {
+                    passwordField.required = true;
+                    passwordField.placeholder = '';
+                }
+            }
+        }
+    }
+    
+    modal.classList.add('active');
+    document.body.classList.add('modal-open');
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.classList.remove('modal-open');
+        
+        // Resetear formulario
+        const form = modal.querySelector('form');
+        if (form) {
+            form.reset();
+        }
+    }
 }
 
 // Funciones CRUD para Usuarios
@@ -471,7 +546,9 @@ async function editUser(userId) {
         const response = await authenticatedFetch(`${API_BASE_URL}/User/${userId}`);
         if (response && response.ok) {
             const user = await response.json();
-            showToast(`Editando usuario: ${user.userName}`, 'info');
+            showModal('userModal', user);
+        } else {
+            showToast('Error al obtener datos del usuario', 'error');
         }
     } catch (error) {
         console.error('Error fetching user:', error);
@@ -506,7 +583,9 @@ async function editPerson(personId) {
         const response = await authenticatedFetch(`${API_BASE_URL}/Person/${personId}`);
         if (response && response.ok) {
             const person = await response.json();
-            showToast(`Editando persona: ${person.firstName} ${person.lastName}`, 'info');
+            showModal('personModal', person);
+        } else {
+            showToast('Error al obtener datos de la persona', 'error');
         }
     } catch (error) {
         console.error('Error fetching person:', error);
@@ -541,7 +620,9 @@ async function editRole(roleId) {
         const response = await authenticatedFetch(`${API_BASE_URL}/Rol/${roleId}`);
         if (response && response.ok) {
             const role = await response.json();
-            showToast(`Editando rol: ${role.name}`, 'info');
+            showModal('roleModal', role);
+        } else {
+            showToast('Error al obtener datos del rol', 'error');
         }
     } catch (error) {
         console.error('Error fetching role:', error);
@@ -751,10 +832,170 @@ async function deleteModule(moduleId) {
     });
 }
 
+// Funciones para manejo de formularios
+document.addEventListener('DOMContentLoaded', function() {
+    // Form handlers
+    const userForm = document.getElementById('userForm');
+    const personForm = document.getElementById('personForm');
+    const roleForm = document.getElementById('roleForm');
+    
+    if (userForm) {
+        userForm.addEventListener('submit', handleUserSubmit);
+    }
+    
+    if (personForm) {
+        personForm.addEventListener('submit', handlePersonSubmit);
+    }
+    
+    if (roleForm) {
+        roleForm.addEventListener('submit', handleRoleSubmit);
+    }
+});
+
+async function handleUserSubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const userData = {
+        userName: formData.get('userName'),
+        code: formData.get('code'),
+        active: formData.get('active') === 'on'
+    };
+    
+    const userId = formData.get('id');
+    const isEditing = userId && userId !== '';
+    
+    // Solo incluir contraseña si está presente
+    const password = formData.get('password');
+    if (password && password.trim() !== '') {
+        userData.password = password;
+    } else if (!isEditing) {
+        showToast('La contraseña es requerida para nuevos usuarios', 'error');
+        return;
+    }
+    
+    try {
+        let response;
+        if (isEditing) {
+            userData.id = parseInt(userId);
+            response = await authenticatedFetch(`${API_BASE_URL}/User/${userId}`, {
+                method: 'PUT',
+                body: JSON.stringify(userData)
+            });
+        } else {
+            response = await authenticatedFetch(`${API_BASE_URL}/User`, {
+                method: 'POST',
+                body: JSON.stringify(userData)
+            });
+        }
+        
+        if (response && response.ok) {
+            showToast(`Usuario ${isEditing ? 'actualizado' : 'creado'} correctamente`, 'success');
+            closeModal('userModal');
+            await loadUsers();
+            await loadStats();
+        } else {
+            const errorData = await response.json().catch(() => ({}));
+            showToast(errorData.message || `Error al ${isEditing ? 'actualizar' : 'crear'} usuario`, 'error');
+        }
+    } catch (error) {
+        console.error('Error submitting user:', error);
+        showToast(`Error al ${isEditing ? 'actualizar' : 'crear'} usuario`, 'error');
+    }
+}
+
+async function handlePersonSubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const personData = {
+        firstName: formData.get('firstName'),
+        lastName: formData.get('lastName'),
+        email: formData.get('email'),
+        phone: formData.get('phone')
+    };
+    
+    const personId = formData.get('id');
+    const isEditing = personId && personId !== '';
+    
+    try {
+        let response;
+        if (isEditing) {
+            personData.id = parseInt(personId);
+            response = await authenticatedFetch(`${API_BASE_URL}/Person/${personId}`, {
+                method: 'PUT',
+                body: JSON.stringify(personData)
+            });
+        } else {
+            response = await authenticatedFetch(`${API_BASE_URL}/Person`, {
+                method: 'POST',
+                body: JSON.stringify(personData)
+            });
+        }
+        
+        if (response && response.ok) {
+            showToast(`Persona ${isEditing ? 'actualizada' : 'creada'} correctamente`, 'success');
+            closeModal('personModal');
+            await loadPersons();
+            await loadStats();
+        } else {
+            const errorData = await response.json().catch(() => ({}));
+            showToast(errorData.message || `Error al ${isEditing ? 'actualizar' : 'crear'} persona`, 'error');
+        }
+    } catch (error) {
+        console.error('Error submitting person:', error);
+        showToast(`Error al ${isEditing ? 'actualizar' : 'crear'} persona`, 'error');
+    }
+}
+
+async function handleRoleSubmit(event) {
+    event.preventDefault();
+    
+    const formData = new FormData(event.target);
+    const roleData = {
+        name: formData.get('name'),
+        description: formData.get('description'),
+        active: formData.get('active') === 'on'
+    };
+    
+    const roleId = formData.get('id');
+    const isEditing = roleId && roleId !== '';
+    
+    try {
+        let response;
+        if (isEditing) {
+            roleData.id = parseInt(roleId);
+            response = await authenticatedFetch(`${API_BASE_URL}/Rol/${roleId}`, {
+                method: 'PUT',
+                body: JSON.stringify(roleData)
+            });
+        } else {
+            response = await authenticatedFetch(`${API_BASE_URL}/Rol`, {
+                method: 'POST',
+                body: JSON.stringify(roleData)
+            });
+        }
+        
+        if (response && response.ok) {
+            showToast(`Rol ${isEditing ? 'actualizado' : 'creado'} correctamente`, 'success');
+            closeModal('roleModal');
+            await loadRoles();
+            await loadStats();
+        } else {
+            const errorData = await response.json().catch(() => ({}));
+            showToast(errorData.message || `Error al ${isEditing ? 'actualizar' : 'crear'} rol`, 'error');
+        }
+    } catch (error) {
+        console.error('Error submitting role:', error);
+        showToast(`Error al ${isEditing ? 'actualizar' : 'crear'} rol`, 'error');
+    }
+}
+
 // Exportar funciones para uso global
 window.logout = logout;
 window.authenticatedFetch = authenticatedFetch;
 window.showModal = showModal;
+window.closeModal = closeModal;
 window.editUser = editUser;
 window.deleteUser = deleteUser;
 window.editPerson = editPerson;

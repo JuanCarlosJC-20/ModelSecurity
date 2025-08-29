@@ -868,3 +868,78 @@ body {
         flex-direction: column;
     }
 }
+
+/* Additional Modal Form Styles */
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.checkbox-label {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    cursor: pointer;
+    font-weight: normal !important;
+    margin-bottom: 0 !important;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+}
+
+.checkmark {
+    display: none;
+}
+
+.form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Responsive Modal Actions */
+@media (max-width: 768px) {
+    .modal-actions {
+        flex-direction: column-reverse;
+        gap: 0.75rem;
+    }
+    
+    .modal-actions button {
+        width: 100%;
+    }
+}
+
+/* Body class to prevent scrolling when modal is open */
+body.modal-open {
+    overflow: hidden;
+}

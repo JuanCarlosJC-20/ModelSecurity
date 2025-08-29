@@ -287,7 +287,162 @@
     </div>
 
     <!-- Modals Container -->
-    <div id="modalsContainer"></div>
+    <div id="modalsContainer">
+        <!-- User Modal -->
+        <div id="userModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="userModalTitle">Nuevo Usuario</h3>
+                    <button type="button" class="modal-close" onclick="closeModal('userModal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="userForm" class="modal-form">
+                    <input type="hidden" id="userId" name="id">
+                    <div class="form-group">
+                        <label for="userUserName">
+                            <i class="fas fa-user"></i>
+                            Nombre de Usuario *
+                        </label>
+                        <input type="text" id="userUserName" name="userName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userPassword">
+                            <i class="fas fa-lock"></i>
+                            Contraseña *
+                        </label>
+                        <input type="password" id="userPassword" name="password" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('userPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="userCode">
+                            <i class="fas fa-code"></i>
+                            Código
+                        </label>
+                        <input type="text" id="userCode" name="code">
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label for="userActive" class="checkbox-label">
+                            <input type="checkbox" id="userActive" name="active" checked>
+                            <span class="checkmark"></span>
+                            Usuario Activo
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('userModal')">
+                            <i class="fas fa-times"></i>
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i>
+                            Guardar Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Person Modal -->
+        <div id="personModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="personModalTitle">Nueva Persona</h3>
+                    <button type="button" class="modal-close" onclick="closeModal('personModal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="personForm" class="modal-form">
+                    <input type="hidden" id="personId" name="id">
+                    <div class="form-group">
+                        <label for="personFirstName">
+                            <i class="fas fa-user"></i>
+                            Nombre *
+                        </label>
+                        <input type="text" id="personFirstName" name="firstName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personLastName">
+                            <i class="fas fa-user"></i>
+                            Apellido *
+                        </label>
+                        <input type="text" id="personLastName" name="lastName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personEmail">
+                            <i class="fas fa-envelope"></i>
+                            Email *
+                        </label>
+                        <input type="email" id="personEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="personPhone">
+                            <i class="fas fa-phone"></i>
+                            Teléfono
+                        </label>
+                        <input type="tel" id="personPhone" name="phone">
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('personModal')">
+                            <i class="fas fa-times"></i>
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i>
+                            Guardar Persona
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Role Modal -->
+        <div id="roleModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="roleModalTitle">Nuevo Rol</h3>
+                    <button type="button" class="modal-close" onclick="closeModal('roleModal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form id="roleForm" class="modal-form">
+                    <input type="hidden" id="roleId" name="id">
+                    <div class="form-group">
+                        <label for="roleName">
+                            <i class="fas fa-user-tag"></i>
+                            Nombre del Rol *
+                        </label>
+                        <input type="text" id="roleName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="roleDescription">
+                            <i class="fas fa-info-circle"></i>
+                            Descripción
+                        </label>
+                        <textarea id="roleDescription" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <label for="roleActive" class="checkbox-label">
+                            <input type="checkbox" id="roleActive" name="active" checked>
+                            <span class="checkmark"></span>
+                            Rol Activo
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-secondary" onclick="closeModal('roleModal')">
+                            <i class="fas fa-times"></i>
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i>
+                            Guardar Rol
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <!-- Loading Spinner -->
     <div id="loadingSpinner" class="loading-spinner">

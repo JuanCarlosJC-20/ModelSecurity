@@ -50,7 +50,7 @@ async function handleRegister(event) {
         showToast('Registro exitoso. Ahora puedes iniciar sesión', 'success');
         isRedirecting = true;
         setTimeout(() => {
-            window.location.replace('./login.html');
+            window.location.replace('./index.html');
         }, 2000);
     } catch (error) {
         console.error('Error registro:', error);
