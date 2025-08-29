@@ -1,5 +1,5 @@
 // Configuración de la API
-const API_BASE_URL = 'http://localhost:5081/api';
+const API_BASE_URL = 'http://localhost:5000/api';
 let isRedirecting = false;
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -24,32 +24,21 @@ async function handleRegister(event) {
     const password = formData.get('password');
     const confirmPassword = formData.get('confirmPassword');
     if (password !== confirmPassword) {
-        alert('Las contraseñas no coinciden ❌');
+        showToast('Las contraseñas no coinciden', 'error');
         return;
     }
 
-    const userData = {
-        username: formData.get('username'),
-        email: formData.get('email'),
-        password,
-        active: true
-    };
-
-    const personData = {
+    // Formato correcto según la API RegisterDto
+    const registerData = {
         firstName: formData.get('firstName'),
         lastName: formData.get('lastName'),
         email: formData.get('email'),
-        phone: formData.get('phone') || null,
-        address: formData.get('address') || null,
-        birthDate: formData.get('birthDate') || null,
-        gender: formData.get('gender') || null,
-        active: true
+        userName: formData.get('username'),
+        password: password
     };
 
-    const registerData = { user: userData, person: personData };
-
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/register`, {
+        const response = await fetch(`${API_BASE_URL}/Auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(registerData)
@@ -58,11 +47,13 @@ async function handleRegister(event) {
         if (!response.ok) throw new Error(`Error HTTP: ${response.status}`);
 
         await response.json();
-        alert('Registro exitoso 🎉 Ahora puedes iniciar sesión');
+        showToast('Registro exitoso. Ahora puedes iniciar sesión', 'success');
         isRedirecting = true;
-        window.location.replace('./login.html');
+        setTimeout(() => {
+            window.location.replace('./login.html');
+        }, 2000);
     } catch (error) {
         console.error('Error registro:', error);
-        alert('Error en el registro ❌');
+        showToast('Error en el registro. Intenta nuevamente', 'error');
     }
 }

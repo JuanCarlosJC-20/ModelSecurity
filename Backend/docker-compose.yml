@@ -1,4 +1,18 @@
 services:
+  # ---------------- FRONTEND ----------------
+  frontend:
+    build: 
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - modelsecurity-api
+    restart: unless-stopped
+    networks:
+      - modelsecurity-network
+
   # ---------------- API ----------------
   modelsecurity-api:
     build: 

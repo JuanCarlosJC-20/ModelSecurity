@@ -1,5 +1,5 @@
 // Configuración de la API
-const API_BASE_URL = 'http://localhost:5081/api';
+const API_BASE_URL = 'http://localhost:5000/api';
 let authToken = null;
 let isRedirecting = false;
 
@@ -30,12 +30,12 @@ async function handleLogin(event) {
 
     const formData = new FormData(event.target);
     const loginData = {
-        username: formData.get('username'),
+        userName: formData.get('username'),
         password: formData.get('password')
     };
 
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        const response = await fetch(`${API_BASE_URL}/Auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(loginData)
@@ -51,11 +51,13 @@ async function handleLogin(event) {
         sessionStorage.setItem('authToken', authToken);
         sessionStorage.setItem('userData', JSON.stringify(result.user || result));
 
-        alert('Inicio de sesión exitoso ✅');
+        showToast('Inicio de sesión exitoso', 'success');
         isRedirecting = true;
-        window.location.replace('./dashboard.html');
+        setTimeout(() => {
+            window.location.replace('./dashboard.html');
+        }, 1000);
     } catch (error) {
         console.error('Error login:', error);
-        alert('Credenciales inválidas ❌');
+        showToast('Credenciales inválidas. Intenta nuevamente', 'error');
     }
 }

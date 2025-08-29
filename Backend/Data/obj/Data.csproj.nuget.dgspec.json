@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Data\\Data.csproj": {}
+    "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Data\\Data.csproj": {}
   },
   "projects": {
-    "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Data\\Data.csproj": {
+    "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Data\\Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Data\\Data.csproj",
+        "projectUniqueName": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Data\\Data.csproj",
         "projectName": "Data",
-        "projectPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Data\\Data.csproj",
+        "projectPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Data\\Data.csproj",
         "packagesPath": "C:\\Users\\sampf\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Data\\obj\\",
+        "outputPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Data\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -32,8 +32,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Entity\\Entity.csproj": {
-                "projectPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Entity\\Entity.csproj"
+              "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Entity\\Entity.csproj": {
+                "projectPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Entity\\Entity.csproj"
               }
             }
           }
@@ -73,14 +73,14 @@
         }
       }
     },
-    "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Entity\\Entity.csproj": {
+    "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Entity\\Entity.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Entity\\Entity.csproj",
+        "projectUniqueName": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Entity\\Entity.csproj",
         "projectName": "Entity",
-        "projectPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Entity\\Entity.csproj",
+        "projectPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Entity\\Entity.csproj",
         "packagesPath": "C:\\Users\\sampf\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Entity\\obj\\",
+        "outputPath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\Entity\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

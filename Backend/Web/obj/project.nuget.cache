@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+gBb1h+TzJ4=",
+  "dgSpecHash": "8qIdByp752Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Web\\Web.csproj",
+  "projectFilePath": "C:\\Users\\sampf\\Desktop\\api_Despliegue\\ModelSecurity\\Backend\\web\\Web.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\sampf\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\sampf\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
