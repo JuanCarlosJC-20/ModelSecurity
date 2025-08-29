@@ -3,76 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro - Sistema de Gestión Natural</title>
-    <link rel="stylesheet" href="./styles/register.css">
-    
+    <title>Registrarse</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="register-container">
-        <div class="register-header">
-            <div class="register-logo">🦁</div>
-            <h1 class="register-title">Únete a nuestro ecosistema</h1>
-            <p class="register-subtitle">Crea una cuenta para acceder al sistema</p>
-        </div>
-        <div class="register-form">
-            <form id="registration">
-                <div class="form-columns">
-                    <div class="form-group required">
-                        <label for="firstname">Nombre</label>
-                        <input type="text" id="firstname" name="firstname" placeholder="Tu nombre">
-                        <span class="input-icon">👤</span>
-                        <div class="validation-feedback" id="firstname-feedback"></div>
-                    </div>
-                    <div class="form-group required">
-                        <label for="lastname">Apellido</label>
-                        <input type="text" id="lastname" name="lastname" placeholder="Tu apellido">
-                        <span class="input-icon">👤</span>
-                        <div class="validation-feedback" id="lastname-feedback"></div>
-                    </div>
-                </div>
-
-                <div class="form-group required">
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com">
-                    <span class="input-icon">✉️</span>
-                    <div class="validation-feedback" id="email-feedback"></div>
-                </div>
-
-                <div class="form-columns">
-                    <div class="form-group required">
-                        <label for="password">Contraseña</label>
-                        <input type="password" id="password" name="password" placeholder="Crea una contraseña segura">
-                        <span class="input-icon toggle-password">🔒</span>
-                        <div class="password-strength">
-                            <div class="password-strength-bar" id="password-strength-bar"></div>
-                        </div>
-                        <div class="password-tips" id="password-tips">
-                            La contraseña debe contener al menos 8 caracteres, una letra mayúscula, una minúscula, un número y un caracter especial.
-                        </div>
-                    </div>
-                    <div class="form-group required">
-                        <label for="confirm-password">Confirmar contraseña</label>
-                        <input type="password" id="confirm-password" name="confirm-password" placeholder="Repite tu contraseña">
-                        <span class="input-icon toggle-password">🔒</span>
-                        <div class="validation-feedback" id="password-match-feedback"></div>
-                    </div>
-                </div>
-
-                
-
-                <div class="terms-group">
-                    <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">He leído y acepto los <a href="#">Términos y Condiciones</a> y la <a href="#">Política de Privacidad</a> del sistema.</label>
-                </div>
-
-                <button type="submit"  class="register-button">Crear cuenta</button>
-            </form>
-            <div class="login-link">
-                <p>¿Ya tienes una cuenta? <a href="login.html">Inicia sesión</a></p>
+    <div class="container">
+        <div class="form-container">
+            <div class="form-header">
+                <i class="fas fa-user-plus"></i>
+                <h2>Crear Cuenta</h2>
+                <p>Completa los datos para registrarte</p>
             </div>
+
+            <form id="registerForm" class="auth-form">
+                <!-- Datos de Usuario -->
+                <div class="form-section">
+                    <h3><i class="fas fa-user-cog"></i> Datos de Usuario</h3>
+                    
+                    <div class="form-group">
+                        <label for="username">
+                            <i class="fas fa-user"></i>
+                            Nombre de Usuario *
+                        </label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            Email *
+                        </label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i>
+                            Contraseña *
+                        </label>
+                        <input type="password" id="password" name="password" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('password')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                            <i class="fas fa-lock"></i>
+                            Confirmar Contraseña *
+                        </label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Datos Personales -->
+                <div class="form-section">
+                    <h3><i class="fas fa-id-card"></i> Datos Personales</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">
+                                <i class="fas fa-user"></i>
+                                Nombre *
+                            </label>
+                            <input type="text" id="firstName" name="firstName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="lastName">
+                                <i class="fas fa-user"></i>
+                                Apellido *
+                            </label>
+                            <input type="text" id="lastName" name="lastName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">
+                            <i class="fas fa-phone"></i>
+                            Teléfono
+                        </label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Dirección
+                        </label>
+                        <input type="text" id="address" name="address">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="birthDate">
+                                <i class="fas fa-calendar"></i>
+                                Fecha de Nacimiento
+                            </label>
+                            <input type="date" id="birthDate" name="birthDate">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="gender">
+                                <i class="fas fa-venus-mars"></i>
+                                Género
+                            </label>
+                            <select id="gender" name="gender">
+                                <option value="">Seleccionar</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Femenino</option>
+                                <option value="O">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-user-plus"></i>
+                    Crear Cuenta
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p>¿Ya tienes cuenta? <a href="login.html">Inicia sesión aquí</a></p>
+            </div>
+
+            <div id="message" class="message"></div>
         </div>
     </div>
 
-   <script src="./js/register.js"></script>
+    <script src="register.js"></script>
 </body>
 </html>

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sistema de Gestión</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="dashboard">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-cog"></i>
+                <h3>Sistema</h3>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <h4><i class="fas fa-tachometer-alt"></i> Dashboard</h4>
+                    <a href="#" class="nav-link active" data-section="overview">
+                        <i class="fas fa-chart-bar"></i>
+                        Vista General
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <h4><i class="fas fa-users"></i> Gestión</h4>
+                    <a href="#" class="nav-link" data-section="users">
+                        <i class="fas fa-user"></i>
+                        Usuarios
+                    </a>
+                    <a href="#" class="nav-link" data-section="persons">
+                        <i class="fas fa-id-card"></i>
+                        Personas
+                    </a>
+                    <a href="#" class="nav-link" data-section="roles">
+                        <i class="fas fa-user-tag"></i>
+                        Roles
+                    </a>
+                    <a href="#" class="nav-link" data-section="permissions">
+                        <i class="fas fa-key"></i>
+                        Permisos
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <h4><i class="fas fa-file-alt"></i> Formularios</h4>
+                    <a href="#" class="nav-link" data-section="forms">
+                        <i class="fas fa-wpforms"></i>
+                        Formularios
+                    </a>
+                    <a href="#" class="nav-link" data-section="modules">
+                        <i class="fas fa-cubes"></i>
+                        Módulos
+                    </a>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button onclick="logout()" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-content">
+                    <h1 id="pageTitle">Vista General</h1>
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span id="userName">Usuario</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Overview Section -->
+                <section id="overview-section" class="content-section active">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalUsers">0</h3>
+                                <p>Total Usuarios</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-id-card"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalPersons">0</h3>
+                                <p>Total Personas</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-tag"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalRoles">0</h3>
+                                <p>Total Roles</p>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-wpforms"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="totalForms">0</h3>
+                                <p>Total Formularios</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Users Section -->
+                <section id="users-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestión de Usuarios</h2>
+                        <button class="btn-primary" onclick="showModal('userModal')">
+                            <i class="fas fa-plus"></i>
+                            Nuevo Usuario
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="usersTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Usuario</th>
+                                    <th>Email</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Persons Section -->
+                <section id="persons-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestión de Personas</h2>
+                        <button class="btn-primary" onclick="showModal('personModal')">
+                            <i class="fas fa-plus"></i>
+                            Nueva Persona
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="personsTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Apellido</th>
+                                    <th>Email</th>
+                                    <th>Teléfono</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Roles Section -->
+                <section id="roles-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestión de Roles</h2>
+                        <button class="btn-primary" onclick="showModal('roleModal')">
+                            <i class="fas fa-plus"></i>
+                            Nuevo Rol
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="rolesTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Permissions Section -->
+                <section id="permissions-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestión de Permisos</h2>
+                        <button class="btn-primary" onclick="showModal('permissionModal')">
+                            <i class="fas fa-plus"></i>
+                            Nuevo Permiso
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="permissionsTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Forms Section -->
+                <section id="forms-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestión de Formularios</h2>
+                        <button class="btn-primary" onclick="showModal('formModal')">
+                            <i class="fas fa-plus"></i>
+                            Nuevo Formulario
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="formsTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Modules Section -->
+                <section id="modules-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Gestión de Módulos</h2>
+                        <button class="btn-primary" onclick="showModal('moduleModal')">
+                            <i class="fas fa-plus"></i>
+                            Nuevo Módulo
+                        </button>
+                    </div>
+
+                    <div class="table-container">
+                        <table id="modulesTable" class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th>Estado</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals Container -->
+    <div id="modalsContainer"></div>
+
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner"></div>
+        <p>Cargando...</p>
+    </div>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>
