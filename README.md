@@ -1,6 +1,6 @@
 # 🚀 ModelSecurity - Despliegue en Contenedor Ubuntu
 
-Aplicación completa con backend .NET y frontend que se conecta a **MySQL**, **PostgreSQL** y **SQL Server** simultáneamente.
+Aplicación completa con backend .NET y frontend que se conecta a **MySQL** y **PostgreSQL** simultáneamente.
 
 ## ⚡ Despliegue Rápido
 
@@ -39,7 +39,6 @@ Una vez completado el despliegue:
 |---------------|--------|---------|------------|
 | MySQL         | 3306   | root    | 1234567    |
 | PostgreSQL    | 5432   | postgres| 1234567    |
-| SQL Server    | 1433   | sa      | SqlServer2025! |
 
 ## 🔧 Comandos Útiles
 

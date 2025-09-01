@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Script de despliegue para CONTENEDOR Docker (sin systemd)
+# Script de despliegue para CONTENEDOR Docker (MySQL + PostgreSQL)
 # Ejecutar con: chmod +x deploy-container.sh && ./deploy-container.sh
 
 set -e
@@ -66,31 +66,6 @@ if ! command -v psql &> /dev/null; then
 fi
 show_message "PostgreSQL configurado"
 
-# Instalar SQL Server
-show_info "Instalando SQL Server..."
-if ! command -v sqlcmd &> /dev/null; then
-    # Instalar SQL Server para Ubuntu
-    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
-    echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/$(lsb_release -rs)/mssql-server-2022 $(lsb_release -cs) main" > /etc/apt/sources.list.d/mssql-server-2022.list
-    echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/$(lsb_release -rs)/prod $(lsb_release -cs) main" > /etc/apt/sources.list.d/msprod.list
-    
-    apt update
-    DEBIAN_FRONTEND=noninteractive apt install -y mssql-server mssql-tools18 unixodbc-dev
-    
-    # Configurar SQL Server
-    export MSSQL_SA_PASSWORD="SqlServer2025!"
-    export ACCEPT_EULA="Y"
-    export MSSQL_PID="Express"
-    
-    /opt/mssql/bin/mssql-conf -n setup accept-eula
-    systemctl start mssql-server || service mssql-server start
-    
-    # Crear base de datos
-    sleep 10
-    /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "SqlServer2025!" -C -Q "CREATE DATABASE ModelSecurity;" || true
-fi
-show_message "SQL Server configurado"
-
 # Instalar Nginx
 show_info "Instalando Nginx..."
 if ! command -v nginx &> /dev/null; then
@@ -98,9 +73,12 @@ if ! command -v nginx &> /dev/null; then
 fi
 show_message "Nginx instalado"
 
-# Obtener IP
-read -p "📡 Ingresa la IP de tu servidor (o presiona Enter para localhost): " SERVER_IP
-SERVER_IP=${SERVER_IP:-localhost}
+# Obtener IP del contenedor
+CONTAINER_IP=$(hostname -I | awk '{print $1}')
+
+# Obtener IP del servidor
+read -p "📡 Ingresa la IP de tu servidor (o presiona Enter para usar $CONTAINER_IP): " SERVER_IP
+SERVER_IP=${SERVER_IP:-$CONTAINER_IP}
 show_info "Configurando para IP: $SERVER_IP"
 
 # Compilar aplicación .NET
@@ -111,8 +89,7 @@ cat > appsettings.Production.json << EOF
 {
   "ConnectionStrings": {
     "MySqlConnection": "Server=localhost;Port=3306;Database=ModelSecurity;User=root;Password=1234567",
-    "PostgresDb": "Host=localhost;Port=5432;Database=ModelSecurity;Username=postgres;Password=1234567",
-    "SqlServerConnection": "Server=localhost;Database=ModelSecurity;User Id=sa;Password=SqlServer2025!;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true"
+    "PostgresDb": "Host=localhost;Port=5432;Database=ModelSecurity;Username=postgres;Password=1234567"
   },
   "Jwt": {
     "Key": "EsteEsUnSecretoSuperSeguroDeMasDe32Caracteres!!",
@@ -191,10 +168,6 @@ echo "✅ MySQL iniciado en puerto 3306"
 service postgresql start
 echo "✅ PostgreSQL iniciado en puerto 5432"
 
-# Iniciar SQL Server
-service mssql-server start
-echo "✅ SQL Server iniciado en puerto 1433"
-
 # Esperar a que las bases de datos estén listas
 sleep 5
 
@@ -217,14 +190,12 @@ echo ""
 echo "🗄️ Bases de datos disponibles:"
 echo "   MySQL: localhost:3306 (root/1234567)"
 echo "   PostgreSQL: localhost:5432 (postgres/1234567)"
-echo "   SQL Server: localhost:1433 (sa/SqlServer2025!)"
 echo ""
 echo "📊 Para ver logs de la API: tail -f /var/log/api.log"
 echo "🔄 Para reiniciar servicios: /opt/start-services.sh"
 echo "🔍 Para verificar bases de datos:"
 echo "   MySQL: mysql -u root -p1234567 -e 'SHOW DATABASES;'"
 echo "   PostgreSQL: sudo -u postgres psql -c '\\l'"
-echo "   SQL Server: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'SqlServer2025!' -C -Q 'SELECT name FROM sys.databases;'"
 
 # Mantener el contenedor activo
 tail -f /var/log/api.log
@@ -237,5 +208,5 @@ echo ""
 show_info "Para iniciar todos los servicios, ejecuta:"
 echo "   /opt/start-services.sh"
 echo ""
-show_warning "IMPORTANTE: Los servicios se ejecutan en modo manual (no systemd)"
+show_warning "IMPORTANTE: Solo MySQL y PostgreSQL configurados"
 echo "            Ejecuta el script de inicio cada vez que reinicies el contenedor"
