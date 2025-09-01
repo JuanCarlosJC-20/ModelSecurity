@@ -52,6 +52,45 @@ if ! command -v mysql &> /dev/null; then
 fi
 show_message "MySQL configurado"
 
+# Instalar PostgreSQL
+show_info "Instalando PostgreSQL..."
+if ! command -v psql &> /dev/null; then
+    DEBIAN_FRONTEND=noninteractive apt install -y postgresql postgresql-contrib
+    service postgresql start
+    
+    # Configurar PostgreSQL
+    sudo -u postgres psql -c "CREATE DATABASE \"ModelSecurity\";" || true
+    sudo -u postgres psql -c "CREATE USER postgres WITH PASSWORD '1234567';" || true
+    sudo -u postgres psql -c "ALTER USER postgres CREATEDB;" || true
+    sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE \"ModelSecurity\" TO postgres;" || true
+fi
+show_message "PostgreSQL configurado"
+
+# Instalar SQL Server
+show_info "Instalando SQL Server..."
+if ! command -v sqlcmd &> /dev/null; then
+    # Instalar SQL Server para Ubuntu
+    curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
+    echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/$(lsb_release -rs)/mssql-server-2022 $(lsb_release -cs) main" > /etc/apt/sources.list.d/mssql-server-2022.list
+    echo "deb [arch=amd64,arm64,armhf signed-by=/usr/share/keyrings/microsoft-prod.gpg] https://packages.microsoft.com/ubuntu/$(lsb_release -rs)/prod $(lsb_release -cs) main" > /etc/apt/sources.list.d/msprod.list
+    
+    apt update
+    DEBIAN_FRONTEND=noninteractive apt install -y mssql-server mssql-tools18 unixodbc-dev
+    
+    # Configurar SQL Server
+    export MSSQL_SA_PASSWORD="SqlServer2025!"
+    export ACCEPT_EULA="Y"
+    export MSSQL_PID="Express"
+    
+    /opt/mssql/bin/mssql-conf -n setup accept-eula
+    systemctl start mssql-server || service mssql-server start
+    
+    # Crear base de datos
+    sleep 10
+    /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "SqlServer2025!" -C -Q "CREATE DATABASE ModelSecurity;" || true
+fi
+show_message "SQL Server configurado"
+
 # Instalar Nginx
 show_info "Instalando Nginx..."
 if ! command -v nginx &> /dev/null; then
@@ -71,7 +110,9 @@ cd Backend/Web
 cat > appsettings.Production.json << EOF
 {
   "ConnectionStrings": {
-    "MySqlConnection": "Server=localhost;Port=3306;Database=ModelSecurity;User=root;Password=1234567"
+    "MySqlConnection": "Server=localhost;Port=3306;Database=ModelSecurity;User=root;Password=1234567",
+    "PostgresDb": "Host=localhost;Port=5432;Database=ModelSecurity;Username=postgres;Password=1234567",
+    "SqlServerConnection": "Server=localhost;Database=ModelSecurity;User Id=sa;Password=SqlServer2025!;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true"
   },
   "Jwt": {
     "Key": "EsteEsUnSecretoSuperSeguroDeMasDe32Caracteres!!",
@@ -81,7 +122,8 @@ cat > appsettings.Production.json << EOF
   "Logging": {
     "LogLevel": {
       "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
+      "Microsoft.AspNetCore": "Warning",
+      "Microsoft.EntityFrameworkCore": "Information"
     }
   },
   "AllowedHosts": "*",
@@ -136,18 +178,29 @@ EOF
 show_message "Configuración completada"
 
 # Crear script de inicio
-cat > /opt/start-services.sh << 'EOF'
+cat > /opt/start-services.sh << EOF
 #!/bin/bash
 
 echo "🚀 Iniciando servicios..."
 
 # Iniciar MySQL
 service mysql start
-echo "✅ MySQL iniciado"
+echo "✅ MySQL iniciado en puerto 3306"
+
+# Iniciar PostgreSQL
+service postgresql start
+echo "✅ PostgreSQL iniciado en puerto 5432"
+
+# Iniciar SQL Server
+service mssql-server start
+echo "✅ SQL Server iniciado en puerto 1433"
+
+# Esperar a que las bases de datos estén listas
+sleep 5
 
 # Iniciar Nginx
 service nginx start
-echo "✅ Nginx iniciado"
+echo "✅ Nginx iniciado en puerto 3000"
 
 # Iniciar API en background
 cd /opt/modelsecurity-api
@@ -161,8 +214,17 @@ echo "🌐 Aplicación disponible en:"
 echo "   Frontend: http://$SERVER_IP:3000"
 echo "   API: http://$SERVER_IP:5000"
 echo ""
+echo "🗄️ Bases de datos disponibles:"
+echo "   MySQL: localhost:3306 (root/1234567)"
+echo "   PostgreSQL: localhost:5432 (postgres/1234567)"
+echo "   SQL Server: localhost:1433 (sa/SqlServer2025!)"
+echo ""
 echo "📊 Para ver logs de la API: tail -f /var/log/api.log"
 echo "🔄 Para reiniciar servicios: /opt/start-services.sh"
+echo "🔍 Para verificar bases de datos:"
+echo "   MySQL: mysql -u root -p1234567 -e 'SHOW DATABASES;'"
+echo "   PostgreSQL: sudo -u postgres psql -c '\\l'"
+echo "   SQL Server: /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'SqlServer2025!' -C -Q 'SELECT name FROM sys.databases;'"
 
 # Mantener el contenedor activo
 tail -f /var/log/api.log
