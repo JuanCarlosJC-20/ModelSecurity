@@ -1,5 +1,5 @@
 // Configuración de la API
-const API_BASE_URL = 'http://localhost:5000/api';
+// API_BASE_URL se carga desde config.js
 let isRedirecting = false;
 
 document.addEventListener('DOMContentLoaded', function () {

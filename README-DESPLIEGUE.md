@@ -1,179 +1,245 @@
-# 🚀 Guía de Despliegue en Ubuntu
+# 🚀 Guía de Despliegue NATIVO en Ubuntu
 
-Esta guía te ayudará a desplegar tu aplicación ModelSecurity en una máquina Ubuntu usando Docker.
+Esta guía te ayudará a desplegar tu aplicación ModelSecurity **directamente en Ubuntu** sin usar Docker.
 
 ## 📋 Requisitos Previos
 
-- Ubuntu 20.04 o superior
-- Acceso sudo en el servidor
-- Conexión a internet
-- Puertos 3000, 5000 y 3306 disponibles
+- ✅ **Ubuntu 20.04 o superior**
+- ✅ **Acceso root** o sudo en el servidor
+- ✅ **Conexión a internet**
+- ✅ **Puertos 3000, 5000 y 3306 disponibles**
 
-## 🛠️ Instalación Automática
+## 🎯 Paso a Paso
 
-### Opción 1: Script Automático (Recomendado)
+### **Paso 1: Clonar el Repositorio**
 
 ```bash
-# Clonar el repositorio
-git clone https://github.com/tu-usuario/ModelSecurity.git
+# Si git no está instalado:
+apt install -y git
+
+# Clonar el proyecto:
+git clone https://github.com/JuanCarlosJC-20/ModelSecurity.git
 cd ModelSecurity
-
-# Dar permisos de ejecución al script
-chmod +x deploy-ubuntu.sh
-
-# Ejecutar el script de despliegue
-./deploy-ubuntu.sh
 ```
+
+### **Paso 2: Dar Permisos al Script**
+
+```bash
+chmod +x deploy-ubuntu-native.sh
+```
+
+### **Paso 3: Ejecutar el Script (Como ROOT)**
+
+```bash
+# IMPORTANTE: Ejecutar como root
+./deploy-ubuntu-native.sh
+```
+
+### **Paso 4: Configurar IP del Servidor**
+
+Cuando el script te pregunte:
+```
+📡 Ingresa la IP de tu servidor Ubuntu: 
+```
+
+**Opción A - Para acceso local:**
+```bash
+localhost
+```
+
+**Opción B - Para acceso externo:**
+```bash
+# Obtener tu IP primero:
+hostname -I
+# Luego ingresarla, ejemplo: 192.168.1.100
+```
+
+### **Paso 5: Esperar la Instalación**
 
 El script automáticamente:
-- ✅ Instala Docker y Docker Compose si no están instalados
-- ✅ Configura las variables de entorno
-- ✅ Construye las imágenes Docker
-- ✅ Levanta todos los servicios
-- ✅ Verifica que todo funcione correctamente
+- ⏳ Instala .NET 9 SDK
+- ⏳ Instala MySQL Server
+- ⏳ Instala Nginx
+- ⏳ Compila tu aplicación
+- ⏳ Configura todos los servicios
+- ⏳ Abre puertos del firewall
 
-### Opción 2: Instalación Manual
+**Tiempo estimado:** 5-10 minutos
 
-1. **Instalar Docker y Docker Compose:**
+## ✅ Verificar que Todo Funciona
+
+### **1. Verificar Servicios**
 ```bash
-sudo apt update
-sudo apt install -y docker.io docker-compose
-sudo systemctl enable docker
-sudo systemctl start docker
-sudo usermod -aG docker $USER
-# Reiniciar sesión o ejecutar: newgrp docker
+# Ver estado de la API:
+systemctl status modelsecurity-api
+
+# Ver estado de MySQL:
+systemctl status mysql
+
+# Ver estado de Nginx:
+systemctl status nginx
 ```
 
-2. **Clonar y configurar el proyecto:**
+### **2. Verificar Conectividad**
 ```bash
-git clone https://github.com/tu-usuario/ModelSecurity.git
-cd ModelSecurity/Backend
+# Probar API:
+curl http://localhost:5000/api
+
+# Probar Frontend:
+curl http://localhost:3000
 ```
 
-3. **Editar el archivo .env:**
+## 🌐 Acceder a la Aplicación
+
+Una vez completado el despliegue:
+
+- **🌐 Frontend**: `http://TU_IP:3000`
+- **🔧 API**: `http://TU_IP:5000`
+- **🗄️ MySQL**: `TU_IP:3306`
+
+## 🛠️ Comandos Útiles
+
+### **Ver Logs**
 ```bash
-# Cambiar localhost por la IP de tu servidor Ubuntu
-nano .env
+# Logs de la API en tiempo real:
+journalctl -u modelsecurity-api -f
+
+# Logs de Nginx:
+tail -f /var/log/nginx/access.log
+tail -f /var/log/nginx/error.log
 ```
 
-4. **Levantar los servicios:**
+### **Reiniciar Servicios**
 ```bash
-docker-compose up -d
+# Reiniciar API:
+systemctl restart modelsecurity-api
+
+# Reiniciar Nginx:
+systemctl restart nginx
+
+# Reiniciar MySQL:
+systemctl restart mysql
 ```
 
-## 🌐 Acceso a la Aplicación
-
-Una vez desplegado, podrás acceder a:
-
-- **Frontend**: http://TU_IP_UBUNTU:3000
-- **API**: http://TU_IP_UBUNTU:5000
-- **MySQL**: TU_IP_UBUNTU:3306
-
-## 🔧 Comandos Útiles
-
+### **Ver Estado del Sistema**
 ```bash
-# Ver estado de los contenedores
-docker-compose ps
+# Ver todos los servicios relacionados:
+systemctl status modelsecurity-api mysql nginx
 
-# Ver logs en tiempo real
-docker-compose logs -f
-
-# Ver logs de un servicio específico
-docker-compose logs -f modelsecurity-api
-
-# Reiniciar todos los servicios
-docker-compose restart
-
-# Detener todos los servicios
-docker-compose down
-
-# Reconstruir e iniciar (si haces cambios)
-docker-compose up -d --build
+# Ver puertos abiertos:
+netstat -tulpn | grep -E ':(3000|5000|3306)'
 ```
 
-## 🔒 Configuración de Firewall
+## 📁 Ubicaciones Importantes
 
-Si usas ufw (Ubuntu Firewall), permite los puertos necesarios:
+### **Archivos de la Aplicación**
+- **API**: `/opt/modelsecurity-api/`
+- **Frontend**: `/var/www/html/`
+- **Configuración API**: `/etc/systemd/system/modelsecurity-api.service`
+- **Configuración Nginx**: `/etc/nginx/sites-available/modelsecurity`
 
+### **Logs del Sistema**
+- **API**: `journalctl -u modelsecurity-api`
+- **Nginx**: `/var/log/nginx/`
+- **MySQL**: `/var/log/mysql/`
+
+## 🔧 Personalización
+
+### **Cambiar Puerto de la API**
 ```bash
-sudo ufw allow 3000
-sudo ufw allow 5000
-sudo ufw allow 3306
-sudo ufw reload
+# Editar el servicio:
+nano /etc/systemd/system/modelsecurity-api.service
+
+# Cambiar la línea:
+Environment=ASPNETCORE_URLS=http://0.0.0.0:TU_PUERTO
+
+# Recargar y reiniciar:
+systemctl daemon-reload
+systemctl restart modelsecurity-api
+```
+
+### **Cambiar Puerto del Frontend**
+```bash
+# Editar configuración de Nginx:
+nano /etc/nginx/sites-available/modelsecurity
+
+# Cambiar la línea:
+listen TU_PUERTO;
+
+# Reiniciar Nginx:
+systemctl restart nginx
 ```
 
 ## 🐛 Solución de Problemas
 
-### Problema: Error de permisos con Docker
+### **API no inicia**
 ```bash
-sudo usermod -aG docker $USER
-newgrep docker
-# O reiniciar la sesión
+# Ver logs detallados:
+journalctl -u modelsecurity-api --no-pager -l
+
+# Verificar archivo de configuración:
+cat /opt/modelsecurity-api/appsettings.Production.json
 ```
 
-### Problema: Puerto ya en uso
+### **MySQL no conecta**
 ```bash
-# Ver qué está usando el puerto
-sudo netstat -tulpn | grep :3000
+# Probar conexión manual:
+mysql -u root -p1234567 -e "SHOW DATABASES;"
 
-# Detener servicios anteriores
-docker-compose down
+# Reiniciar MySQL:
+systemctl restart mysql
 ```
 
-### Problema: Base de datos no conecta
+### **Frontend no carga**
 ```bash
-# Verificar logs de MySQL
-docker-compose logs mysql
+# Verificar archivos:
+ls -la /var/www/html/
 
-# Reiniciar solo MySQL
-docker-compose restart mysql
+# Verificar configuración Nginx:
+nginx -t
+
+# Ver logs de Nginx:
+tail -f /var/log/nginx/error.log
 ```
 
-### Problema: Frontend no puede conectar con API
-1. Verifica que la IP en el archivo .env sea correcta
-2. Verifica que el firewall permita el puerto 5000
-3. Revisa los logs del API: `docker-compose logs modelsecurity-api`
-
-## 📊 Monitoreo
-
-Para monitorear el estado de tu aplicación:
-
+### **Puertos no accesibles desde otras máquinas**
 ```bash
-# Recursos del sistema
-docker stats
+# Verificar firewall:
+ufw status
 
-# Espacio en disco usado por Docker
-docker system df
-
-# Limpiar recursos no utilizados
-docker system prune -f
+# Abrir puertos manualmente:
+ufw allow 3000
+ufw allow 5000
 ```
 
-## 🔄 Actualizaciones
+## 🔒 Seguridad para Producción
 
-Para actualizar tu aplicación:
-
+### **Cambiar Contraseñas por Defecto**
 ```bash
-# Obtener cambios del repositorio
-git pull
+# Cambiar contraseña de MySQL:
+mysql -u root -p -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'TU_NUEVA_CONTRASEÑA';"
 
-# Reconstruir y reiniciar
-docker-compose down
-docker-compose up -d --build
+# Actualizar en appsettings.Production.json:
+nano /opt/modelsecurity-api/appsettings.Production.json
 ```
 
-## 📝 Notas Importantes
+### **Configurar HTTPS (Opcional)**
+```bash
+# Instalar Certbot:
+apt install -y certbot python3-certbot-nginx
 
-- La base de datos se configura automáticamente en el primer inicio
-- Los datos se persisten en volúmenes Docker
-- Para producción, cambia las contraseñas por defecto
-- Considera usar HTTPS con un proxy reverso (nginx) para producción
+# Obtener certificado SSL:
+certbot --nginx -d tu-dominio.com
+```
 
-## 🆘 Soporte
+## ✅ ¡Listo!
 
-Si tienes problemas:
+Tu aplicación ModelSecurity está ejecutándose **nativamente en Ubuntu** y lista para usar.
 
-1. Revisa los logs: `docker-compose logs`
-2. Verifica el estado: `docker-compose ps`
-3. Asegúrate de que todos los puertos estén disponibles
-4. Verifica la configuración de red y firewall
+### **URLs de Acceso:**
+- Frontend: `http://TU_IP:3000`
+- API: `http://TU_IP:5000`
+
+### **Credenciales por Defecto:**
+- MySQL: usuario `root`, contraseña `1234567`
+- Base de datos: `ModelSecurity`
