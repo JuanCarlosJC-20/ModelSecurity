@@ -1,26 +1,40 @@
 # .dockerignore para proyecto .NET
-**/.dockerignore
-**/.env
+
+# Git y archivos de control de versiones
 **/.git
 **/.gitignore
-**/.project
-**/.settings
-**/.toolstarget
+
+# IDEs y editores
 **/.vs
 **/.vscode
 **/.idea
+**/.project
+**/.settings
+**/.toolstarget
+
+# Archivos de proyecto de usuario
 **/*.*proj.user
 **/*.dbmdl
 **/*.jfm
+
+# Archivos de desarrollo específicos
 **/azds.yaml
-**/bin
-**/charts
-**/docker-compose*
-**/Dockerfile*
-**/node_modules
-**/npm-debug.log
-**/obj
 **/secrets.dev.yaml
 **/values.dev.yaml
-LICENSE
+
+# Archivos compilados
+**/bin
+**/obj
+
+# Node.js (si aplica)
+**/node_modules
+**/npm-debug.log
+
+# Archivos de documentación
 README.md
+LICENSE
+
+
+
+# Archivos sensibles (pero ya deberían estar en .gitignore)
+**/.env

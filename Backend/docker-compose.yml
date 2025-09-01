@@ -22,18 +22,23 @@ services:
     ports:
       - "5000:8080"
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_ENVIRONMENT=Production
       - ASPNETCORE_URLS=http://+:8080
       - ASPNETCORE_HTTP_PORTS=8080
-
-      # Conexiones (ajústalas en tu appsettings.json para leer de ENV)
-      - ConnectionStrings__MySqlConnection=Server=mysql;Port=3306;Database=ModelSecurity;User=root;Password=1234567
-      - ConnectionStrings__PostgresDb=Host=postgres;Port=5432;Database=ModelSecurity;Username=postgres;Password=1234567
-      - ConnectionStrings__SqlServerConnection=Server=sqlserver;Database=ModelSecurity;User Id=sa;Password=SqlServer2025!;Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;
       
+      # Variables para Ubuntu/Linux
+      - TZ=America/Bogota
+      - LANG=es_CO.UTF-8
+      
+      # Conexiones con nombres de servicio
+      - ConnectionStrings__MySqlConnection=Server=mysql;Port=3306;Database=ModelSecurity;User=root;Password=${MYSQL_PASSWORD:-1234567}
+      - ConnectionStrings__PostgresDb=Host=postgres;Port=5432;Database=ModelSecurity;Username=postgres;Password=${POSTGRES_PASSWORD:-1234567}
+      - ConnectionStrings__SqlServerConnection=Server=sqlserver;Database=ModelSecurity;User Id=sa;Password=${SQLSERVER_PASSWORD:-SqlServer2025!};Encrypt=false;TrustServerCertificate=true;MultipleActiveResultSets=true;
+      
+    # Volúmenes para Linux/Ubuntu
     volumes:
-      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
-      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ~/.microsoft/usersecrets:/home/app/.microsoft/usersecrets:ro
+      - ~/.aspnet/https:/home/app/.aspnet/https:ro
     depends_on:
       mysql:
         condition: service_healthy
@@ -44,6 +49,12 @@ services:
     restart: unless-stopped
     networks:
       - modelsecurity-network
+    # Health check para la API
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   # ---------------- MYSQL ----------------
   mysql:
@@ -51,38 +62,48 @@ services:
     container_name: mysql_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: 1234567
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-1234567}
       MYSQL_DATABASE: ModelSecurity
+      # Configuración para Ubuntu
+      MYSQL_CHARSET: utf8mb4
+      MYSQL_COLLATION: utf8mb4_unicode_ci
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      # Configuración personalizada de MySQL
+      - ./mysql/conf.d:/etc/mysql/conf.d:ro
     networks:
       - modelsecurity-network
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_PASSWORD:-1234567}"]
       timeout: 20s
       retries: 10
+      interval: 10s
 
   # ---------------- POSTGRES ----------------
   postgres:
-    image: postgres:15
+    image: postgres:15-alpine
     container_name: postgres_db
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1234567
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-1234567}
       POSTGRES_DB: ModelSecurity
+      # Configuración para mejor rendimiento
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --locale=C"
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
     networks:
       - modelsecurity-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ModelSecurity"]
       timeout: 20s
       retries: 10
+      interval: 10s
 
   # ---------------- SQL SERVER ----------------
   sqlserver:
@@ -91,10 +112,12 @@ services:
     restart: always
     environment:
       ACCEPT_EULA: "Y"
-      SA_PASSWORD: "SqlServer2025!"
+      SA_PASSWORD: ${SQLSERVER_PASSWORD:-SqlServer2025!}
       MSSQL_PID: "Express"
       MSSQL_ENCRYPT: "false"
       MSSQL_TRUST_SERVER_CERTIFICATE: "true"
+      # Configuración de memoria para Ubuntu
+      MSSQL_MEMORY_LIMIT_MB: 2048
     ports:
       - "1433:1433"
     volumes:
@@ -102,19 +125,42 @@ services:
     networks:
       - modelsecurity-network
     healthcheck:
-      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P SqlServer2025! -C -Q 'SELECT 1'"]
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P ${SQLSERVER_PASSWORD:-SqlServer2025!} -C -Q 'SELECT 1' || exit 1"]
       timeout: 30s
       retries: 5
-      interval: 10s
+      interval: 15s
       start_period: 60s
+
+  # ---------------- REVERSE PROXY (NGINX) ----------------
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - frontend
+      - modelsecurity-api
+    restart: unless-stopped
+    networks:
+      - modelsecurity-network
 
 # ---------------- Volúmenes persistentes ----------------
 volumes:
   mysql_data:
+    driver: local
   postgres_data:
+    driver: local
   sqlserver_data:
+    driver: local
 
 # ---------------- Red interna ----------------
 networks:
   modelsecurity-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

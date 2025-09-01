@@ -1,0 +1,54 @@
+# Archivos sensibles - NO subir a GitHub
+.env
+.env.local
+.env.production
+.env.staging
+*.env
+
+# Archivos de desarrollo .NET
+bin/
+obj/
+out/
+*.user
+*.suo
+*.cache
+*.docstates
+
+# Visual Studio
+.vs/
+.vscode/
+*.sln.docstates
+
+# Archivos de base de datos
+*.mdf
+*.ldf
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Certificados SSL
+*.pfx
+*.p12
+*.key
+*.pem
+*.crt
+
+# Node modules (si tienes frontend)
+node_modules/
+
+# Docker volumes data (opcional)
+mysql_data/
+postgres_data/
+sqlserver_data/
+
+# Archivos temporales
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Secretos de usuario
+**/appsettings.Development.json
+**/appsettings.Production.json
