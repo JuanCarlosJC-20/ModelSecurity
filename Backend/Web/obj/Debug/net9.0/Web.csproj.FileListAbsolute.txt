@@ -1625,3 +1625,4 @@ C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Backend\web\obj\Debug\net9.0
 C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Backend\web\obj\Debug\net9.0\Web.pdb
 C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Backend\web\obj\Debug\net9.0\Web.genruntimeconfig.cache
 C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Backend\web\obj\Debug\net9.0\ref\Web.dll
+C:\Users\sampf\Desktop\api_Despliegue\ModelSecurity\Backend\Web\bin\Debug\net9.0\appsettings.Production.json

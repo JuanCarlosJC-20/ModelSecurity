@@ -33,12 +33,33 @@ namespace Business
         {
             try
             {
-                // Buscar usuario con failover automático
+                // Buscar usuario con roles y permisos
                 var user = await _multiDbService.ExecuteWithFailoverAsync(async (context) =>
                 {
                     return await context.Set<User>()
                         .Include(u => u.Person)
                         .FirstOrDefaultAsync(u => u.UserName == login.UserName && u.Active);
+                });
+
+                // Obtener roles y permisos del usuario
+                var userRoles = await _multiDbService.ExecuteWithFailoverAsync(async (context) =>
+                {
+                    return await context.Set<RolUser>()
+                        .Include(ru => ru.Rol)
+                        .Where(ru => ru.UserId == user.Id && ru.Rol.Active)
+                        .Select(ru => ru.Rol.Name)
+                        .ToListAsync();
+                });
+
+                var userPermissions = await _multiDbService.ExecuteWithFailoverAsync(async (context) =>
+                {
+                    return await context.Set<RolUser>()
+                        .Where(ru => ru.UserId == user.Id && ru.Rol.Active)
+                        .SelectMany(ru => context.Set<RolFormPermission>()
+                            .Where(rfp => rfp.RolId == ru.RolId && rfp.Permission.Active)
+                            .Select(rfp => rfp.Permission.Name))
+                        .Distinct()
+                        .ToListAsync();
                 });
 
                 if (user == null)
@@ -68,14 +89,20 @@ namespace Business
                     }
                 });
 
-                var token = GenerateJwtToken(user);
+                var token = GenerateJwtToken(user, userRoles ?? new List<string>());
                 _logger.LogInformation("Login exitoso para usuario: {UserName}", login.UserName);
 
                 return new LoginResponseDto
                 {
                     Token = token,
                     Expiration = DateTime.UtcNow.AddHours(1),
-                    UserName = user.UserName
+                    UserName = user.UserName,
+                    UserId = user.Id,
+                    FirstName = user.Person?.FirstName ?? "",
+                    LastName = user.Person?.LastName ?? "",
+                    Email = user.Person?.Email ?? "",
+                    Roles = userRoles ?? new List<string>(),
+                    Permissions = userPermissions ?? new List<string>()
                 };
             }
             catch (Exception ex)
@@ -179,17 +206,26 @@ namespace Business
             }
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(User user, List<string> roles)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
+            var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim("userId", user.Id.ToString()),
+                new Claim("firstName", user.Person?.FirstName ?? ""),
+                new Claim("lastName", user.Person?.LastName ?? ""),
+                new Claim("email", user.Person?.Email ?? ""),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+
+            // Agregar roles como claims
+            foreach (var role in roles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],

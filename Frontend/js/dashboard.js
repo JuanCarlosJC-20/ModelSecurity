@@ -29,6 +29,11 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeDashboard();
     loadDashboardData();
     setupNavigation();
+    
+    // Aplicar control de acceso basado en roles
+    setTimeout(() => {
+        applyRoleBasedAccessControl();
+    }, 100);
 });
 
 // Inicializar dashboard
@@ -37,14 +42,22 @@ function initializeDashboard() {
     
     // Mostrar información del usuario
     const userData = JSON.parse(sessionStorage.getItem('userData') || '{}');
-    const userName = userData.username || userData.user?.username || 'Usuario';
+    const fullName = userData.firstName && userData.lastName 
+        ? `${userData.firstName} ${userData.lastName}` 
+        : userData.userName || 'Usuario';
     
     const userNameElement = document.getElementById('userName');
     if (userNameElement) {
-        userNameElement.textContent = userName;
+        userNameElement.textContent = fullName;
+        
+        // Mostrar rol del usuario
+        if (userData.roles && userData.roles.length > 0) {
+            const roleText = userData.roles.join(', ');
+            userNameElement.title = `Roles: ${roleText}`;
+        }
     }
     
-    console.log('Dashboard initialized for user:', userName);
+    console.log('Dashboard initialized for user:', fullName);
 }
 
 // Cargar datos del dashboard
@@ -455,12 +468,31 @@ function logout() {
     console.log('Logging out from dashboard...');
     sessionStorage.removeItem('authToken');
     sessionStorage.removeItem('userData');
+    
+    // Limpiar datos de usuario en RBAC
+    if (typeof clearUserData === 'function') {
+        clearUserData();
+    }
+    
     dashboardInitialized = false;
     window.location.replace('./index.html');
 }
 
 // Funciones para modales
+const originalShowModal = showModal;
 function showModal(modalId, data = null) {
+    // Si no hay datos, es una creación (nuevo registro)
+    if (!data && !checkAuthorization('create')) {
+        showToast('No tienes permisos para crear nuevos registros', 'error');
+        return;
+    }
+    
+    // Si hay datos, es una edición
+    if (data && !checkAuthorization('edit')) {
+        showToast('No tienes permisos para editar registros', 'error');
+        return;
+    }
+    
     console.log('Opening modal:', modalId);
     const modal = document.getElementById(modalId);
     if (!modal) {
@@ -541,7 +573,7 @@ function closeModal(modalId) {
 }
 
 // Funciones CRUD para Usuarios
-async function editUser(userId) {
+const editUser = interceptAction('edit', async function(userId) {
     try {
         const response = await authenticatedFetch(`${API_BASE_URL}/User/${userId}`);
         if (response && response.ok) {
@@ -554,9 +586,9 @@ async function editUser(userId) {
         console.error('Error fetching user:', error);
         showToast('Error al obtener datos del usuario', 'error');
     }
-}
+}, 'No tienes permisos para editar usuarios');
 
-async function deleteUser(userId) {
+const deleteUser = interceptAction('delete', function(userId) {
     showConfirmDialog('¿Estás seguro de que quieres eliminar este usuario?', async () => {
         try {
             const response = await authenticatedFetch(`${API_BASE_URL}/User/${userId}`, {
@@ -575,10 +607,10 @@ async function deleteUser(userId) {
             showToast('Error al eliminar usuario', 'error');
         }
     });
-}
+}, 'No tienes permisos para eliminar usuarios');
 
 // Funciones CRUD para Personas
-async function editPerson(personId) {
+const editPerson = interceptAction('edit', async function(personId) {
     try {
         const response = await authenticatedFetch(`${API_BASE_URL}/Person/${personId}`);
         if (response && response.ok) {
@@ -591,9 +623,9 @@ async function editPerson(personId) {
         console.error('Error fetching person:', error);
         showToast('Error al obtener datos de la persona', 'error');
     }
-}
+}, 'No tienes permisos para editar personas');
 
-async function deletePerson(personId) {
+const deletePerson = interceptAction('delete', function(personId) {
     showConfirmDialog('¿Estás seguro de que quieres eliminar esta persona?', async () => {
         try {
             const response = await authenticatedFetch(`${API_BASE_URL}/Person/${personId}`, {
@@ -612,10 +644,10 @@ async function deletePerson(personId) {
             showToast('Error al eliminar persona', 'error');
         }
     });
-}
+}, 'No tienes permisos para eliminar personas');
 
 // Funciones CRUD para Roles
-async function editRole(roleId) {
+const editRole = interceptAction('edit', async function(roleId) {
     try {
         const response = await authenticatedFetch(`${API_BASE_URL}/Rol/${roleId}`);
         if (response && response.ok) {
@@ -628,9 +660,9 @@ async function editRole(roleId) {
         console.error('Error fetching role:', error);
         showToast('Error al obtener datos del rol', 'error');
     }
-}
+}, 'No tienes permisos para editar roles');
 
-async function deleteRole(roleId) {
+const deleteRole = interceptAction('delete', function(roleId) {
     showConfirmDialog('¿Estás seguro de que quieres eliminar este rol?', async () => {
         try {
             const response = await authenticatedFetch(`${API_BASE_URL}/Rol/${roleId}`, {
@@ -649,7 +681,7 @@ async function deleteRole(roleId) {
             showToast('Error al eliminar rol', 'error');
         }
     });
-}
+}, 'No tienes permisos para eliminar roles');
 
 // Funciones CRUD para Formularios
 async function editForm(formId) {

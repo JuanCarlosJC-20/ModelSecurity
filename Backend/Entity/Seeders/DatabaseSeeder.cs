@@ -14,6 +14,7 @@ namespace Entity.Seeders
                 await SeedPermissionsAsync(context);
                 await SeedModulesAsync(context);
                 await SeedFormsAsync(context);
+                await SeedAdminUserAsync(context);
                 await context.SaveChangesAsync();
                 
                 Console.WriteLine("✅ Datos iniciales creados correctamente.");
@@ -199,6 +200,64 @@ namespace Entity.Seeders
                     Console.WriteLine($"🔧 Creando formulario: {form.Name}");
                 }
             }
+        }
+
+        private static async Task SeedAdminUserAsync(DbContext context)
+        {
+            // Verificar si ya existe un administrador
+            var existingAdmin = await context.Set<User>()
+                .Include(u => u.Person)
+                .FirstOrDefaultAsync(u => u.UserName == "admin");
+
+            if (existingAdmin != null)
+            {
+                Console.WriteLine("🔧 Usuario administrador ya existe");
+                return;
+            }
+
+            // Crear persona para el admin
+            var adminPerson = new Person
+            {
+                FirstName = "Administrador",
+                LastName = "Sistema",
+                Email = "admin@sistema.com",
+                CreateAt = DateTime.UtcNow
+            };
+            context.Set<Person>().Add(adminPerson);
+            await context.SaveChangesAsync();
+
+            // Crear usuario admin
+            var adminUser = new User
+            {
+                UserName = "admin",
+                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"), // Contraseña por defecto
+                Code = "ADMIN001",
+                PersonId = adminPerson.Id,
+                Active = true,
+                CreateAt = DateTime.UtcNow
+            };
+            context.Set<User>().Add(adminUser);
+            await context.SaveChangesAsync();
+
+            // Asignar rol Admin
+            var adminRole = await context.Set<Rol>()
+                .FirstOrDefaultAsync(r => r.Name == "Admin");
+
+            if (adminRole != null)
+            {
+                var roleUser = new RolUser
+                {
+                    UserId = adminUser.Id,
+                    RolId = adminRole.Id
+                };
+                context.Set<RolUser>().Add(roleUser);
+                await context.SaveChangesAsync();
+            }
+
+            Console.WriteLine("🔧 Usuario administrador creado:");
+            Console.WriteLine("   Usuario: admin");
+            Console.WriteLine("   Contraseña: admin123");
+            Console.WriteLine("   ⚠️  CAMBIAR CONTRASEÑA DESPUÉS DEL PRIMER LOGIN");
         }
     }
 }

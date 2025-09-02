@@ -49,7 +49,23 @@ async function handleLogin(event) {
         if (!authToken) throw new Error('No se recibió token');
 
         sessionStorage.setItem('authToken', authToken);
-        sessionStorage.setItem('userData', JSON.stringify(result.user || result));
+        
+        // Guardar toda la información del usuario incluyendo roles y permisos
+        const userData = {
+            userId: result.userId,
+            userName: result.userName,
+            firstName: result.firstName,
+            lastName: result.lastName,
+            email: result.email,
+            roles: result.roles || [],
+            permissions: result.permissions || []
+        };
+        
+        sessionStorage.setItem('userData', JSON.stringify(userData));
+        
+        console.log('Login successful for user:', userData.userName);
+        console.log('User roles:', userData.roles);
+        console.log('User permissions:', userData.permissions);
 
         showToast('Inicio de sesión exitoso', 'success');
         isRedirecting = true;
