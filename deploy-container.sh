@@ -27,16 +27,36 @@ fi
 show_info "Actualizando sistema..."
 apt update && apt upgrade -y
 
-# Instalar .NET 9
-show_info "Instalando .NET 9..."
+# Instalar .NET 8
+show_info "Instalando .NET 8..."
 if ! command -v dotnet &> /dev/null; then
-    wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -rs)/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+    # Detectar versión de Ubuntu y usar la correcta
+    UBUNTU_VERSION="22.04"
+    if [ -f /etc/lsb-release ]; then
+        UBUNTU_VERSION=$(grep DISTRIB_RELEASE /etc/lsb-release | cut -d'=' -f2)
+    fi
+    
+    # Si es Ubuntu 24.04, usar 22.04 como fallback para .NET 8
+    if [ "$UBUNTU_VERSION" = "24.04" ]; then
+        UBUNTU_VERSION="22.04"
+    fi
+    
+    wget https://packages.microsoft.com/config/ubuntu/$UBUNTU_VERSION/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
     dpkg -i packages-microsoft-prod.deb
     rm packages-microsoft-prod.deb
     apt update
-    apt install -y dotnet-sdk-9.0 aspnetcore-runtime-9.0
+    
+    # Instalar .NET 8 con fallback
+    if ! apt install -y dotnet-sdk-8.0 aspnetcore-runtime-8.0; then
+        # Fallback: instalación manual si falla el paquete
+        wget https://download.visualstudio.microsoft.com/download/pr/b8cf2dd4-6ecf-4cb5-9c21-63b4a4c63ccc/7d57b75a2ef4d6a0f4bfa8d02b2e5f90/dotnet-sdk-8.0.403-linux-x64.tar.gz
+        mkdir -p /usr/share/dotnet
+        tar zxf dotnet-sdk-8.0.403-linux-x64.tar.gz -C /usr/share/dotnet
+        ln -sf /usr/share/dotnet/dotnet /usr/bin/dotnet
+        rm dotnet-sdk-8.0.403-linux-x64.tar.gz
+    fi
 fi
-show_message ".NET 9 instalado"
+show_message ".NET 8 instalado"
 
 # Instalar MySQL
 show_info "Instalando MySQL..."
@@ -105,9 +125,9 @@ cat > appsettings.Production.json << EOF
   },
   "AllowedHosts": "*",
   "OrigenesPermitidos": [
-    "http://$SERVER_IP:3000",
-    "https://$SERVER_IP:3000",
-    "http://localhost:3000"
+    "http://$SERVER_IP:8080",
+    "https://$SERVER_IP:8080",
+    "http://localhost:8080"
   ]
 }
 EOF
@@ -133,10 +153,10 @@ EOF
 # Copiar frontend
 cp -r * /var/www/html/
 
-# Configurar nginx
+# Configurar nginx para puerto 8080
 cat > /etc/nginx/sites-available/default << EOF
 server {
-    listen 3000;
+    listen 8080;
     server_name $SERVER_IP localhost;
     root /var/www/html;
     index index.html;
@@ -173,7 +193,7 @@ sleep 5
 
 # Iniciar Nginx
 service nginx start
-echo "✅ Nginx iniciado en puerto 3000"
+echo "✅ Nginx iniciado en puerto 8080"
 
 # Iniciar API en background
 cd /opt/modelsecurity-api
@@ -184,7 +204,7 @@ echo "✅ API iniciada en puerto 5000"
 
 echo ""
 echo "🌐 Aplicación disponible en:"
-echo "   Frontend: http://$SERVER_IP:3000"
+echo "   Frontend: http://$SERVER_IP:8080"
 echo "   API: http://$SERVER_IP:5000"
 echo ""
 echo "🗄️ Bases de datos disponibles:"
