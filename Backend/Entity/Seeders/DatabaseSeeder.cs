@@ -221,7 +221,7 @@ namespace Entity.Seeders
                 FirstName = "Administrador",
                 LastName = "Sistema",
                 Email = "admin@sistema.com",
-                CreateAt = DateTime.UtcNow
+                Active = true
             };
             context.Set<Person>().Add(adminPerson);
             await context.SaveChangesAsync();
@@ -230,7 +230,7 @@ namespace Entity.Seeders
             var adminUser = new User
             {
                 UserName = "admin",
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"), // Contraseña por defecto
+                PasswordHash = "$2a$11$7EqJtq98hPqEX7fNZaFWoOEFy0H/oLPZnMFWAQEMHYYP4ZCnP3lOa", // admin123 hasheado
                 Code = "ADMIN001",
                 PersonId = adminPerson.Id,
                 Active = true,
